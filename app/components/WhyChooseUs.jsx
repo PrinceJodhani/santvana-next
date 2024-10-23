@@ -1,5 +1,5 @@
 // app/components/WhyChooseUs.jsx
-'use client';
+"use client";
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -59,25 +59,29 @@ const reasons = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-16" style={{backgroundColor: '#C0CEC0'}}>
+    <section className="py-16" style={{ backgroundColor: '#C0CEC0' }}>
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center  mb-12" style={{color:'#2E393A'}}>
+        <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#2E393A' }}>
           Why Choose Us? Get Your Life Back
         </h2>
         <p className="text-center text-gray-700 mb-8">
           Wondering what we provide that makes us the right choice to help you with your problems and enforce your well-being? Here's your answer!
         </p>
         {/* Swiper for Mobile Devices */}
-        <div className="md:hidden">
+        <div className="md:hidden relative">
           <Swiper
             modules={[Navigation]}
             spaceBetween={16}
             slidesPerView={1}
-            navigation
+            navigation={{
+              nextEl: '.swiper-button-next-custom',
+              prevEl: '.swiper-button-prev-custom',
+            }}
+            className="overflow-visible"
           >
             {reasons.map((reason, index) => (
               <SwiperSlide key={index}>
-                <div className="text-center p-6 border rounded-lg shadow-md bg-gray-50">
+                <div className="text-center p-6 border rounded-lg shadow-md bg-white">
                   <img
                     src={reason.icon}
                     alt={reason.title}
@@ -91,13 +95,42 @@ const WhyChooseUs = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+          {/* Custom Navigation Buttons */}
+          <div
+            className="swiper-button-prev-custom absolute top-1/2 -left-4 transform -translate-y-1/2 cursor-pointer bg-gray-800 text-white rounded-full p-2 z-10"
+            aria-label="Previous slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div
+            className="swiper-button-next-custom absolute top-1/2 -right-4 transform -translate-y-1/2 cursor-pointer bg-gray-800 text-white rounded-full p-2 z-10"
+            aria-label="Next slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
         {/* Grid for Larger Screens */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {reasons.map((reason, index) => (
             <div
               key={index}
-              className="text-center p-6 border rounded-lg shadow-md bg-gray-50"
+              className="text-center p-6 border rounded-lg shadow-md bg-white"
             >
               <img
                 src={reason.icon}

@@ -1,33 +1,110 @@
 // app/components/Footer.jsx
 "use client";
 import React from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
-    <footer className=" text-gray-200 py-12" style={{backgroundColor:'#D6D9D4'}}>
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Dr. Poonam Vipani</h3>
-          <p className='text-slate-800'>"Empowering minds, nurturing hearts."</p>
+    <footer className="relative text-gray-700">
+      {/* Wave SVG at the top */}
+      {/* <div className="absolute top-0 left-0 w-full overflow-hidden leading-none rotate-180">
+        <svg
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          className="w-full h-32"
+        >
+          <path
+            d="M0,0 C150,100 350,0 600,50 C850,100 1050,0 1200,50 L1200,0 L0,0 Z"
+            fill="#E8F0F2"
+          ></path>
+        </svg>
+      </div> */}
+
+      <div
+        className="max-w-8xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-10"
+        style={{ backgroundColor: '#E8F0F2' }}
+      >
+        <div className="flex flex-col items-start">
+          <Image
+            src={'/images/logo.png'}
+            alt="santvana-logo"
+            width={200}
+            height={30}
+          />
+          <p className="mt-4 text-gray-600">
+            "Empowering minds, nurturing hearts."
+          </p>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">
+            Quick Links
+          </h3>
           <ul>
-            <li><a href="#home" className="hover:text-white text-slate-800">Home</a></li>
-            <li><a href="#services" className="hover:text-white text-slate-800">Services</a></li>
-            <li><a href="#team" className="hover:text-white text-slate-800">Team</a></li>
-            <li><a href="#contact" className="hover:text-white text-slate-800">Contact</a></li>
+            <li>
+              <a href="#home" className="hover:text-primary">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#services" className="hover:text-primary">
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#team" className="hover:text-primary">
+                Team
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="hover:text-primary">
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-4">Contact Info</h3>
-          <p className='text-slate-800'>Email: <a href="mailto:santvana27@gmail.com" className="hover:text-white text-slate-800">santvana27@gmail.com</a></p>
-          <p className='text-slate-800'>Phone: <a href="tel:9824218278" className="hover:text-white text-slate-800">9824218278</a>, <a href="tel:9723069261" className="hover:text-white text-slate-800">9723069261</a></p>
-          <p className='text-slate-800'>Instagram: <a href="https://instagram.com/santvana.mentalhealth" className="hover:text-white text-slate-800">@santvana.mentalhealth</a></p>
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">
+            Contact Info
+          </h3>
+          <p>
+            Email:{' '}
+            <a
+              href="mailto:santvana27@gmail.com"
+              className="hover:text-primary"
+            >
+              santvana27@gmail.com
+            </a>
+          </p>
+          <p>
+            Phone:{' '}
+            <a href="tel:9824218278" className="hover:text-primary">
+              9824218278
+            </a>
+            ,{' '}
+            <a href="tel:9723069261" className="hover:text-primary">
+              9723069261
+            </a>
+          </p>
+          <p>
+            Instagram:{' '}
+            <a
+              href="https://instagram.com/santvana.mentalhealth"
+              className="hover:text-primary"
+            >
+              @santvana.mentalhealth
+            </a>
+          </p>
         </div>
       </div>
-      <div className="mt-8 text-center text-slate-800">
-        <p>© {new Date().getFullYear()} Santvana - Psychological Guidance Centre. All rights reserved.</p>
+      <div
+        className="py-4 text-center text-gray-600"
+        style={{ backgroundColor: '#E8F0F2' }}
+      >
+        <p>
+          © {new Date().getFullYear()} Santvana - Psychological Guidance Centre.
+          All rights reserved.
+        </p>
       </div>
     </footer>
   );

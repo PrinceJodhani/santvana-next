@@ -1,11 +1,10 @@
 // app/components/Services.jsx
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
-import Image from 'next/image';
 
 const servicesData = [
   {
@@ -51,28 +50,26 @@ const servicesData = [
 ];
 
 const Services = () => {
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const toggleService = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
   return (
-    <section id="services" className="py-16" style={{backgroundColor: '#C0CEC0'}}>
+    <section id="services" className="py-16" style={{ backgroundColor: '#C0CEC0' }}>
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12" style={{color:'#2E393A'}} >
+        <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#2E393A' }}>
           Our Services Provided By Experts
         </h2>
         <p className="text-center text-gray-700 mb-8">
           Explore our tailored services designed to transform your life with personalized, compassionate therapy just for you!
         </p>
         {/* Swiper for Mobile Devices */}
-        <div className="md:hidden">
+        <div className="md:hidden relative">
           <Swiper
             modules={[Navigation]}
             spaceBetween={16}
             slidesPerView={1}
-            navigation
+            navigation={{
+              nextEl: '.swiper-button-next-custom',
+              prevEl: '.swiper-button-prev-custom',
+            }}
+            className="overflow-visible"
           >
             {servicesData.map((service, index) => (
               <SwiperSlide key={index}>
@@ -86,29 +83,50 @@ const Services = () => {
                     <h3 className="text-xl font-semibold mb-2 text-primary">
                       {service.title}
                     </h3>
-                    {activeIndex === index && (
-                      <p className="text-gray-700">{service.description}</p>
-                    )}
-                    <button
-                      onClick={() => toggleService(index)}
-                      className="mt-4 text-secondary hover:underline"
-                    >
-                      {activeIndex === index ? 'Read Less' : 'Read More'}
-                    </button>
+                    <p className="text-gray-700">{service.description}</p>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
+          {/* Custom Navigation Buttons */}
+          <div
+            className="swiper-button-prev-custom absolute top-1/2 -left-4 transform -translate-y-1/2 cursor-pointer bg-gray-800 text-white rounded-full p-2 z-10"
+            aria-label="Previous slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div
+            className="swiper-button-next-custom absolute top-1/2 -right-4 transform -translate-y-1/2 cursor-pointer bg-gray-800 text-white rounded-full p-2 z-10"
+            aria-label="Next slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
         {/* Grid for Larger Screens */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesData.map((service, index) => (
             <div
               key={index}
-              className=" rounded-lg overflow-hidden shadow-lg" style={{backgroundColor:'#D6D9D4'}}
+              className="rounded-lg overflow-hidden shadow-lg"
+              style={{ backgroundColor: '#D6D9D4' }}
             >
-            
               <img
                 src={service.image}
                 alt={service.title}
@@ -118,15 +136,7 @@ const Services = () => {
                 <h3 className="text-xl font-semibold mb-2 text-primary">
                   {service.title}
                 </h3>
-                {activeIndex === index && (
-                  <p className="text-gray-700">{service.description}</p>
-                )}
-                <button
-                  onClick={() => toggleService(index)}
-                  className="mt-4 text-secondary hover:underline"
-                >
-                  {activeIndex === index ? 'Read Less' : 'Read More'}
-                </button>
+                <p className="text-gray-700">{service.description}</p>
               </div>
             </div>
           ))}
