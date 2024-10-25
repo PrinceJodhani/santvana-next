@@ -6,11 +6,10 @@ const AppointmentForm = ({ member, onClose }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
-    phone: "",
     gender: "",
-    // department:"",
     date: "",
     brief: "",
+    needHelpFor: "",
   });
 
   const handleChange = (e) => {
@@ -22,7 +21,7 @@ const AppointmentForm = ({ member, onClose }) => {
     e.preventDefault();
 
     // Construct the WhatsApp message
-    const message = `Hello,\nI want to make an appointment.\n\nName: ${formData.firstName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nGender: ${formData.gender}\nDate: ${formData.date}\nBrief: ${formData.brief}`;
+    const message = `Hello,\nI want to make an appointment.\n\nName: ${formData.firstName}\nEmail: ${formData.email}\nGender: ${formData.gender}\nDate: ${formData.date}\nI Need Help For: ${formData.needHelpFor}\nBrief: ${formData.brief}`;
 
     // Encode the message
     const encodedMessage = encodeURIComponent(message);
@@ -44,7 +43,7 @@ const AppointmentForm = ({ member, onClose }) => {
         <input
           type="text"
           name="firstName"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.firstName}
           onChange={handleChange}
           required
@@ -55,28 +54,16 @@ const AppointmentForm = ({ member, onClose }) => {
         <input
           type="email"
           name="email"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.email}
           onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700">Phone</label>
-        <input
-          type="tel"
-          name="phone"
-          className="w-full mt-1 p-2 border rounded"
-          value={formData.phone}
-          onChange={handleChange}
-          required
         />
       </div>
       <div>
         <label className="block text-gray-700">Your Gender</label>
         <select
           name="gender"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.gender}
           onChange={handleChange}
           required
@@ -92,37 +79,46 @@ const AppointmentForm = ({ member, onClose }) => {
         <input
           type="date"
           name="date"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.date}
           onChange={handleChange}
-          required
         />
       </div>
-      {/* <div>
-        <label className="block text-gray-700">Department</label>
-        <input
-          type="text"
-          name="department"
-          className="w-full mt-1 p-2 border rounded"
-          value={formData.department}
-          onChange={handleChange}
-          required
-        />
-      </div> */}
       <div>
-        <label className="block text-gray-700">Enter in brief</label>
+        <label className="block text-gray-700">I Need Help For</label>
+        <select
+          name="needHelpFor"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          value={formData.needHelpFor}
+          onChange={handleChange}
+        >
+          <option value="">Select an option</option>
+          <option value="Depression">Depression</option>
+          <option value="Anxiety">Anxiety</option>
+          <option value="Bipolar">Bipolar</option>
+          <option value="OCD">OCD</option>
+          <option value="GAD">GAD</option>
+          <option value="Schizophrenia">Schizophrenia</option>
+          <option value="Addiction">Addiction</option>
+          <option value="Couple Therapy">Couple Therapy</option>
+          <option value="Relation Therapy">Relation Therapy</option>
+          <option value="Family Therapy">Family Therapy</option>
+          <option value="LGBTQAI Therapy">LGBTQAI Therapy</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-gray-700">Write Your Concern in Brief</label>
         <textarea
           name="brief"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           rows="3"
           value={formData.brief}
           onChange={handleChange}
-          required
         ></textarea>
       </div>
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 rounded hover:bg-secondary transition-colors"
+        className="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition-colors duration-300"
       >
         Submit
       </button>

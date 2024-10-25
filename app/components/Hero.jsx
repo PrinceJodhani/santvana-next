@@ -1,7 +1,6 @@
 // app/components/Hero.jsx
 'use client'
 import React, { useState } from 'react';
-import { AnimatedTooltip } from "../../components/ui/animated-tooltip";
 import AppointmentForm from './AppointmentForm';
 
 // Import the Drawer components
@@ -10,50 +9,7 @@ import {
   DrawerClose,
   DrawerContent,
 } from '@/components/ui/drawer';
-const people = [
-  {
-    id: 1,
-    name: "Ms. Poonam G Vipani",
-    designation: "Associate Clinical Psychologist",
-    image:
-      "/images/poonam.jpg",
-  },
-  {
-    id: 2,
-    name: "Ms. Rajvee Shah",
-    designation: "Psychotherapist",
-    image:
-      "/images/rajvee.jpg",
-  },
-  {
-    id: 3,
-    name: "Ms. Nidhi Nahata",
-    designation: "Clinical Psychologist",
-    image:
-      "/images/nidhi.jpg",
-  },
-  {
-    id: 4,
-    name: "Dr. Rutvi Kakadiya",
-    designation: "Occupational Therapist",
-    image:
-      "/images/rutvi.jpg",
-  },
-  {
-    id: 5,
-    name: "Dr. Jinal Shah",
-    designation: "Homeopathic Consultant",
-    image:
-      "/images/jinal.jpg",
-  },
-  {
-    id: 6,
-    name: "Ms. Bhumi Shah",
-    designation: "Registered Dietician",
-    image:
-      "/images/bhumi.jpg",
-  },
-];
+
 const Hero = () => {
 
   const [showBookingDrawer, setShowBookingDrawer] = useState(false);
@@ -70,13 +26,13 @@ const Hero = () => {
     <>
     <section
       id="home"
-      className="h-screen flex items-center justify-center bg-cover bg-center relative"
+      className="h-auto flex items-center justify-center bg-cover bg-center relative"
       style={{ backgroundImage: 'url("/images/background.jpg")' }}
     >
       {/* White Overlay */}
       <div className="absolute inset-0 bg-white opacity-70"></div>
-      <div className="text-center text-primary px-4 relative z-10">
-        <h1 className="text-5xl font-bold mb-4">
+      <div className="text-center text-primary px-4 relative z-10 pb-44">
+        <h1 className="text-5xl font-bold mb-4 mt-60 ">
           Transforming Lives With Care!
         </h1>
         <p className="text-xl mb-6">
@@ -89,9 +45,7 @@ const Hero = () => {
           Book an Appointment
         </button>
 
-        <div className="flex mt-20 flex-row items-center justify-center mb-10 w-full">
-      <AnimatedTooltip items={people} />
-    </div>
+        
       </div>
     </section>
      

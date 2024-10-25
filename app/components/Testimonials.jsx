@@ -10,16 +10,24 @@ import { motion } from 'framer-motion';
 
 const testimonials = [
   {
-    quote: 'This is a life-changing experience. Highly recommended!',
-    name: 'Client A',
+    quote: 'I had Anxiety problem and after taking therapy from her I feel much better. Thank you for your such a humble and kind gesture as well as guidance and support. 🙏',
+    name: 'Indi agrocon',
   },
   {
-    quote: 'Professional and compassionate care. I felt heard and supported.',
-    name: 'Client B',
+    quote: 'I am feeling very much better now only because of Dr Poonam ... She\'s very kind hearted and it was very good experience for me ..... Thankyou so much ma\'am Bestest than ever 💗',
+    name: 'Poulomi Biswas',
   },
   {
-    quote: 'The team helped me navigate through my challenges effectively.',
-    name: 'Client C',
+    quote: 'Poonam mam , aka my therapist, has helped me a lot to become who i am today. She has been very generous towards me , and hence i have found my safe space here with her❤️',
+    name: 'Prisha Gupta',
+  },
+  {
+    quote: 'Nice experience and Thanks to Poonam mam for her support …',
+    name: 'Dipesh Bochiya',
+  },
+  {
+    quote: 'I was really happy that I took the decision and started therapy for my situation. Poonam mam is very helpful and good listener. She helped me a lot in my situation.',
+    name: 'akshay barvaliya',
   },
   // Add more testimonials as needed
 ];

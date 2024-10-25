@@ -14,6 +14,18 @@ const reasons = [
       'Licensed therapist ensures trustworthy therapy based on ethical standards, proven results based on extensive training and certification.',
   },
   {
+    icon: '/icons/conversation.png',
+    title: 'Non-judgmental and Safe Space',
+    description:
+      'We provide a non-judgmental and safe space that ensures you can express yourself freely and seek support without any fear.',
+  },
+  {
+    icon: '/icons/confidential-folder.png',
+    title: 'Confidentiality',
+    description:
+      'We maintain the notion of confidentiality that guarantees your identity and the conversations in the therapy sessions stay private and secure.',
+  },
+  {
     icon: '/icons/diagnosis.png',
     title: 'Personalized Treatment',
     description:
@@ -39,21 +51,9 @@ const reasons = [
   },
   {
     icon: '/icons/medical-team.png',
-    title: 'Experienced Staff',
+    title: 'Experienced Team',
     description:
       'We work with experienced staff that are trained to provide expert care and guidance with deep knowledge and skill.',
-  },
-  {
-    icon: '/icons/conversation.png',
-    title: 'Non-judgmental and Safe Space',
-    description:
-      'We provide a non-judgmental and safe space that ensures you can express yourself freely and seek support without any fear.',
-  },
-  {
-    icon: '/icons/confidential-folder.png',
-    title: 'Confidentiality',
-    description:
-      'We maintain the notion of confidentiality that guarantees your identity and the conversations in the therapy sessions stay private and secure.',
   },
 ];
 

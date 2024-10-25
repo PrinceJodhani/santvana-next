@@ -2,8 +2,53 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { AnimatedTooltip } from "../../components/ui/animated-tooltip";
 
+import Image from 'next/image';
+const people = [
+  {
+    id: 1,
+    name: "Ms. Poonam G Vipani",
+    designation: "Associate Clinical Psychologist",
+    image:
+      "/images/poonam.jpg",
+  },
+  {
+    id: 2,
+    name: "Ms. Rajvee Shah",
+    designation: "Psychotherapist",
+    image:
+      "/images/rajvee.jpg",
+  },
+  {
+    id: 3,
+    name: "Ms. Nidhi Nahata",
+    designation: "Clinical Psychologist",
+    image:
+      "/images/nidhi.jpg",
+  },
+  {
+    id: 4,
+    name: "Dr. Rutvi Kakadiya",
+    designation: "Occupational Therapist",
+    image:
+      "/images/rutvi.jpg",
+  },
+  {
+    id: 5,
+    name: "Dr. Jinal Shah",
+    designation: "Homeopathic Consultant",
+    image:
+      "/images/jinal.jpg",
+  },
+  {
+    id: 6,
+    name: "Ms. Bhumi Shah",
+    designation: "Registered Dietician",
+    image:
+      "/images/bhumi.jpg",
+  },
+];
 const Footer = () => {
   return (
     <footer className="relative text-gray-700">
@@ -32,10 +77,14 @@ const Footer = () => {
             width={200}
             height={30}
           />
-          <p className="mt-4 text-gray-600">
+          {/* <p className="mt-4 text-gray-600">
             "Empowering minds, nurturing hearts."
-          </p>
+          </p> */}
+          <div className="flex flex-row items-center justify-center mt-5">
+      <AnimatedTooltip items={people} />
+    </div>
         </div>
+        
         <div>
           <h3 className="text-xl font-semibold mb-4 text-gray-800">
             Quick Links
