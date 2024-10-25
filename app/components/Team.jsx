@@ -63,6 +63,18 @@ const teamMembers = [
 **About:**
 - Update Soon
 `,
+  }, {
+    name: "Dr. Dhara Patel",
+    title: "ABA therapist & remedial educator",
+    qualifications: "MA in clinical psychology",
+    role: "",
+    image: "/images/rutvi.jpg",
+    phone: "+919876543211",
+    details: `
+
+**About:**
+- Update soon
+`,
   },
 ];
 

@@ -32,7 +32,7 @@ const Hero = () => {
       {/* White Overlay */}
       <div className="absolute inset-0 bg-white opacity-70"></div>
       <div className="text-center text-primary px-4 relative z-10 pb-44">
-        <h1 className="text-5xl font-bold mb-4 mt-60 ">
+        <h1 className="text-5xl mb-4 mt-60 font-serif text-[#6b5c3e] leading-tight">
           Transforming Lives With Care!
         </h1>
         <p className="text-xl mb-6">

@@ -9,6 +9,7 @@ import CoreTeam from './components/CoreTeam';
 import Team from './components/Team';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
+import Hero2 from './components/Hero2';
 
 export default function HomePage() {
   return (
@@ -23,6 +24,7 @@ export default function HomePage() {
         <CoreTeam />
         <Team />
         <WhyChooseUs />
+        <Hero2 />
         <Testimonials />
         {/* Include contact section if needed */}
       </main>
