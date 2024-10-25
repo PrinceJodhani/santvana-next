@@ -68,7 +68,7 @@ const teamMembers = [
     title: "ABA therapist & remedial educator",
     qualifications: "MA in clinical psychology",
     role: "",
-    image: "/images/rutvi.jpg",
+    image: "/images/dhara.jpg",
     phone: "+919876543211",
     details: `
 

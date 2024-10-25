@@ -47,6 +47,13 @@ const people = [
     designation: "Registered Dietician",
     image:
       "/images/bhumi.jpg",
+  },,
+  {
+    id: 7,
+    name: "Dr. Dhara Patel",
+    designation: "ABA therapist & remedial educator",
+    image:
+      "/images/dhara.jpg",
   },
 ];
 const Footer = () => {

@@ -34,7 +34,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="py-16" style={{ backgroundColor: '#E8DAD0' }}>
+    <section id='Testimonials' className="py-16" style={{ backgroundColor: '#E8DAD0' }}>
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-center text-primary mb-12">
           Testimonials - What Clients Say

@@ -52,10 +52,10 @@ const Navbar = () => {
                 </li>
                 <li>
                   <a
-                    href="#contact"
+                    href="#Testimonials"
                     className="hover:text-blue-300 transition duration-300"
                   >
-                    Contact
+                    Testimonials
                   </a>
                 </li>
               </ul>
@@ -131,11 +131,11 @@ const Navbar = () => {
               </li>
               <li>
                 <a
-                  href="#contact"
+                  href="#Testimonials"
                   className="block hover:text-blue-300 transition duration-300"
                   onClick={toggleMenu}
                 >
-                  Contact
+                  Testimonials
                 </a>
               </li>
             </ul>
