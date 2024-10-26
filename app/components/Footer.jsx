@@ -59,6 +59,8 @@ const people = [
 const Footer = () => {
   return (
     <footer className="relative text-gray-700">
+      {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="#E8DAD0"><path d="M0 0h1000v4H0z"></path><path d="M0 0h1000v80.8S550 100 500 100 0 80.8 0 80.8V0Z" opacity=".2"></path><path d="M0 0h1000v61.6S600 100 500 100 0 61.6 0 61.6V0Z" opacity=".3"></path><path d="M0 0h1000v42.4S650 100 500 100 0 42.4 0 42.4V0Z" opacity=".4"></path><path d="M0 0h1000v23.2S700 100 500 100 0 23.2 0 23.2V0Z" opacity=".5"></path><path d="M0 0v4s250 96 500 96 500-96 500-96V0H0Z"></path></svg> */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="#E8DAD0"><rect fill="#E8F0F2" width="100%" height="100%"/><path d="M0 0h1000v4H0z"></path><path d="M0 0h1000v80.8S550 100 500 100 0 80.8 0 80.8V0Z" opacity=".2"></path><path d="M0 0h1000v61.6S600 100 500 100 0 61.6 0 61.6V0Z" opacity=".3"></path><path d="M0 0h1000v42.4S650 100 500 100 0 42.4 0 42.4V0Z" opacity=".4"></path><path d="M0 0h1000v23.2S700 100 500 100 0 23.2 0 23.2V0Z" opacity=".5"></path><path d="M0 0v4s250 96 500 96 500-96 500-96V0H0Z"></path></svg>
       {/* Wave SVG at the top */}
       {/* <div className="absolute top-0 left-0 w-full overflow-hidden leading-none rotate-180">
         <svg
