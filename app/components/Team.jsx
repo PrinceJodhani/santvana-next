@@ -64,7 +64,7 @@ const teamMembers = [
 - Update Soon
 `,
   }, {
-    name: "Dr. Dhara Patel",
+    name: "Ms. Dhara Patel",
     title: "ABA therapist & remedial educator",
     qualifications: "MA in clinical psychology",
     role: "",
@@ -139,13 +139,13 @@ const Team = () => {
 
   return (
     <section className="py-16 bg-[#E8DAD0]">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-3">
         <h2 className="text-3xl font-bold text-center mb-12">Meet Our Team</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="text-center bg-white p-6 rounded-lg shadow-lg"
+              className="text-center bg-white p-3 rounded-lg shadow-lg"
             >
               <img
                 src={member.image}
