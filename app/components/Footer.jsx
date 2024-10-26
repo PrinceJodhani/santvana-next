@@ -153,6 +153,12 @@ const Footer = () => {
               @santvana.mentalhealth
             </a>
           </p>
+          <p>
+            Address: {' '} 
+            <a href='https://maps.app.goo.gl/xKVFjuP5ExMWLTY8A'>
+            407, Aagam Emporio, Besides GNine Restaurant, Vesu, Surat.
+            </a>
+          </p>
         </div>
       </div>
       <div
