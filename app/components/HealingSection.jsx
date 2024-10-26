@@ -27,14 +27,14 @@ const HealingSection = () => {
         className="py-7 flex flex-col md:flex-row items-center"
         style={{ backgroundColor: '#546365' }}
       >
-        <div className="md:w-1/2 lg:px-40">
+        <div className="md:w-1/2 lg:px-40 mx-6">
           <img
             src="/images/healing.jpg"
             alt="Healing"
             className="rounded-lg shadow-lg w-full"
           />
         </div>
-        <div className="md:w-1/2 px-6 mt-8 md:mt-0">
+        <div className="md:w-1/2 px-6 mt-8 md:mt-0 ">
           <h2 className={`text-3xl font-bold mb-4 text-white playwrite-gb-s`}>
             Healing Can Be Messy and Complicated But You Don't Have to Navigate It Alone
           </h2>
