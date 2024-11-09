@@ -10,6 +10,7 @@ import Team from './components/Team';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import Hero2 from './components/Hero2';
+import ExpandableCardDemo from '@/components/blocks/expandable-card-demo-standard';
 
 export default function HomePage() {
   return (
@@ -17,7 +18,8 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <HealingSection />
+        <ExpandableCardDemo />
+      <HealingSection />
         
         <Services />
         
