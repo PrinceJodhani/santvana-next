@@ -15,7 +15,6 @@ const teamMembers = [
     name: "Ms. Nidhi Nahata",
     title: "Clinical Psychologist",
     qualifications: "RCI Registered, MA, M.Phil.",
-    role: "Senior Psychologist",
     image: "/images/nidhi.jpg",
     phone: "+919876543210",
     details: `
@@ -30,7 +29,6 @@ const teamMembers = [
     name: "Dr. Rutvi Kakadiya",
     title: "Occupational Therapist",
     qualifications: "BOT, MOT, Registered With AIOTA",
-    role: "Lead Occupational Therapist",
     image: "/images/rutvi.jpg",
     phone: "+919876543211",
     details: `
@@ -43,7 +41,6 @@ const teamMembers = [
     name: "Dr. Jinal Shah",
     title: "Homeopathic Consultant",
     qualifications: "MA (Psych), BHMS, NDDY",
-    role: "Senior Homeopathic Consultant",
     image: "/images/jinal.jpg",
     phone: "+919876543212",
     details: `
@@ -56,7 +53,6 @@ const teamMembers = [
     name: "Ms. Bhumi Shah",
     title: "Registered Dietician",
     qualifications: "CDE, Reg. No. 12/2009",
-    role: "Lead Dietician",
     image: "/images/bhumi.jpg",
     phone: "+919876543213",
     details: `
@@ -66,10 +62,10 @@ const teamMembers = [
   }, {
     name: "Ms. Dhara Patel",
     title: "ABA therapist & remedial educator",
+    image: "/images/dhara.jpg",
+
     qualifications: "MA in clinical psychology",
     role: "",
-    image: "/images/dhara.jpg",
-    phone: "+919876543211",
     details: `
 
 **About:**
