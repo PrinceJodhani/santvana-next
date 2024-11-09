@@ -212,9 +212,9 @@ export const CloseIcon = () => {
 const cards = [
   {
     description:
-      "You are trying to figure out this thing called life, but something isn't working.",
-    title:
       "On the outside, you seem to have it all together, but it is a different story on the inside.",
+    title:
+      "You are trying to figure out this thing called life, but something isn't working.",
     ctaText: "Read More",
     ctaLink: "", // Removed the external link
     content: () => (
