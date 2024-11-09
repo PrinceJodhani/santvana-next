@@ -59,27 +59,27 @@ const AppointmentForm = ({ member, onClose }) => {
           value={formData.firstName}
           onChange={handleChange}
           required
+          placeholder="Your Name"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Email<span className="text-red-500">*</span></label>
+        <label className="block text-gray-700">Email</label>
         <input
           type="email"
           name="email"
           className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.email}
           onChange={handleChange}
-          required
+          placeholder="abcd@gmail.com"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Your Gender<span className="text-red-500">*</span></label>
+        <label className="block text-gray-700">Your Gender</label>
         <select
           name="gender"
           className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           value={formData.gender}
           onChange={handleChange}
-          required
         >
           <option value="">Select Gender</option>
           <option value="Female">Female</option>
@@ -138,6 +138,7 @@ const AppointmentForm = ({ member, onClose }) => {
           value={formData.brief}
           onChange={handleChange}
           required
+          placeholder="Write..."
         ></textarea>
       </div>
       <button

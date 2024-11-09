@@ -35,13 +35,13 @@ const HealingSection = () => {
           />
         </div>
         <div className="md:w-1/2 px-6 mt-8 md:mt-0 ">
-          <h2 className={`text-3xl font-bold mb-4 text-white playwrite-gb-s`}>
+          <h2 className={`text-3xl font-bold mb-4 text-[#C0CEC0] playwrite-gb-s`}>
             Healing Can Be Messy and Complicated But You Don't Have to Navigate It Alone
           </h2>
-          <p className="mb-4 text-white">
+          <p className="mb-4 text-[#C0CEC0]">
             Life has felt out of your control. You feel like no one understands what you’re going through. You want to feel better and “back to normal”, but everything you’ve tried so far has fallen flat.
           </p>
-          <p className="mb-7 text-white">
+          <p className="mb-7 text-[#C0CEC0]">
             In-depth therapy helps you dig deeper into understanding yourself and others so that you can begin to break free from old patterns and develop the life you want.
           </p>
           <button
