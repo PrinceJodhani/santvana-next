@@ -169,6 +169,9 @@ const Footer = () => {
           © {new Date().getFullYear()} Santvana - Psychological Guidance Centre.
           All rights reserved.
         </p>
+        <p>
+          Developed By <a href='https://www.linkedin.com/in/prince-jodhani-05413721b'>Prince Jodhani</a>
+        </p>
       </div>
     </footer>
   );
