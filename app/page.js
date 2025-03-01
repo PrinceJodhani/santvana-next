@@ -1,6 +1,5 @@
 // app/page.jsx
 import React from 'react';
-import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import HealingSection from './components/HealingSection';
 import Services from './components/Services';
@@ -15,7 +14,7 @@ import ExpandableCardDemo from '@/components/blocks/expandable-card-demo-standar
 export default function HomePage() {
   return (
     <>
-      <Navbar />
+     
       <main>
         <Hero />
         <ExpandableCardDemo />
