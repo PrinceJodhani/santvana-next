@@ -14,7 +14,6 @@ import ExpandableCardDemo from '@/components/blocks/expandable-card-demo-standar
 export default function HomePage() {
   return (
     <>
-     
       <main>
         <Hero />
         <ExpandableCardDemo />
