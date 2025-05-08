@@ -18,9 +18,7 @@ export default function HomePage() {
         <Hero />
         <ExpandableCardDemo />
       <HealingSection />
-        
         <Services />
-        
         <CoreTeam />
         <Team />
         <WhyChooseUs />
