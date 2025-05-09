@@ -1632,12 +1632,12 @@ setUserData(user);
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mt-20 mx-auto">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
-          <h1 className="text-2xl font-bold text-indigo-800">Your Personality Test Results</h1>
+          <h1 className="text-2xl font-bold text-[#784212]">Your Personality Test Results</h1>
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleDownloadPDF}
               disabled={isGeneratingPdf}
-              className="flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition-colors"
+              className="flex items-center justify-center px-4 py-2 bg-[#784212] text-white rounded-lg shadow hover:bg-[#117864] transition-colors"
             >
               {isGeneratingPdf ? (
                 <>
@@ -1653,7 +1653,7 @@ setUserData(user);
             </button>
             <button
               onClick={handleTakeNewTest}
-              className="flex items-center justify-center px-4 py-2 bg-white text-indigo-600 rounded-lg shadow hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-center px-4 py-2 bg-white text-[#117864] rounded-lg shadow hover:bg-gray-50 transition-colors"
             >
               <RefreshCcw className="h-4 w-4 mr-2" />
               Take New Test
@@ -1669,17 +1669,17 @@ setUserData(user);
           ref={reportRef}
         >
           {/* Header with Logo */}
-          <div className="bg-gradient-to-r from-indigo-700 to-indigo-900 py-6 px-8 flex items-center">
-            <div className="h-16 w-16 relative flex-shrink-0">
-              <Image 
+          <div className="bg-[#abebc6] py-8 px-12 flex items-center">
+            <div className="h-16  relative flex-shrink-0">
+              <img 
                 src="/images/logo.png" 
                 alt="Logo" 
-                fill
-                style={{ objectFit: "contain" }}
+                style={{ width: "140px", height: "auto" }}
+                
                 className="rounded-md"
               />
             </div>
-            <h1 className="ml-4 text-xl sm:text-2xl font-bold text-white">APTITUDE ASSESSMENT PROFILE</h1>
+            <h1 className="ml-4 text-xl sm:text-2xl  font-bold text-[#186a3b]">APTITUDE ASSESSMENT PROFILE</h1>
           </div>
 
           {/* User Information */}
@@ -1688,29 +1688,29 @@ setUserData(user);
               <div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Name</p>
-                  <p className="font-medium text-gray-800">{userData?.name || "Test Taker"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.name || "Test Taker"}</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Date of Birth</p>
-                  <p className="font-medium text-gray-800">{userData?.dob || "01/01/2000"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.dob || "01/01/2000"}</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Age</p>
-                  <p className="font-medium text-gray-800">{userData?.age || "25"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.age || "25"}</p>
                 </div>
               </div>
               <div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Education</p>
-                  <p className="font-medium text-gray-800">{userData?.education || "12th Science"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.education || "12th Science"}</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Contact Number</p>
-                  <p className="font-medium text-gray-800">{userData?.contact || "(+91) XXXXXXXXXX"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.contact || "(+91) XXXXXXXXXX"}</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-gray-800">{userData?.email || "email@example.com"}</p>
+                  <p className="font-medium text-[#ec7063]">{userData?.email || "email@example.com"}</p>
                 </div>
               </div>
             </div>
@@ -1719,48 +1719,52 @@ setUserData(user);
           {/* Definitions */}
           <div className="p-6 sm:p-8 border-b border-gray-200 bg-gray-50">
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-indigo-800 mb-2">What is Aptitude?</h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Aptitude?</h3>
               <p className="text-gray-700">
-                Aptitude refers to an individual's natural ability or talent to learn and perform specific tasks or skills. 
+                Aptitude refers to an <b className="text-[#ca6f1e]"> individual's natural ability </b>or <b className="text-[#ca6f1e]"> talent </b> to learn and perform specific tasks or skills. 
                 In the context of a career, aptitude encompasses the capabilities that enable a person to succeed in certain job functions or fields.
               </p>
             </div>
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-indigo-800 mb-2">What is Personality?</h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Personality?</h3>
               <p className="text-gray-700">
-                Personality refers to the unique set of traits, characteristics, and behaviors that define an individual. 
+                Personality refers to the<b className="text-[#ca6f1e]">  unique set of traits, characteristics, and behaviors </b> that define an individual. 
                 In the context of career, personality influences how a person approaches work, interacts with others, and makes decisions about their professional life.
               </p>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-indigo-800 mb-2">What is Interest?</h3>
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Interest?</h3>
               <p className="text-gray-700">
-                An interest is a subjective attitude to the activities or subjects an individual naturally enjoys and is drawn to. 
-                How do together they help in choosing a career? Aptitude, personality, and interest together form the foundation for making a smart and satisfying career choice. 
-                When all three align, you're more likely to choose a career where you perform well, feel comfortable, and stay motivated. 
-                This integration helps ensure not just success, but long-term satisfaction and growth in your chosen field.
+                An interest is a subjective attitude to the activities or subjects an individual<b className="text-[#ca6f1e]"> naturally enjoys and is drawn to</b>. 
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">How do together they help in choosing a career? </h3>
+              <p className="text-gray-700">
+              Aptitude, personality, and interest together form the foundation for making a smart and satisfying career choice. When all three align, you're more likely to choose a career where you perform well, feel comfortable, and stay motivated. This integration helps ensure not just success, but long-term satisfaction and growth in your chosen field. 
               </p>
             </div>
           </div>
 
           {/* Results Summary */}
           <div className="p-6 sm:p-8 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-indigo-800 mb-6">Your Result Summary</h2>
+            <h2 className="text-xl font-bold text-[#784212] mb-6">Your Result Summary</h2>
             
             <div className="mb-4">
-              <p className="font-medium text-gray-800">
-                Strong Aptitude area: <span className="text-indigo-600">{careerRecommendations?.aptitude} Aptitude</span>
+              <p className="font-medium text-[#ec7063]">
+                Strong Aptitude area: <span className="text-[#145a32]">{careerRecommendations?.aptitude} Aptitude</span>
               </p>
             </div>
             
             <div className="mb-4">
-              <p className="font-medium text-gray-800">
-                Personality types: <span className="text-indigo-600">{careerRecommendations?.personalityTypes?.join(' & ') || "Realistic & Investigative"}</span>
+              <p className="font-medium text-[#ec7063]">
+                Personality types: <span className="text-[#145a32]">{careerRecommendations?.personalityTypes?.join(' & ') || "Realistic & Investigative"}</span>
               </p>
             </div>
             
             <div className="mb-6">
-              <p className="font-medium text-gray-800 mb-2">Interest Areas:</p>
+              <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
               <ul className="list-disc pl-6 space-y-1">
                 {careerRecommendations?.interestAreas?.map((interest, index) => (
                   <li key={index} className="text-gray-700">
@@ -1778,13 +1782,13 @@ setUserData(user);
             </div>
             
             <div className="mb-6">
-              <p className="font-medium text-gray-800">
-                Potential Stream: <span className="text-indigo-600">{careerRecommendations?.streams?.join('/ ') || "Science/ Commerce"}</span>
+              <p className="font-medium text-[#ec7063]">
+                Potential Stream: <span className="text-[#145a32]">{careerRecommendations?.streams?.join('/ ') || "Science/ Commerce"}</span>
               </p>
             </div>
             
             <div>
-              <p className="font-medium text-gray-800 mb-2">Potential Career Fields:</p>
+              <p className="font-medium text-[#ec7063] mb-2">Potential Career Fields:</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                 {(careerRecommendations?.careerFields || [
                   "Software Engineer",
@@ -1806,12 +1810,12 @@ setUserData(user);
 
           {/* Note */}
           <div className="p-6 sm:p-8 border-b border-gray-200 bg-indigo-50">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-2">Note:</h3>
+            <h3 className="text-lg font-semibold text-[#784212] mb-2">Note:</h3>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
               <li>This is a preliminary aptitude assessment. For a more thorough and comprehensive analysis, we recommend undertaking a detailed evaluation.</li>
               <li>Following the recommendations can greatly elevate the potential for success and long-term satisfaction in the chosen career.</li>
             </ul>
-            <p className="mt-4 text-indigo-700 italic font-medium">
+            <p className="mt-4 text-[#239b56] italic font-medium">
               "Wishing you a future filled with success and endless possibilities in the career you choose!"
             </p>
           </div>
@@ -1828,8 +1832,8 @@ setUserData(user);
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="font-medium text-gray-800 mt-2">Ms. Poonam Vipani</p>
-                <p className="text-sm text-gray-600">Clinical Psychologist (Associate) A105297 (RCI Registered)</p>
+                <p className="font-medium text-[#F08080] mt-2">Ms. Poonam Vipani</p>
+                <p className="text-sm text-[#117a65]">Clinical Psychologist (Associate) </p><p className="text-sm text-[#117a65]"> A105297 (RCI Registered)</p>
               </div>
               <div className="text-center">
                 <div className="h-20 w-40 mx-auto relative">
@@ -1840,14 +1844,14 @@ setUserData(user);
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="font-medium text-gray-800 mt-2">Ms. Rajvee Shah</p>
-                <p className="text-sm text-gray-600">Psychologist</p>
+                <p className="font-medium text-[#F08080] mt-2">Ms. Rajvee Shah</p>
+                <p className="text-sm text-[#117a65]">Psychologist</p>
               </div>
             </div>
           </div>
 
           {/* Contact Footer */}
-          <div className="p-6 bg-indigo-900 text-white text-center">
+          <div className="p-6 bg-[#117864] text-white text-center">
             <p className="text-sm">
               98242 18278 | 97230 69261
             </p>
@@ -1862,7 +1866,7 @@ setUserData(user);
           <button
             onClick={handleDownloadPDF}
             disabled={isGeneratingPdf}
-            className="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center px-6 py-3 bg-[#784212] text-white rounded-lg shadow hover:bg-[#117a65] transition-colors w-full sm:w-auto"
           >
             {isGeneratingPdf ? (
               <>
@@ -1878,7 +1882,7 @@ setUserData(user);
           </button>
           <button
             onClick={handleTakeNewTest}
-            className="flex items-center justify-center px-6 py-3 bg-white text-indigo-600 rounded-lg shadow hover:bg-gray-50 transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center px-6 py-3 bg-white text-[#117864] rounded-lg shadow hover:bg-gray-50 transition-colors w-full sm:w-auto"
           >
             <RefreshCcw className="h-5 w-5 mr-2" />
             Take Another Test
