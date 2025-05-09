@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
@@ -22,7 +22,8 @@ import {
 import { formatDistanceStrict } from "date-fns";
 import { getPersonalityTests } from "./actions";
 
-export default function AdminPersonalityTests() {
+// Create a separate component for the page content that uses useSearchParams
+function AdminTestsContent() {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,10 +48,13 @@ export default function AdminPersonalityTests() {
         const page = parseInt(searchParams.get("page")) || 1;
         setCurrentPage(page);
         
+        const search = searchParams.get("search") || "";
+        setSearchQuery(search);
+        
         const response = await getPersonalityTests({
           page,
           limit: itemsPerPage,
-          search: searchQuery,
+          search,
           sortField,
           sortDirection
         });
@@ -69,59 +73,59 @@ export default function AdminPersonalityTests() {
     };
     
     fetchTests();
-  }, [currentPage, searchQuery, sortField, sortDirection, searchParams]);
+  }, [searchParams, sortField, sortDirection]);
 
   // Format date for display
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  
-  try {
-    // If dateString is already a Date object, convert it to ISO string
-    const dateToFormat = dateString instanceof Date ? dateString.toISOString() : dateString;
-    const date = new Date(dateToFormat);
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     
-    // Check if date is valid
-    if (isNaN(date.getTime())) {
+    try {
+      // If dateString is already a Date object, convert it to ISO string
+      const dateToFormat = dateString instanceof Date ? dateString.toISOString() : dateString;
+      const date = new Date(dateToFormat);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+      
+      return date.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
       return "Invalid date";
     }
-    
-    return date.toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true
-    });
-  } catch (error) {
-    console.error("Error formatting date:", error);
-    return "Invalid date";
-  }
-};
+  };
 
-// Update calculateTimeTaken function too
-const calculateTimeTaken = (startTime, endTime) => {
-  if (!startTime || !endTime) return "In progress";
-  
-  try {
-    // Convert Date objects to ISO strings if needed
-    const startToUse = startTime instanceof Date ? startTime.toISOString() : startTime;
-    const endToUse = endTime instanceof Date ? endTime.toISOString() : endTime;
+  // Calculate time taken between start and completion
+  const calculateTimeTaken = (startTime, endTime) => {
+    if (!startTime || !endTime) return "In progress";
     
-    const start = new Date(startToUse);
-    const end = new Date(endToUse);
-    
-    // Check if dates are valid
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    try {
+      // Convert Date objects to ISO strings if needed
+      const startToUse = startTime instanceof Date ? startTime.toISOString() : startTime;
+      const endToUse = endTime instanceof Date ? endTime.toISOString() : endTime;
+      
+      const start = new Date(startToUse);
+      const end = new Date(endToUse);
+      
+      // Check if dates are valid
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        return "Invalid time";
+      }
+      
+      return formatDistanceStrict(end, start, { addSuffix: false });
+    } catch (error) {
+      console.error("Error calculating time taken:", error);
       return "Invalid time";
     }
-    
-    return formatDistanceStrict(end, start, { addSuffix: false });
-  } catch (error) {
-    console.error("Error calculating time taken:", error);
-    return "Invalid time";
-  }
-};
+  };
 
   // Handle search
   const handleSearch = (e) => {
@@ -238,27 +242,27 @@ const calculateTimeTaken = (startTime, endTime) => {
   };
 
   // Parse and display JSON data
-const parseJsonField = (jsonData) => {
-  if (!jsonData) return null;
-  
-  try {
-    // Handle case where jsonData is already an object
-    if (typeof jsonData === 'object' && jsonData !== null) {
+  const parseJsonField = (jsonData) => {
+    if (!jsonData) return null;
+    
+    try {
+      // Handle case where jsonData is already an object
+      if (typeof jsonData === 'object' && jsonData !== null) {
+        return jsonData;
+      }
+      
+      // Handle JSON string case
+      if (typeof jsonData === 'string') {
+        return JSON.parse(jsonData);
+      }
+      
+      // Fall back to original data if we can't parse it
       return jsonData;
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      return null;
     }
-    
-    // Handle JSON string case
-    if (typeof jsonData === 'string') {
-      return JSON.parse(jsonData);
-    }
-    
-    // Fall back to original data if we can't parse it
-    return jsonData;
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-    return null;
-  }
-};
+  };
 
   // Render personality type scores
   const renderPersonalityScores = (jsonData) => {
@@ -335,15 +339,15 @@ const parseJsonField = (jsonData) => {
   };
 
   return (
-    <div className="min-h-screen  bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <header className="text-white shadow-md">
+      <header className="bg-indigo-700 text-white shadow-md">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl mt-20 font-bold">Personality Test Admin Panel</h1>
+          <h1 className="text-2xl font-bold">Personality Test Admin Panel</h1>
         </div>
       </header>
       
-      <main className="max-w-7xl  mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Action Buttons & Search */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
@@ -627,85 +631,86 @@ const parseJsonField = (jsonData) => {
             
             <div className="p-6" ref={detailRef}>
               {/* Personal Information */}
-             <div className="bg-indigo-50 p-4 rounded-lg mb-6">
-  <h3 className="text-lg font-bold text-indigo-800 mb-4">Personal Information</h3>
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <p className="text-sm text-gray-500">Full Name</p>
-      <p className="font-medium">{detailView.full_name}</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Email</p>
-      <p className="font-medium">{detailView.email}</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Contact</p>
-      <p className="font-medium">{detailView.contact ? `+91 ${detailView.contact}` : "N/A"}</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Education</p>
-      <p className="font-medium">{detailView.std}</p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Date of Birth</p>
-      <p className="font-medium">{typeof detailView.dob === 'object' && detailView.dob instanceof Date 
-        ? detailView.dob.toLocaleDateString() 
-        : detailView.dob || "N/A"}
-      </p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Age</p>
-      <p className="font-medium">{detailView.age || "N/A"}</p>
-    </div>
-  </div>
-</div>
-
-{/* Test Information */}
-<div className="bg-gray-50 p-4 rounded-lg mb-6">
-  <h3 className="text-lg font-bold text-gray-800 mb-4">Test Information</h3>
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="flex items-start">
-      <Calendar size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
-      <div>
-        <p className="text-sm text-gray-500">Started At</p>
-        <p className="font-medium">
-          {typeof detailView.test_started_at === 'object' && detailView.test_started_at instanceof Date 
-            ? formatDate(detailView.test_started_at.toISOString()) 
-            : formatDate(detailView.test_started_at)}
-        </p>
-      </div>
-    </div>
-    <div className="flex items-start">
-      <Calendar size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
-      <div>
-        <p className="text-sm text-gray-500">Completed At</p>
-        <p className="font-medium">
-          {detailView.test_completed_at 
-            ? (typeof detailView.test_completed_at === 'object' && detailView.test_completed_at instanceof Date
-                ? formatDate(detailView.test_completed_at.toISOString())
-                : formatDate(detailView.test_completed_at)) 
-            : "In progress"}
-        </p>
-      </div>
-    </div>
-    <div className="flex items-start">
-      <Clock size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
-      <div>
-        <p className="text-sm text-gray-500">Time Taken</p>
-        <p className="font-medium">{calculateTimeTaken(
-          typeof detailView.test_started_at === 'object' ? detailView.test_started_at.toISOString() : detailView.test_started_at,
-          typeof detailView.test_completed_at === 'object' ? detailView.test_completed_at.toISOString() : detailView.test_completed_at
-        )}</p>
-      </div>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">Status</p>
-      <p className={`font-medium ${detailView.test_completed_at ? "text-green-600" : "text-yellow-600"}`}>
-        {detailView.test_completed_at ? "Completed" : "In Progress"}
-      </p>
-    </div>
-  </div>
-</div>
+              <div className="bg-indigo-50 p-4 rounded-lg mb-6">
+                <h3 className="text-lg font-bold text-indigo-800 mb-4">Personal Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Full Name</p>
+                    <p className="font-medium">{detailView.full_name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Email</p>
+                    <p className="font-medium">{detailView.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Contact</p>
+                    <p className="font-medium">{detailView.contact ? `+91 ${detailView.contact}` : "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Education</p>
+                    <p className="font-medium">{detailView.std}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Date of Birth</p>
+                    <p className="font-medium">{typeof detailView.dob === 'object' && detailView.dob instanceof Date 
+                      ? detailView.dob.toLocaleDateString() 
+                      : detailView.dob || "N/A"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Age</p>
+                    <p className="font-medium">{detailView.age || "N/A"}</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Test Information */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Test Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start">
+                    <Calendar size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Started At</p>
+                      <p className="font-medium">
+                        {typeof detailView.test_started_at === 'object' && detailView.test_started_at instanceof Date 
+                          ? formatDate(detailView.test_started_at.toISOString()) 
+                          : formatDate(detailView.test_started_at)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <Calendar size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Completed At</p>
+                      <p className="font-medium">
+                        {detailView.test_completed_at 
+                          ? (typeof detailView.test_completed_at === 'object' && detailView.test_completed_at instanceof Date
+                              ? formatDate(detailView.test_completed_at.toISOString())
+                              : formatDate(detailView.test_completed_at)) 
+                          : "In progress"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <Clock size={18} className="text-indigo-500 mt-0.5 mr-2 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-500">Time Taken</p>
+                     
+                        <p className="font-medium">{calculateTimeTaken(
+                        typeof detailView.test_started_at === 'object' ? detailView.test_started_at.toISOString() : detailView.test_started_at,
+                        typeof detailView.test_completed_at === 'object' ? detailView.test_completed_at.toISOString() : detailView.test_completed_at
+                      )}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Status</p>
+                    <p className={`font-medium ${detailView.test_completed_at ? "text-green-600" : "text-yellow-600"}`}>
+                      {detailView.test_completed_at ? "Completed" : "In Progress"}
+                    </p>
+                  </div>
+                </div>
+              </div>
               
               {/* Section 1 Results */}
               <div className="mb-6">
@@ -718,70 +723,66 @@ const parseJsonField = (jsonData) => {
               </div>
               
               {/* Section 2 Results (if available) */}
-              // Replace the Section 2 Results section in app/admin/personality-test/page.jsx
-// Look for the comment "Section 2 Results (if available)" and replace that entire block
-
-{/* Section 2 Results (if available) */}
-{detailView.section2_results && (
-  <div className="mb-6">
-    <h3 className="text-lg font-bold text-gray-800 mb-4">Section 2: Aptitude Results</h3>
-    <div className="bg-indigo-50 p-4 rounded-lg">
-      {(() => {
-        // Use a function to allow more complex logic
-        try {
-          const s2Results = parseJsonField(detailView.section2_results);
-          
-          // Debug log to see what we're getting
-          console.log("Section 2 Results:", s2Results);
-          
-          // Check if we have valid results with a score
-          if (s2Results && (s2Results.score !== undefined || s2Results.attempted !== undefined || s2Results.correct !== undefined)) {
-            return (
-              <div className="flex items-center">
-                <div className="mr-4">
-                  <div className="text-3xl font-bold text-indigo-600">
-                    {s2Results.score !== undefined ? `${s2Results.score}%` : 'N/A'}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {s2Results.correct !== undefined ? `${s2Results.correct}` : '0'}/
-                    {s2Results.totalQuestions !== undefined ? s2Results.totalQuestions : '25'} correct
+              {detailView.section2_results && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4">Section 2: Aptitude Results</h3>
+                  <div className="bg-indigo-50 p-4 rounded-lg">
+                    {(() => {
+                      // Use a function to allow more complex logic
+                      try {
+                        const s2Results = parseJsonField(detailView.section2_results);
+                        
+                        // Debug log to see what we're getting
+                        console.log("Section 2 Results:", s2Results);
+                        
+                        // Check if we have valid results with a score
+                        if (s2Results && (s2Results.score !== undefined || s2Results.attempted !== undefined || s2Results.correct !== undefined)) {
+                          return (
+                            <div className="flex items-center">
+                              <div className="mr-4">
+                                <div className="text-3xl font-bold text-indigo-600">
+                                  {s2Results.score !== undefined ? `${s2Results.score}%` : 'N/A'}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {s2Results.correct !== undefined ? `${s2Results.correct}` : '0'}/
+                                  {s2Results.totalQuestions !== undefined ? s2Results.totalQuestions : '25'} correct
+                                </div>
+                              </div>
+                              <div className="flex-1">
+                                <div className="w-full bg-gray-200 rounded-full h-4">
+                                  <div 
+                                    className="bg-indigo-600 h-4 rounded-full" 
+                                    style={{ width: `${s2Results.score || 0}%` }}
+                                  ></div>
+                                </div>
+                                <div className="mt-1 text-xs text-gray-500 text-right">
+                                  {s2Results.attempted !== undefined ? s2Results.attempted : '0'}/
+                                  {s2Results.totalQuestions !== undefined ? s2Results.totalQuestions : '25'} attempted
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        } else if (s2Results && typeof s2Results === 'object' && Object.keys(s2Results).length > 0) {
+                          // Maybe the structure is different than expected
+                          return (
+                            <div>
+                              <p className="font-medium">Raw Results Available:</p>
+                              <pre className="mt-2 bg-gray-100 p-3 rounded-md text-xs overflow-auto max-h-40">
+                                {JSON.stringify(s2Results, null, 2)}
+                              </pre>
+                            </div>
+                          );
+                        } else {
+                          return <p className="text-gray-500 italic">Incomplete assessment</p>;
+                        }
+                      } catch (error) {
+                        console.error("Error rendering section 2 results:", error);
+                        return <p className="text-red-500 italic">Error displaying results</p>;
+                      }
+                    })()}
                   </div>
                 </div>
-                <div className="flex-1">
-                  <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div 
-                      className="bg-indigo-600 h-4 rounded-full" 
-                      style={{ width: `${s2Results.score || 0}%` }}
-                    ></div>
-                  </div>
-                  <div className="mt-1 text-xs text-gray-500 text-right">
-                    {s2Results.attempted !== undefined ? s2Results.attempted : '0'}/
-                    {s2Results.totalQuestions !== undefined ? s2Results.totalQuestions : '25'} attempted
-                  </div>
-                </div>
-              </div>
-            );
-          } else if (s2Results && typeof s2Results === 'object' && Object.keys(s2Results).length > 0) {
-            // Maybe the structure is different than expected
-            return (
-              <div>
-                <p className="font-medium">Raw Results Available:</p>
-                <pre className="mt-2 bg-gray-100 p-3 rounded-md text-xs overflow-auto max-h-40">
-                  {JSON.stringify(s2Results, null, 2)}
-                </pre>
-              </div>
-            );
-          } else {
-            return <p className="text-gray-500 italic">Incomplete assessment</p>;
-          }
-        } catch (error) {
-          console.error("Error rendering section 2 results:", error);
-          return <p className="text-red-500 italic">Error displaying results</p>;
-        }
-      })()}
-    </div>
-  </div>
-)}
+              )}
               
               {/* Aptitude Summary & Career Recommendations */}
               {detailView.aptitude_summary && (
@@ -806,5 +807,21 @@ const parseJsonField = (jsonData) => {
         </div>
       )}
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function AdminPersonalityTests() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+          <p className="mt-2 text-gray-600">Loading admin panel...</p>
+        </div>
+      </div>
+    }>
+      <AdminTestsContent />
+    </Suspense>
   );
 }

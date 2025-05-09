@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Download, Loader } from "lucide-react";
 import { exportAllPersonalityTests } from "../personality-test/actions";
 import * as XLSX from 'xlsx';
 
-export default function ExportPersonalityTests() {
+// Separate component that doesn't use hooks at the top level
+function ExportContent() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [testsData, setTestsData] = useState([]);
@@ -264,5 +265,21 @@ export default function ExportPersonalityTests() {
         )}
       </main>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function ExportPersonalityTests() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent"></div>
+          <p className="mt-2 text-gray-600">Loading export page...</p>
+        </div>
+      </div>
+    }>
+      <ExportContent />
+    </Suspense>
   );
 }
