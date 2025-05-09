@@ -16,6 +16,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "framer-motion": "^11.11.9",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
@@ -27,7 +28,8 @@
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.0"
+    "vaul": "^1.1.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
