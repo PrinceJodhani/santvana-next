@@ -405,7 +405,7 @@ export default function PersonalityTest() {
               }
             } else if (savedSection === "completed") {
               // Navigate to results page if test is complete
-              router.push("/personality-test/result");
+              router.push("/career-guidance-test/result");
             } else {
               // Default to instructions if registration is complete but no section started
               setCurrentStep("section1_instructions");
@@ -756,9 +756,9 @@ setCookie("user_email", formData.email, 1);
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-              <div className="bg-indigo-600 py-6 px-8">
-                <h1 className="text-2xl font-bold text-white">Personality Test Registration</h1>
-                <p className="text-indigo-100 mt-2">Please fill out the form below to begin your personality assessment</p>
+              <div className="bg-[#abebc6] py-6 px-8">
+                <h1 className="text-2xl font-bold text-[#186a3b]">Personality Test Registration</h1>
+                <p className="text-[#186a3b] mt-2">Please fill out the form below to begin your personality assessment</p>
               </div>
               
               <form 
@@ -901,7 +901,7 @@ setCookie("user_email", formData.email, 1);
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#935116] hover:bg-[#1d8348] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                   >
                     {isSubmitting ? (
                       <>
@@ -927,27 +927,27 @@ setCookie("user_email", formData.email, 1);
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-              <div className="bg-indigo-600 py-6 px-8">
-                <h1 className="text-2xl font-bold text-white">Personality Test</h1>
-                <p className="text-indigo-100 mt-2">Instructions for Section 1</p>
+              <div className="bg-[#abebc6] py-6 px-8">
+                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Test</h1>
+                <p className="text-[#186a3b] mt-2">Instructions for Section 1</p>
               </div>
 
               <div className="p-8">
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <div className="h-12 w-12 rounded-full bg-[#abebc6] flex items-center justify-center">
                     <Info size={24} className="text-indigo-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-800">Section 1: Interest & Personality Inventory</h2>
+                  <h2 className="text-xl font-bold text-[#145a32]">Section 1: Interest & Personality Inventory</h2>
                 </div>
                 
                 <div className="mt-6 prose prose-indigo">
                   <h3 className="text-lg font-semibold">Instructions:</h3>
                   <ul className="list-disc list-outside pl-5 space-y-2 text-gray-700">
-                    <li>This inventory is designed to help you identify your interests and personality</li>
+                    <li>This inventory is designed to help you identify your <b> interests and personality</b></li>
                     <li>Read each statement carefully.</li>
                     <li>Click <strong>Yes</strong>, if you agree with the statement, click <strong>No</strong>, if you don't agree with it.</li>
                     <li>Be honest and consider your genuine feelings rather than what you think is expected.</li>
-                    <li>There are no right or wrong answers! It is about liking the work, which may different person to person.</li>
+                    <li><b>There are no right or wrong answers!</b> It is about liking the work, which may different person to person.</li>
                   </ul>
                 </div>
 
@@ -971,7 +971,7 @@ setCookie("user_email", formData.email, 1);
                   <button
                     onClick={handleStartSection1}
                     disabled={!agreedToSection1}
-                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
+                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#935116] hover:bg-[#1d8348] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
                       !agreedToSection1 ? "opacity-60 cursor-not-allowed" : ""
                     }`}
                   >
@@ -995,17 +995,17 @@ setCookie("user_email", formData.email, 1);
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-              <div className="bg-indigo-600 py-4 px-6">
+              <div className="bg-[#abebc6] py-4 px-6">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-xl font-bold text-white">Section 1: Interest & Personality</h1>
-                  <span className="text-indigo-100">
-                    Question {currentQuestionIndex + 1} of {totalSection1Questions}
+                  <h1 className="text-xl font-bold text-[#145a32]">Section 1: Interest & Personality</h1>
+                  <span className="text-[#145a32]">
+                    <b>Question {currentQuestionIndex + 1} of {totalSection1Questions}</b>
                   </span>
                 </div>
                 {/* Progress bar */}
-                <div className="mt-2 h-2 w-full bg-indigo-200 rounded-full overflow-hidden">
+                <div className="mt-2 h-2 w-full bg-white rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-white transition-all duration-300 ease-in-out"
+                    className="h-full bg-[#145a32] transition-all duration-300 ease-in-out"
                     style={{ width: `${section1Progress}%` }}
                   ></div>
                 </div>
@@ -1116,9 +1116,9 @@ setCookie("user_email", formData.email, 1);
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-              <div className="bg-indigo-600 py-6 px-8">
-                <h1 className="text-2xl font-bold text-white">Personality Test</h1>
-                <p className="text-indigo-100 mt-2">Instructions for Section 2</p>
+              <div className="bg-[#abebc6] py-6 px-8">
+                <h1 className="text-2xl font-bold text-[#145a32]">Personality Test</h1>
+                <p className="text-[#145a32] mt-2"><b>Instructions for Section 2</b></p>
               </div>
 
               <div className="p-8">
@@ -1143,9 +1143,11 @@ setCookie("user_email", formData.email, 1);
                   <h3 className="text-lg font-semibold">Instructions:</h3>
                   <ul className="list-disc list-outside pl-5 space-y-2 text-gray-700">
                     <li>This test consists of multiple-choice questions (MCQs), with only one correct answer for each.</li>
-                    <li>You will have 7 minutes to complete the entire test, which includes 25 questions.</li>
-                    <li>Aim to attempt as many questions as possible within the time limit.</li>
-                    <li>If you are unsure about an answer, it's advisable to move on to the next question to avoid wasting time.</li>
+                    <li>You will have <b>7 minutes</b> to complete the entire test, which includes 25 questions.</li>
+                    <li><b>Aim to attempt as many questions as possible within the time limit.</b></li>
+                    <li><b>If you are unsure about an answer, it's advisable to move on to the next question to avoid wasting time.</b></li>
+                    <li>Rough work on paper is aloud but<b> calculator </b>is not aloud</li>
+                  
                   </ul>
                   <p className="font-semibold text-gray-700 mt-4">Good luck!</p>
                 </div>
@@ -1170,7 +1172,7 @@ setCookie("user_email", formData.email, 1);
                   <button
                     onClick={handleStartSection2}
                     disabled={!agreedToSection2}
-                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
+                    className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#935116] hover:bg-[#1d8348] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
                       !agreedToSection2 ? "opacity-60 cursor-not-allowed" : ""
                     }`}
                   >
@@ -1194,23 +1196,23 @@ setCookie("user_email", formData.email, 1);
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-              <div className="bg-indigo-600 py-4 px-6">
+              <div className="bg-[#abebc6] py-4 px-6">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-xl font-bold text-white">Section 2: Aptitude Assessment</h1>
+                  <h1 className="text-xl font-bold text-[#145a32]">Section 2: Aptitude Assessment</h1>
                   <div className="flex items-center space-x-3">
-                    <div className="flex items-center bg-white bg-opacity-25 px-3 py-1 rounded-full">
+                    <div className="flex items-center bg-black bg-opacity-100 px-3 py-1 rounded-full">
                       <Clock size={16} className="text-white mr-1" />
                       <span className="text-white font-medium">{formatTime(timeLeft)}</span>
                     </div>
-                    <span className="text-indigo-100">
+                    <span className="text-[#145a32]">
                       {currentQuestionIndex + 1} / {totalSection2Questions}
                     </span>
                   </div>
                 </div>
                 {/* Progress bar */}
-                <div className="mt-2 h-2 w-full bg-indigo-200 rounded-full overflow-hidden">
+                <div className="mt-2 h-2 w-full bg-white rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-white transition-all duration-300 ease-in-out"
+                    className="h-full bg-[#145a32] transition-all duration-300 ease-in-out"
                     style={{ width: `${section2Progress}%` }}
                   ></div>
                 </div>
@@ -1221,11 +1223,11 @@ setCookie("user_email", formData.email, 1);
                   key={currentQuestionIndex}
                   className="min-h-[300px]"
                 >
-                  <div className="mb-2">
+                  {/* <div className="mb-2">
                     <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-full">
                       {currentSection2Question.category}
                     </span>
-                  </div>
+                  </div> */}
                   
                   <h2 className="text-xl font-medium text-gray-800 mb-4 whitespace-pre-line">
                     {currentSection2Question.text}
@@ -1235,11 +1237,11 @@ setCookie("user_email", formData.email, 1);
                   {currentSection2Question.image && (
                     <div className="my-6 flex justify-center">
                       <div className="relative w-full max-w-md h-40 sm:h-64">
-                        <Image
+                        <img
                           src={currentSection2Question.image}
                           alt="Question visual"
-                          fill
-                          style={{ objectFit: "contain" }}
+                          
+                          style={{ height: "100%", width: "100%", objectFit: "contain" }}
                           className="rounded-lg"
                         />
                       </div>
@@ -1255,8 +1257,8 @@ setCookie("user_email", formData.email, 1);
                           onClick={() => handleSection2Answer(optionLetter)}
                           className={`w-full flex items-center p-4 border rounded-lg text-left ${
                             section2Answers[currentSection2Question.id] === optionLetter
-                              ? "bg-indigo-600 text-white border-transparent"
-                              : "bg-white text-gray-800 border-gray-300 hover:bg-indigo-50"
+                              ? "bg-[#abebc6] text-white border-transparent"
+                              : "bg-white text-gray-800 border-gray-300 hover:bg-[#abebc6]"
                           }`}
                         >
                           <span className={`flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center mr-3 ${

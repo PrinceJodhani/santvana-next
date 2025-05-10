@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense,Fragment } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
@@ -552,53 +552,54 @@ function AdminTestsContent() {
         )}
         
         {/* Pagination */}
-        {!loading && totalPages > 1 && (
-          <div className="flex justify-between items-center mt-6 bg-white p-4 rounded-lg shadow">
+        {/* Pagination */}
+{!loading && totalPages > 1 && (
+  <div className="flex justify-between items-center mt-6 bg-white p-4 rounded-lg shadow">
+    <button
+      onClick={() => handlePageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+      className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+    >
+      <ChevronLeft size={16} className="mr-1" />
+      Previous
+    </button>
+    
+    <div className="flex items-center">
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .filter(page => 
+          page === 1 || 
+          page === totalPages || 
+          (page >= currentPage - 1 && page <= currentPage + 1)
+        )
+        .map((page, i, arr) => (
+          <Fragment key={page}>
+            {i > 0 && arr[i - 1] !== page - 1 && (
+              <span className="px-2 py-1 text-gray-500">...</span>
+            )}
             <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              onClick={() => handlePageChange(page)}
+              className={`px-3 py-1 mx-1 rounded-md text-sm font-medium ${
+                currentPage === page
+                  ? "bg-indigo-600 text-white"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
             >
-              <ChevronLeft size={16} className="mr-1" />
-              Previous
+              {page}
             </button>
-            
-            <div className="flex items-center">
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter(page => 
-                  page === 1 || 
-                  page === totalPages || 
-                  (page >= currentPage - 1 && page <= currentPage + 1)
-                )
-                .map((page, i, arr) => (
-                  <React.Fragment key={page}>
-                    {i > 0 && arr[i - 1] !== page - 1 && (
-                      <span className="px-2 py-1 text-gray-500">...</span>
-                    )}
-                    <button
-                      onClick={() => handlePageChange(page)}
-                      className={`px-3 py-1 mx-1 rounded-md text-sm font-medium ${
-                        currentPage === page
-                          ? "bg-indigo-600 text-white"
-                          : "text-gray-700 hover:bg-gray-50"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  </React.Fragment>
-                ))}
-            </div>
-            
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-            >
-              Next
-              <ChevronRight size={16} className="ml-1" />
-            </button>
-          </div>
-        )}
+          </Fragment>
+        ))}
+    </div>
+    
+    <button
+      onClick={() => handlePageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+      className="flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+    >
+      Next
+      <ChevronRight size={16} className="ml-1" />
+    </button>
+  </div>
+)}
       </main>
       
       {/* Detail Modal */}

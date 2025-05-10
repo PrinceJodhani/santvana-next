@@ -1445,51 +1445,140 @@ export default function TestResults() {
   };
 
   const handleDownloadPDF = async () => {
-    if (!reportRef.current) return;
+  if (!reportRef.current) return;
+  
+  try {
+    setIsGeneratingPdf(true);
     
-    try {
-      setIsGeneratingPdf(true);
-      
-      // Set a fixed width for the report during PDF generation to ensure consistency
-      const reportElement = reportRef.current;
-      const originalWidth = reportElement.style.width;
-      reportElement.style.width = "900px"; // Fixed width for PDF
-      
-      const canvas = await html2canvas(reportElement, {
-        scale: 1.5, // Higher scale for better quality
-        useCORS: true,
-        logging: false,
-        windowWidth: 1200 // Set a consistent window width for rendering
-      });
-      
-      // Restore original styling
-      reportElement.style.width = originalWidth;
-      
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-      });
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 10;
-      
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`);
-      
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      alert("There was an error generating the PDF. Please try again.");
-    } finally {
-      setIsGeneratingPdf(false);
+    // Get the report element
+    const reportElement = reportRef.current;
+    
+    // Store original styles
+    const originalStyles = {
+      width: reportElement.style.width,
+      height: reportElement.style.height,
+      overflow: reportElement.style.overflow
+    };
+    
+    // Set up for PDF generation - A4 portrait optimized
+    reportElement.style.width = "800px"; // Optimal width for A4 portrait
+    reportElement.style.height = "auto";
+    reportElement.style.overflow = "visible";
+    
+    // First, measure total height
+    const totalHeight = reportElement.scrollHeight;
+    
+    // Calculate split point - find approximately 60% for first page
+    // This will ensure proper content distribution
+    const firstPageHeight = Math.floor(totalHeight * 0.60);
+    
+    // Configure PDF in portrait orientation (A4)
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+    
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+    // Identify the footer element
+    const footer = reportElement.querySelector('.bg-\\[\\#117864\\]'); // Footer with blue background
+    let footerHeight = 0;
+    if (footer) {
+      footerHeight = footer.offsetHeight;
     }
-  };
+    
+    // Generate first page (top portion)
+    const canvas1 = await html2canvas(reportElement, {
+      scale: 2, // Higher scale for better quality
+      useCORS: true,
+      logging: false,
+      windowWidth: 800,
+      height: firstPageHeight,
+      y: 0
+    });
+    
+    // For the second page, we need to capture from the split point to the end
+    // but exclude the footer which we'll add separately
+    const secondPageCanvas = await html2canvas(reportElement, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      windowWidth: 800,
+      height: totalHeight - firstPageHeight + 50, // Add overlap
+      y: firstPageHeight - 50 // Start with slight overlap to ensure no content is lost
+    });
+    
+    // Capture footer separately with higher quality
+    let footerCanvas = null;
+    if (footer) {
+      footerCanvas = await html2canvas(footer, {
+        scale: 2.5, // Even higher scale for footer to ensure text clarity
+        useCORS: true,
+        backgroundColor: '#117864' // Ensure background color is preserved
+      });
+    }
+    
+    // Add first page to PDF
+    const imgWidth = canvas1.width;
+    const imgHeight = canvas1.height;
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+    const imgX = (pdfWidth - imgWidth * ratio) / 2;
+    const imgY = 5; // Position closer to top
+    
+    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+    
+    // Add second page
+    pdf.addPage();
+    
+    // Add the second page content - stretch to fill more space
+    const secondRatio = Math.min(pdfWidth / secondPageCanvas.width, (pdfHeight - 20) / secondPageCanvas.height);
+    pdf.addImage(
+      secondPageCanvas.toDataURL('image/png'), 
+      'PNG', 
+      imgX, 
+      imgY, 
+      secondPageCanvas.width * secondRatio, 
+      secondPageCanvas.height * secondRatio
+    );
+    
+    // Add footer to both pages if we captured it separately
+    if (footerCanvas) {
+      // Calculate footer position and size
+      const footerWidth = footerCanvas.width;
+      const footerImgHeight = footerCanvas.height;
+      const footerRatio = pdfWidth / footerWidth * 0.9; // Make it 90% of page width
+      const footerX = (pdfWidth - footerWidth * footerRatio) / 2;
+      const footerY = pdfHeight - (footerImgHeight * footerRatio) - 5;
+      
+      // Add to second page
+      // pdf.setPage(2);
+      // pdf.addImage(
+      //   footerCanvas.toDataURL('image/png'), 
+      //   'PNG', 
+      //   footerX, 
+      //   footerY, 
+      //   footerWidth * footerRatio, 
+      //   footerImgHeight * footerRatio
+      // );
+    }
+    
+    // Restore original styles
+    reportElement.style.width = originalStyles.width;
+    reportElement.style.height = originalStyles.height;
+    reportElement.style.overflow = originalStyles.overflow;
+    
+    // Save the PDF
+    pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`);
+    
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    alert("There was an error generating the PDF. Please try again.");
+  } finally {
+    setIsGeneratingPdf(false);
+  }
+};
 
   const handleTakeNewTest = () => {
     clearAllCookies();
