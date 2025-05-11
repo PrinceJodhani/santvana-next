@@ -1941,11 +1941,10 @@ export default function TestResults() {
   }
 
   // Helper function to apply CSS adjustments
-  // Helper function to apply CSS adjustments
-function applyCSSAdjustments(clonedDoc, isIOS) {
-  if (isIOS) {
-    const styles = clonedDoc.createElement("style");
-    styles.textContent = `
+  function applyCSSAdjustments(clonedDoc, isIOS) {
+    if (isIOS) {
+      const styles = clonedDoc.createElement("style");
+      styles.textContent = `
       * {
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -1978,47 +1977,11 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
       [class*="border-b"] {
         padding-bottom: 6px !important;
       }
-      
-      /* Target specifically the "What is Aptitude?" type questions and make them smaller */
-      div:has(h3:contains("What is Aptitude")), 
-      div:has(h3:contains("What is Personality")), 
-      div:has(h3:contains("What is Interest")),
-      div:has(h2:contains("What is Aptitude")), 
-      div:has(h2:contains("What is Personality")), 
-      div:has(h2:contains("What is Interest")),
-      div:has(div:contains("What is Aptitude")), 
-      div:has(div:contains("What is Personality")), 
-      div:has(div:contains("What is Interest")) {
-        padding-top: 2px !important;
-        padding-bottom: 2px !important;
-      }
-      
-      /* Target the headings directly */
-      h2:contains("What is"), h3:contains("What is"), div.font-bold:contains("What is") {
-        font-size: 82% !important;
-        margin-top: 4px !important;
-        margin-bottom: 2px !important;
-      }
-      
-      /* Target the paragraph content in these sections */
-      div:has(h3:contains("What is")) p, 
-      div:has(h2:contains("What is")) p,
-      div:has(div:contains("What is")) p {
-        font-size: 80% !important;
-        line-height: 1.1 !important;
-        margin-top: 1px !important;
-        margin-bottom: 1px !important;
-      }
-      
-      /* Specifically target the highlighted words in these sections */
-      span[style*="color"], span.text-amber-800, .text-amber-800, 
-      span.font-bold, .font-semibold, strong {
-        font-size: inherit !important;
-      }
     `;
-    clonedDoc.head.appendChild(styles);
+      clonedDoc.head.appendChild(styles);
+    }
   }
-}
+
   const handleTakeNewTest = () => {
     clearAllCookies();
     router.push("/career-guidance-test");
