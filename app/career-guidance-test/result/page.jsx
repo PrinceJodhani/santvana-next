@@ -1491,14 +1491,13 @@ export default function TestResults() {
     };
     
     // Set up for PDF generation with device-specific adjustments
-    // Use a narrower width for iOS to prevent overflow
     const contentWidth = isIOS ? "720px" : "794px"; 
     
     reportElement.style.width = contentWidth;
     reportElement.style.height = "auto";
     reportElement.style.overflow = "visible";
     
-    // Find the "Your Result Summary" element to ensure it starts on page 2
+    // Find the "Your Result Summary" element
     const resultSummarySection = reportElement.querySelector('h2.text-xl.font-bold.text-\\[\\#784212\\].mb-6');
     let resultSummaryElement = null;
     
@@ -1513,234 +1512,132 @@ export default function TestResults() {
     // Find the footer
     const footerElement = reportElement.querySelector('div.bg-green-200');
     
-    // ========================= FIRST PAGE (MODIFIED FOR iOS) =========================
-    // Get elements before the result summary section (for first page)
-    const firstPageContent = document.createElement('div');
-    firstPageContent.style.width = contentWidth;
-    firstPageContent.style.position = "absolute";
-    firstPageContent.style.left = "-9999px";
-    firstPageContent.style.background = "white";
-    firstPageContent.style.overflow = "hidden"; // Prevent overflow
+    // Get total page count (we'll use this for page numbers if needed)
+    const totalPages = isIOS ? 2 : 2;
     
-    if (resultSummaryElement && resultSummaryElement.parentNode) {
-      const parent = resultSummaryElement.parentNode;
-      const children = Array.from(parent.children);
-      const resultSummaryIndex = children.indexOf(resultSummaryElement);
-      
-      // For iOS: Create a container for side-by-side layout
-      if (isIOS) {
-        // Clone the first element (typically the header) as is
-        const headerElement = children[0].cloneNode(true);
-        firstPageContent.appendChild(headerElement);
-        
-        // Create a flex container for the personal information
-        const infoContainer = document.createElement('div');
-        infoContainer.style.display = 'flex';
-        infoContainer.style.flexWrap = 'wrap';
-        infoContainer.style.justifyContent = 'space-between';
-        infoContainer.style.padding = '0 12px';
-        
-        // Find all personal info fields (typically from index 1 to ~6)
-        // These would include Name, DOB, Age, Education, Contact, Email
-        const personalInfoSections = [];
-        
-        // Identify personal info sections (typically these are short sections with labels and values)
-        let personalInfoEndIndex = 1; // Start after header
-        for (let i = 1; i < resultSummaryIndex && i < 10; i++) {
-          // Check if this element looks like a personal info field
-          const el = children[i];
-          const text = el.textContent || '';
-          
-          // Check for common personal info fields - we'll create a side-by-side layout for these
-          if (
-            text.includes('Name') || 
-            text.includes('Date of Birth') || 
-            text.includes('Age') || 
-            text.includes('Education') || 
-            text.includes('Contact') || 
-            text.includes('Email') ||
-            text.length < 100 // Short sections are likely personal info
-          ) {
-            personalInfoSections.push(el);
-            personalInfoEndIndex = i;
-          } else {
-            // Found something that's not personal info, stop looking
-            break;
-          }
-        }
-        
-        // Create side-by-side layout for personal info fields
-        personalInfoSections.forEach(section => {
-          const content = section.innerHTML || '';
-          
-          // Create a container for this info field
-          const fieldContainer = document.createElement('div');
-          fieldContainer.style.width = '48%'; // Almost half-width for 2 columns
-          fieldContainer.style.marginBottom = '12px';
-          fieldContainer.innerHTML = content;
-          
-          // Add to the flex container
-          infoContainer.appendChild(fieldContainer);
-        });
-        
-        // Add the flex container to the first page
-        firstPageContent.appendChild(infoContainer);
-        
-        // Add remaining elements after personal info
-        for (let i = personalInfoEndIndex + 1; i < resultSummaryIndex; i++) {
-          firstPageContent.appendChild(children[i].cloneNode(true));
-        }
-      } else {
-        // For Android: Keep the original layout
-        for (let i = 0; i < resultSummaryIndex; i++) {
-          firstPageContent.appendChild(children[i].cloneNode(true));
-        }
-      }
-    }
-    
-    // ========================= SECOND & THIRD PAGES (DIFFERENT HANDLING) =========================
-    let secondPageContent, thirdPageContent;
-    
+    // For iOS: We'll let content flow naturally without manual page breaks
     if (isIOS) {
-      // --------- IPHONE: SPLIT INTO 3 PAGES WITH BETTER CONTENT DISTRIBUTION ---------
+      // Create a container for the full content
+      const fullContent = document.createElement('div');
+      fullContent.style.width = contentWidth;
+      fullContent.style.position = "absolute";
+      fullContent.style.left = "-9999px";
+      fullContent.style.background = "white";
       
-      // Reduce first page content for iOS to prevent overflow
-      if (firstPageContent.children.length > 3) {
-        // Move the last child to the beginning of the second page to prevent overflow
-        const lastChild = firstPageContent.children[firstPageContent.children.length - 1];
-        firstPageContent.removeChild(lastChild);
-        
-        // We'll add this to the second page later
-        const overflowContent = lastChild;
-        
-        // Create second page content container (Result Summary and half the content)
-        secondPageContent = document.createElement('div');
-        secondPageContent.style.width = contentWidth;
-        secondPageContent.style.position = "absolute";
-        secondPageContent.style.left = "-9999px";
-        secondPageContent.style.background = "white";
-        secondPageContent.style.overflow = "hidden";
-        
-        // Create third page content container (Rest of content + signature + footer)
-        thirdPageContent = document.createElement('div');
-        thirdPageContent.style.width = contentWidth;
-        thirdPageContent.style.position = "absolute";
-        thirdPageContent.style.left = "-9999px";
-        thirdPageContent.style.background = "white";
-        thirdPageContent.style.overflow = "hidden";
-        
-        if (resultSummaryElement) {
-          // First add the overflow content from the first page
-          secondPageContent.appendChild(overflowContent.cloneNode(true));
-          
-          // Then add the result summary section to second page
-          secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
-          
-          // Count how many elements we have after resultSummaryElement
-          let elementCount = 0;
-          let elementList = [];
-          let currentElement = resultSummaryElement.nextElementSibling;
-          
-          while (currentElement && currentElement !== footerElement) {
-            elementList.push(currentElement);
-            elementCount++;
-            currentElement = currentElement.nextElementSibling;
-          }
-          
-          // Distribute content: put about half on second page, half on third
-          const halfIndex = Math.ceil(elementCount / 2);
-          
-          // Add first half of elements to second page
-          for (let i = 0; i < halfIndex && i < elementList.length; i++) {
-            secondPageContent.appendChild(elementList[i].cloneNode(true));
-          }
-          
-          // Add second half of elements to third page (including signature section)
-          for (let i = halfIndex; i < elementList.length; i++) {
-            thirdPageContent.appendChild(elementList[i].cloneNode(true));
-          }
-          
-          // Add the signature section to the third page if it's not already included
-          if (!elementList.includes(signatureSection) && signatureSection) {
-            const signatureClone = signatureSection.cloneNode(true);
-            thirdPageContent.appendChild(signatureClone);
-            
-            // Fix signature images
-            fixSignatureImages(signatureClone);
-          }
-          
-          // Add the custom footer to the third page ONLY
-          thirdPageContent.appendChild(createCustomFooter(isIOS));
-        }
-      } else {
-        // Fallback if we can't reduce first page content
-        // Create second page content container
-        secondPageContent = document.createElement('div');
-        secondPageContent.style.width = contentWidth;
-        secondPageContent.style.position = "absolute";
-        secondPageContent.style.left = "-9999px";
-        secondPageContent.style.background = "white";
-        secondPageContent.style.overflow = "hidden";
-        
-        // Create third page content container
-        thirdPageContent = document.createElement('div');
-        thirdPageContent.style.width = contentWidth;
-        thirdPageContent.style.position = "absolute";
-        thirdPageContent.style.left = "-9999px";
-        thirdPageContent.style.background = "white";
-        thirdPageContent.style.overflow = "hidden";
-        
-        if (resultSummaryElement) {
-          // Add the result summary section to second page
-          secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
-          
-          // Count and collect elements after result summary
-          let elementList = [];
-          let currentElement = resultSummaryElement.nextElementSibling;
-          
-          while (currentElement && currentElement !== footerElement) {
-            elementList.push(currentElement);
-            currentElement = currentElement.nextElementSibling;
-          }
-          
-          // Calculate the midpoint to split content between pages
-          const midpoint = Math.ceil(elementList.length / 2);
-          
-          // Add first half to second page
-          for (let i = 0; i < midpoint; i++) {
-            secondPageContent.appendChild(elementList[i].cloneNode(true));
-          }
-          
-          // Add second half to third page
-          for (let i = midpoint; i < elementList.length; i++) {
-            thirdPageContent.appendChild(elementList[i].cloneNode(true));
-          }
-          
-          // Add signature section to third page if not already included
-          if (!elementList.includes(signatureSection) && signatureSection) {
-            const signatureClone = signatureSection.cloneNode(true);
-            thirdPageContent.appendChild(signatureClone);
-            
-            // Fix signature images
-            fixSignatureImages(signatureClone);
-          }
-          
-          // Add the custom footer only to the third page
-          thirdPageContent.appendChild(createCustomFooter(isIOS));
-        }
+      // Clone the entire report
+      const reportClone = reportElement.cloneNode(true);
+      fullContent.appendChild(reportClone);
+      
+      // Find the signature section in the clone
+      const clonedSignatureSection = fullContent.querySelector('div.p-6.sm\\:p-8.border-b.border-gray-200:nth-last-of-type(2)');
+      
+      if (clonedSignatureSection) {
+        // Fix signature images in the clone
+        fixSignatureImages(clonedSignatureSection);
       }
+      
+      // Add the custom footer to the end
+      const customFooter = createCustomFooter(isIOS);
+      fullContent.appendChild(customFooter);
+      
+      // Append to body for rendering
+      document.body.appendChild(fullContent);
+      
+      // Generate canvas
+      const canvas = await html2canvas(fullContent, {
+        scale: 1.2,
+        useCORS: true,
+        logging: false,
+        width: parseInt(contentWidth),
+        imageTimeout: 15000,
+        windowWidth: parseInt(contentWidth),
+        onclone: (clonedDoc) => {
+          applyCSSAdjustments(clonedDoc, isIOS);
+        }
+      });
+      
+      // Clean up
+      document.body.removeChild(fullContent);
+      
+      // Compress canvas image
+      const compressedImage = canvas.toDataURL('image/jpeg', 0.9);
+      
+      // Create PDF
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Calculate aspect ratio
+      const contentHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      // Calculate how many pages we need
+      const pageCount = Math.ceil(contentHeight / pdfHeight);
+      
+      // Add each page with appropriate slice of the content
+      for (let i = 0; i < pageCount; i++) {
+        if (i > 0) {
+          pdf.addPage();
+        }
+        
+        // Calculate the position to slice the image
+        const sourceY = i * (canvas.height / pageCount);
+        const sourceHeight = canvas.height / pageCount;
+        
+        // Add the slice of the image to the PDF
+        pdf.addImage(
+          compressedImage, 
+          'JPEG', 
+          0, 
+          0, 
+          pdfWidth, 
+          pdfHeight, 
+          undefined, 
+          'FAST',
+          0,
+          sourceY / canvas.height,
+          1,
+          sourceHeight / canvas.height
+        );
+      }
+      
+      // Save the PDF
+      pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`);
+      
     } else {
-      // --------- ANDROID: KEEP AS ONE PAGE ---------
-      // Create the second page content container (everything after first page)
-      secondPageContent = document.createElement('div');
+      // For Android: Keep the original 2-page layout
+      // ========================= FIRST PAGE =========================
+      const firstPageContent = document.createElement('div');
+      firstPageContent.style.width = contentWidth;
+      firstPageContent.style.position = "absolute";
+      firstPageContent.style.left = "-9999px";
+      firstPageContent.style.background = "white";
+      firstPageContent.style.overflow = "hidden";
+      
+      // ========================= SECOND PAGE =========================
+      const secondPageContent = document.createElement('div');
       secondPageContent.style.width = contentWidth;
       secondPageContent.style.position = "absolute";
       secondPageContent.style.left = "-9999px";
       secondPageContent.style.background = "white";
       secondPageContent.style.overflow = "hidden";
       
-      if (resultSummaryElement) {
-        // First, add the result summary section
+      if (resultSummaryElement && resultSummaryElement.parentNode) {
+        const parent = resultSummaryElement.parentNode;
+        const children = Array.from(parent.children);
+        const resultSummaryIndex = children.indexOf(resultSummaryElement);
+        
+        // Add elements before result summary to first page
+        for (let i = 0; i < resultSummaryIndex; i++) {
+          firstPageContent.appendChild(children[i].cloneNode(true));
+        }
+        
+        // Add result summary and following elements to second page
         secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
         
         // Add everything between result summary and signatures
@@ -1759,129 +1656,72 @@ export default function TestResults() {
           fixSignatureImages(signatureClone);
         }
         
-        // Add custom footer
+        // Add footer
         secondPageContent.appendChild(createCustomFooter(isIOS));
       }
-    }
-    
-    // Configure PDF in portrait orientation (A4)
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
-      compress: true // Enable compression
-    });
-    
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-    // Append elements to body for rendering
-    document.body.appendChild(firstPageContent);
-    document.body.appendChild(secondPageContent);
-    if (isIOS && thirdPageContent) {
-      document.body.appendChild(thirdPageContent);
-    }
-    
-    // Use an optimized scale based on device
-    // For iOS, use a more aggressive scale reduction to ensure content fits properly
-    const renderScale = isIOS ? 1.1 : 1.5;
-    
-    // Generate first page canvas
-    const canvas1 = await html2canvas(firstPageContent, {
-      scale: renderScale,
-      useCORS: true,
-      logging: false,
-      width: parseInt(contentWidth),
-      imageTimeout: 15000,
-      windowWidth: parseInt(contentWidth),
-      onclone: (clonedDoc) => {
-        applyCSSAdjustments(clonedDoc, isIOS);
-      }
-    });
-    
-    // Generate second page canvas
-    const canvas2 = await html2canvas(secondPageContent, {
-      scale: renderScale,
-      useCORS: true,
-      logging: false,
-      width: parseInt(contentWidth),
-      imageTimeout: 15000,
-      windowWidth: parseInt(contentWidth),
-      onclone: (clonedDoc) => {
-        applyCSSAdjustments(clonedDoc, isIOS);
-      }
-    });
-    
-    // Generate third page canvas for iOS
-    let canvas3 = null;
-    if (isIOS && thirdPageContent) {
-      canvas3 = await html2canvas(thirdPageContent, {
-        scale: renderScale,
+      
+      // Append to body for rendering
+      document.body.appendChild(firstPageContent);
+      document.body.appendChild(secondPageContent);
+      
+      // Configure PDF
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      // Generate canvases
+      const canvas1 = await html2canvas(firstPageContent, {
+        scale: 1.5,
         useCORS: true,
         logging: false,
         width: parseInt(contentWidth),
         imageTimeout: 15000,
-        windowWidth: parseInt(contentWidth),
-        onclone: (clonedDoc) => {
-          applyCSSAdjustments(clonedDoc, isIOS);
-        }
+        windowWidth: parseInt(contentWidth)
       });
-    }
-    
-    // Clean up
-    document.body.removeChild(firstPageContent);
-    document.body.removeChild(secondPageContent);
-    if (isIOS && thirdPageContent) {
-      document.body.removeChild(thirdPageContent);
-    }
-    
-    // Use a higher quality setting for iOS to maintain text readability
-    const imageQuality = isIOS ? 0.9 : 0.8;
-    
-    // Compress canvas images before adding to PDF
-    const compressedImage1 = canvas1.toDataURL('image/jpeg', imageQuality);
-    const compressedImage2 = canvas2.toDataURL('image/jpeg', imageQuality);
-    let compressedImage3 = null;
-    if (isIOS && canvas3) {
-      compressedImage3 = canvas3.toDataURL('image/jpeg', imageQuality);
-    }
-    
-    // For iOS, use minimal margins to maximize content space
-    const margin = isIOS ? 1 : 5;
-    
-    // Add first page to PDF
-    const imgWidth1 = pdfWidth - (2 * margin);
-    const imgHeight1 = (canvas1.height * imgWidth1) / canvas1.width;
-    pdf.addImage(compressedImage1, 'JPEG', margin, margin, imgWidth1, imgHeight1);
-    
-    // Add second page
-    pdf.addPage();
-    
-    // Add the second page content
-    const imgWidth2 = pdfWidth - (2 * margin);
-    const imgHeight2 = (canvas2.height * imgWidth2) / canvas2.width;
-    pdf.addImage(compressedImage2, 'JPEG', margin, margin, imgWidth2, imgHeight2);
-    
-    // Add third page for iOS
-    if (isIOS && compressedImage3) {
+      
+      const canvas2 = await html2canvas(secondPageContent, {
+        scale: 1.5,
+        useCORS: true,
+        logging: false,
+        width: parseInt(contentWidth),
+        imageTimeout: 15000,
+        windowWidth: parseInt(contentWidth)
+      });
+      
+      // Clean up
+      document.body.removeChild(firstPageContent);
+      document.body.removeChild(secondPageContent);
+      
+      // Compress images
+      const compressedImage1 = canvas1.toDataURL('image/jpeg', 0.8);
+      const compressedImage2 = canvas2.toDataURL('image/jpeg', 0.8);
+      
+      // Add to PDF
+      const margin = 5;
+      const imgWidth = pdfWidth - (2 * margin);
+      
+      const imgHeight1 = (canvas1.height * imgWidth) / canvas1.width;
+      pdf.addImage(compressedImage1, 'JPEG', margin, margin, imgWidth, imgHeight1);
+      
       pdf.addPage();
-      const imgWidth3 = pdfWidth - (2 * margin);
-      const imgHeight3 = (canvas3.height * imgWidth3) / canvas3.width;
-      pdf.addImage(compressedImage3, 'JPEG', margin, margin, imgWidth3, imgHeight3);
+      
+      const imgHeight2 = (canvas2.height * imgWidth) / canvas2.width;
+      pdf.addImage(compressedImage2, 'JPEG', margin, margin, imgWidth, imgHeight2);
+      
+      // Save the PDF
+      pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`);
     }
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
     reportElement.style.height = originalStyles.height;
     reportElement.style.overflow = originalStyles.overflow;
-    
-    // Save the PDF with optimized settings
-    const pdfOptions = {
-      compress: true,
-      precision: 2
-    };
-    
-    pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`, pdfOptions);
     
   } catch (error) {
     console.error("Error generating PDF:", error);
@@ -1890,7 +1730,6 @@ export default function TestResults() {
     setIsGeneratingPdf(false);
   }
 };
-
 // Helper function to create custom footer
 function createCustomFooter(isIOS) {
   const customFooter = document.createElement('div');
@@ -1986,9 +1825,9 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         margin-bottom: 4px !important;
       }
       div {
-        page-break-inside: avoid;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
+        /* Remove page-break-inside to allow natural page breaks */
       }
       .p-6, .sm\\:p-8 {
         padding: 8px !important;
@@ -2019,7 +1858,7 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         line-height: 1.3 !important;
       }
       
-      /* Make the "What is Aptitude?" text smaller */
+      /* Make the question text smaller */
       div:contains("What is Aptitude"), 
       div:contains("What is Personality"),
       div:contains("What is Interest"),
@@ -2028,31 +1867,18 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         line-height: 1.2 !important;
       }
       
-      /* Target the answer texts specifically to make them smaller */
-      div:contains("What is Aptitude") p, 
-      div:contains("What is Personality") p,
-      div:contains("What is Interest") p,
-      div:contains("How do together") p,
-      div:contains("Aptitude refers to") p,
-      div:contains("Personality refers to") p,
-      div:contains("An interest is") p {
-        font-size: 80% !important;
-        line-height: 1.2 !important;
-        margin-top: 1px !important;
-        margin-bottom: 1px !important;
+      /* Allow breaks between sections when needed */
+      div[class*="border-b"] {
+        page-break-inside: auto !important;
       }
       
-      /* Target the colored/highlighted text */
-      [style*="color:#"], [style*="color: #"],
-      span[style*="color"], span.text-amber-800,
-      span[class*="text-"], strong, b {
-        font-size: inherit !important;
+      /* But don't break in the middle of a section */
+      h2, h3, h4 {
+        page-break-after: avoid !important;
       }
       
-      /* Target specifically the answer paragraphs */
-      div.p-6 > p, div.sm\\:p-8 > p {
-        font-size: 80% !important;
-        line-height: 1.2 !important;
+      p {
+        page-break-inside: auto !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
