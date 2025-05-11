@@ -757,7 +757,7 @@ setCookie("user_email", formData.email, 1);
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
               <div className="bg-[#abebc6] py-6 px-8">
-                <h1 className="text-2xl font-bold text-[#186a3b]">Personality Test Registration</h1>
+                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Test Registration</h1>
                 <p className="text-[#186a3b] mt-2">Please fill out the form below to begin your personality assessment</p>
               </div>
               
@@ -908,7 +908,7 @@ setCookie("user_email", formData.email, 1);
                         <Loader className="animate-spin -ml-1 mr-3 h-5 w-5" />
                         Processing...
                       </>
-                    ) : 'Register for Personality Test'}
+                    ) : 'Begin Test'}
                   </button>
                 </div>
               </form>
