@@ -2019,48 +2019,40 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         line-height: 1.3 !important;
       }
       
-      /* Make personal info fields side-by-side on iOS */
-      /* First, target the parent container */
-      .p-6:first-of-type > div:not(:first-child), .sm\\:p-8:first-of-type > div:not(:first-child) {
+      /* Target specific information fields to make them side-by-side */
+      div:has([style*="color: #E74C3C"], [style*="color:#E74C3C"], .text-red-500) {
         display: inline-block !important;
-        width: 45% !important;
+        width: 48% !important;
         vertical-align: top !important;
-        margin-right: 5% !important;
+        margin-right: 2% !important;
       }
       
-      /* Target "What is Aptitude" sections to make smaller */
-      div:has(h3:contains("What is")), 
-      div:has(div:contains("What is")) {
-        padding-top: 2px !important;
-        padding-bottom: 2px !important;
-      }
-      
-      div:contains("What is Aptitude"), 
-      div:contains("What is Personality"),
-      div:contains("What is Interest"),
-      div:contains("How do together") {
-        font-size: 85% !important;
-        line-height: 1.2 !important;
-      }
-      
-      /* Make text in these sections smaller */
-      div:contains("What is Aptitude") p, 
-      div:contains("What is Personality") p,
-      div:contains("What is Interest") p,
-      div:contains("How do together") p {
+      /* Make the explanation sections (What is Aptitude, etc.) more compact */
+      div[class*="p-6"]:has(p:contains("What is Aptitude")),
+      div[class*="p-6"]:has(p:contains("What is Personality")),
+      div[class*="p-6"]:has(p:contains("What is Interest")),
+      div[class*="p-6"]:has(p:contains("How do together")) {
         font-size: 80% !important;
         line-height: 1.2 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
         margin-top: 2px !important;
         margin-bottom: 2px !important;
       }
       
-      /* Target colored text */
-      span[style*="color: #"], 
-      span[style*="color:#"], 
-      .text-amber-800,
-      span.text-amber-800,
-      span.font-semibold, 
-      span.font-bold {
+      /* Make all text in these sections more compact */
+      div[class*="p-6"]:has(p:contains("What is")) p,
+      div[class*="p-6"]:has(p:contains("How do together")) p {
+        font-size: 75% !important;
+        line-height: 1.15 !important;
+        margin-top: 1px !important;
+        margin-bottom: 1px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      
+      /* Target the colored keywords to keep them properly styled */
+      [style*="color:"] {
         font-size: inherit !important;
       }
     `;
