@@ -1895,7 +1895,7 @@ export default function TestResults() {
       leftSection.appendChild(centerName);
       
       const centerDesc = document.createElement('p');
-      centerDesc.textContent = 'Psychological Guidance Center';
+      centerDesc.textContent = 'Psychological Well-being Center';
       centerDesc.style.color = '#145a32';
       centerDesc.style.fontSize = isIOS ? '12px' : '14px';
       centerDesc.style.margin = '0';
@@ -2195,7 +2195,7 @@ setUserData(user);
       <div className="max-w-4xl mt-20 mx-auto">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
           <h1 className="text-2xl font-bold text-[#784212]">
-            Your Personality Test Results
+            Your Career Assessment Result
           </h1>
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button
@@ -2250,7 +2250,7 @@ setUserData(user);
               />
             </div>
             <h1 className="ml-10 text-xl sm:text-2xl  font-bold text-[#186a3b]">
-              APTITUDE ASSESSMENT PROFILE
+              Career Guidance Assessment Profile
             </h1>
           </div>
 
