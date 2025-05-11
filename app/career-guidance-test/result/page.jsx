@@ -1492,7 +1492,7 @@ export default function TestResults() {
     
     // Set up for PDF generation with device-specific adjustments
     // Use a narrower width for iOS to prevent overflow
-    const contentWidth = isIOS ? "720px" : "794px"; 
+    const contentWidth = isIOS ? "700px" : "794px"; 
     
     reportElement.style.width = contentWidth;
     reportElement.style.height = "auto";
@@ -1527,69 +1527,166 @@ export default function TestResults() {
       const children = Array.from(parent.children);
       const resultSummaryIndex = children.indexOf(resultSummaryElement);
       
-      // For iOS: Create a container for side-by-side layout
+      // For iOS: Create a completely different layout optimized for space
       if (isIOS) {
         // Clone the first element (typically the header) as is
         const headerElement = children[0].cloneNode(true);
         firstPageContent.appendChild(headerElement);
         
-        // Create a flex container for the personal information
+        // Create a flex container for ALL personal information
         const infoContainer = document.createElement('div');
         infoContainer.style.display = 'flex';
         infoContainer.style.flexWrap = 'wrap';
         infoContainer.style.justifyContent = 'space-between';
-        infoContainer.style.padding = '0 12px';
+        infoContainer.style.padding = '8px 12px';
         
-        // Find all personal info fields (typically from index 1 to ~6)
-        // These would include Name, DOB, Age, Education, Contact, Email
-        const personalInfoSections = [];
+        // We'll manually create identifiers for the fields we know exist
+        const fieldIdentifiers = [
+          { key: 'Name', search: 'Name' },
+          { key: 'DOB', search: 'Date of Birth' },
+          { key: 'Age', search: 'Age' },
+          { key: 'Education', search: 'Education' },
+          { key: 'Contact', search: 'Contact Number' },
+          { key: 'Email', search: 'Email' }
+        ];
         
-        // Identify personal info sections (typically these are short sections with labels and values)
-        let personalInfoEndIndex = 1; // Start after header
-        for (let i = 1; i < resultSummaryIndex && i < 10; i++) {
-          // Check if this element looks like a personal info field
-          const el = children[i];
-          const text = el.textContent || '';
+        // Find all personal info fields using our identifiers
+        for (let i = 1; i < resultSummaryIndex && i < 15; i++) {
+          const element = children[i];
+          const elementText = element.textContent || '';
           
-          // Check for common personal info fields - we'll create a side-by-side layout for these
-          if (
-            text.includes('Name') || 
-            text.includes('Date of Birth') || 
-            text.includes('Age') || 
-            text.includes('Education') || 
-            text.includes('Contact') || 
-            text.includes('Email') ||
-            text.length < 100 // Short sections are likely personal info
-          ) {
-            personalInfoSections.push(el);
-            personalInfoEndIndex = i;
-          } else {
-            // Found something that's not personal info, stop looking
-            break;
+          // Check if this element is a personal info field
+          for (const field of fieldIdentifiers) {
+            if (elementText.includes(field.search)) {
+              // Extract label and value
+              let label = '';
+              let value = '';
+              
+              // Try to find the field label (usually a div or p element)
+              const labelElement = element.querySelector('div, p, h1, h2, h3, h4, h5, h6');
+              if (labelElement) {
+                label = labelElement.textContent || field.search;
+              } else {
+                label = field.search;
+              }
+              
+              // The value is usually in a separate element, often red text
+              const valueElements = element.querySelectorAll('div, p, span');
+              for (const el of valueElements) {
+                const style = window.getComputedStyle(el);
+                // Look for elements that might contain the value (often colored differently)
+                if (el !== labelElement && el.textContent && el.textContent.trim() !== label) {
+                  value = el.textContent.trim();
+                  break;
+                }
+              }
+              
+              // If we didn't find a value, try to extract it from the element text
+              if (!value) {
+                value = elementText.replace(label, '').trim();
+              }
+              
+              // Create a compact field container
+              const fieldContainer = document.createElement('div');
+              fieldContainer.style.width = '48%';
+              fieldContainer.style.marginBottom = '4px';
+              
+              // Create label with smaller font
+              const labelEl = document.createElement('div');
+              labelEl.textContent = label;
+              labelEl.style.fontSize = '85%';
+              labelEl.style.color = '#555';
+              labelEl.style.marginBottom = '1px';
+              fieldContainer.appendChild(labelEl);
+              
+              // Create value with bolder appearance
+              const valueEl = document.createElement('div');
+              valueEl.textContent = value;
+              valueEl.style.color = '#E74C3C'; // Red color similar to original
+              valueEl.style.fontWeight = 'bold';
+              valueEl.style.fontSize = '90%';
+              fieldContainer.appendChild(valueEl);
+              
+              infoContainer.appendChild(fieldContainer);
+              break;
+            }
           }
         }
-        
-        // Create side-by-side layout for personal info fields
-        personalInfoSections.forEach(section => {
-          const content = section.innerHTML || '';
-          
-          // Create a container for this info field
-          const fieldContainer = document.createElement('div');
-          fieldContainer.style.width = '48%'; // Almost half-width for 2 columns
-          fieldContainer.style.marginBottom = '12px';
-          fieldContainer.innerHTML = content;
-          
-          // Add to the flex container
-          infoContainer.appendChild(fieldContainer);
-        });
         
         // Add the flex container to the first page
         firstPageContent.appendChild(infoContainer);
         
-        // Add remaining elements after personal info
-        for (let i = personalInfoEndIndex + 1; i < resultSummaryIndex; i++) {
-          firstPageContent.appendChild(children[i].cloneNode(true));
+        // Now add the explanation sections - with more compact spacing
+        // Find aptitude, personality, and interest sections
+        const explanationSections = [];
+        let foundExplanationStart = false;
+        
+        for (let i = 1; i < resultSummaryIndex; i++) {
+          const element = children[i];
+          const elementText = element.textContent || '';
+          
+          // Look for the start of explanation sections
+          if (!foundExplanationStart && 
+              (elementText.includes('What is Aptitude?') || 
+               elementText.includes('What is Interest?') || 
+               elementText.includes('What is Personality?'))) {
+            foundExplanationStart = true;
+          }
+          
+          if (foundExplanationStart) {
+            explanationSections.push(element);
+          }
         }
+        
+        // Create a compact container for the explanation sections
+        const explanationsContainer = document.createElement('div');
+        explanationsContainer.style.padding = '0 6px';
+        
+        // Process each explanation section to make it more compact
+        explanationSections.forEach(section => {
+          const compactSection = document.createElement('div');
+          compactSection.style.marginBottom = '6px';
+          
+          // Try to find the heading
+          const heading = section.querySelector('h1, h2, h3, h4, h5, h6') || 
+                         section.querySelector('div[class*="font-bold"], p[class*="font-bold"]');
+          
+          if (heading) {
+            const headingEl = document.createElement('h4');
+            headingEl.textContent = heading.textContent;
+            headingEl.style.fontSize = '90%';
+            headingEl.style.fontWeight = 'bold';
+            headingEl.style.color = '#784212'; // Keep original color
+            headingEl.style.marginTop = '4px';
+            headingEl.style.marginBottom = '2px';
+            compactSection.appendChild(headingEl);
+            
+            // Extract the content (not including the heading)
+            const content = section.innerHTML.replace(heading.outerHTML, '').trim();
+            
+            // Create a more compact paragraph
+            const paragraph = document.createElement('p');
+            paragraph.innerHTML = content;
+            paragraph.style.fontSize = '85%';
+            paragraph.style.lineHeight = '1.2';
+            paragraph.style.marginTop = '0';
+            paragraph.style.marginBottom = '4px';
+            compactSection.appendChild(paragraph);
+          } else {
+            // If we can't find a heading, just add the content as is but more compact
+            const paragraph = document.createElement('div');
+            paragraph.innerHTML = section.innerHTML;
+            paragraph.style.fontSize = '85%';
+            paragraph.style.lineHeight = '1.2';
+            compactSection.appendChild(paragraph);
+          }
+          
+          explanationsContainer.appendChild(compactSection);
+        });
+        
+        // Add the explanations container to the first page
+        firstPageContent.appendChild(explanationsContainer);
+        
       } else {
         // For Android: Keep the original layout
         for (let i = 0; i < resultSummaryIndex; i++) {
@@ -1784,7 +1881,7 @@ export default function TestResults() {
     
     // Use an optimized scale based on device
     // For iOS, use a more aggressive scale reduction to ensure content fits properly
-    const renderScale = isIOS ? 1.1 : 1.5;
+    const renderScale = isIOS ? 1.05 : 1.5;
     
     // Generate first page canvas
     const canvas1 = await html2canvas(firstPageContent, {
@@ -1980,31 +2077,32 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
       }
       p, h1, h2, h3, h4, h5, h6 {
         width: auto !important;
-        font-size: 90% !important;
-        margin-top: 4px !important;
-        margin-bottom: 4px !important;
+        font-size: 85% !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        line-height: 1.2 !important;
       }
       div {
         page-break-inside: avoid;
-        padding-top: 2px !important;
-        padding-bottom: 2px !important;
+        padding-top: 1px !important;
+        padding-bottom: 1px !important;
       }
       .p-6, .sm\\:p-8 {
-        padding: 8px !important;
+        padding: 6px !important;
       }
       .mb-6 {
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
       }
       .mb-4 {
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
       }
       .mb-2 {
-        margin-bottom: 2px !important;
+        margin-bottom: 1px !important;
       }
       /* Reduce vertical spacing */
       [class*="border-b"] {
-        padding-bottom: 4px !important;
-        margin-bottom: 4px !important;
+        padding-bottom: 2px !important;
+        margin-bottom: 2px !important;
         border-width: 1px !important;
       }
       /* Make border-b lighter to save ink but still be visible */
@@ -2013,9 +2111,24 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
       }
       /* Optimize aptitude and personality explanation sections */
       div.p-6.sm\\:p-8.border-b.border-gray-200 p {
-        margin-top: 2px !important;
+        margin-top: 1px !important;
+        margin-bottom: 1px !important;
+        line-height: 1.2 !important;
+      }
+      /* Fix overlap in recommended courses section */
+      [class*="bg-green"], [style*="background-color: #e8f8e8"] {
+        padding: 4px !important;
+        margin: 4px 0 !important;
+      }
+      /* Fix for overlapping text in career fields */
+      [class*="grid"], [style*="display: grid"] {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+      }
+      [class*="grid"] > div, [style*="display: grid"] > div {
+        width: 45% !important;
         margin-bottom: 2px !important;
-        line-height: 1.3 !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
