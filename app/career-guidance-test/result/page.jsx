@@ -2470,7 +2470,7 @@ setUserData(user);
 <div className="bg-green-200 py-4 w-full px-12 flex justify-between items-center">
   <div className="flex flex-col">
     <p className="text-md font-bold text-[#145a32]">SANTVANA</p>
-    <p className="text-sm text-[#145a32]">Psychological Guidance Center</p>
+    <p className="text-sm text-[#145a32]">Psychological Well-being Center</p>
   </div>
   <div className="flex flex-col items-end">
     <p className="text-sm text-[#145a32]">98242 18278 | 97230 69261</p>
