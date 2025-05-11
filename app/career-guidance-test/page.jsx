@@ -185,7 +185,7 @@ const section2Questions = [
     id: 12, 
     category: "Numerical Aptitude",
     text: "If a shirt costs INR 1750 and is discounted by 15%, what is the sale price?", 
-    options: ["INR 1448.5", "INR 1484.5", "INR 1438.5", "INR 1424.5"],
+    options: ["INR 1448.5", "INR 1487.5", "INR 1438.5", "INR 1424.5"],
     correctAnswer: "B"
   },
   { 
@@ -206,7 +206,7 @@ const section2Questions = [
     id: 15, 
     category: "Numerical Aptitude",
     text: "A chart shows sales: Jan (55), Feb (65), Mar (70), April (55). What is the average monthly sales?", 
-    options: ["62.5", "65.5", "63.5", "68.5"],
+    options: ["61.25", "65.25", "63.25", "68.25"],
     correctAnswer: "A"
   },
   
@@ -221,9 +221,9 @@ const section2Questions = [
   { 
     id: 17, 
     category: "Clerical Aptitude",
-    text: "Choose the name that is different from the others.", 
-    options: ["W.E. Johnson", "W.E. Johnson", "W.E. Johnsan", "W.E. Johnson"],
-    correctAnswer: "C"
+    text: "Which of the following is the earliest date?", 
+    options: ["July 9, 1969", "July 9, 1999", "June 9, 1996", "June 9, 1969"],
+    correctAnswer: "D"
   },
   { 
     id: 18, 
@@ -306,7 +306,7 @@ export default function PersonalityTest() {
   const [userId, setUserId] = useState(null);
   const [timeLeft, setTimeLeft] = useState(7 * 60); // 7 minutes in seconds
   const [timerActive, setTimerActive] = useState(false);
-  
+  const [isManualNavigation, setIsManualNavigation] = useState(false);
   const router = useRouter();
   const timerRef = useRef(null);
   const educationOptions = ["12th Arts", "12th Science", "12th Commerce"];
@@ -438,23 +438,29 @@ export default function PersonalityTest() {
   }, [section1Answers, currentQuestionIndex, currentSection1Question, currentStep, totalSection1Questions]);
 
   // Auto-advance to next question after selection in section 2
-  useEffect(() => {
-    if (!currentSection2Question) return;
-    
-    if (currentStep === "section2" && currentSection2Question.id) {
-      const hasSelectedCurrentQuestion = section2Answers[currentSection2Question.id] !== undefined;
-      
-      if (hasSelectedCurrentQuestion) {
-        const timer = setTimeout(() => {
-          if (currentSection2QuestionIndex < totalSection2Questions - 1) {
-            setCurrentQuestionIndex(prev => prev + 1);
-          }
-        }, 500);
-        
-        return () => clearTimeout(timer);
-      }
+ useEffect(() => {
+  if (!currentSection2Question || isManualNavigation) {
+    // Clear the manual navigation flag after skipping the auto-advance once
+    if (isManualNavigation) {
+      setIsManualNavigation(false);
     }
-  }, [section2Answers, currentSection2QuestionIndex, currentSection2Question, currentStep, totalSection2Questions]);
+    return;
+  }
+  
+  if (currentStep === "section2" && currentSection2Question.id) {
+    const hasSelectedCurrentQuestion = section2Answers[currentSection2Question.id] !== undefined;
+    
+    if (hasSelectedCurrentQuestion) {
+      const timer = setTimeout(() => {
+        if (currentSection2QuestionIndex < totalSection2Questions - 1) {
+          setCurrentQuestionIndex(prev => prev + 1);
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }
+}, [section2Answers, currentSection2QuestionIndex, currentSection2Question, currentStep, totalSection2Questions, isManualNavigation]);
 
   // Form validation
   const validateForm = () => {
@@ -757,8 +763,8 @@ setCookie("user_email", formData.email, 1);
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
               <div className="bg-[#abebc6] py-6 px-8">
-                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Test Registration</h1>
-                <p className="text-[#186a3b] mt-2">Please fill out the form below to begin your personality assessment</p>
+                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Assessment Registration</h1>
+                <p className="text-[#186a3b] mt-2">Please fill out the form below to begin your assessment</p>
               </div>
               
               <form 
@@ -1117,17 +1123,18 @@ setCookie("user_email", formData.email, 1);
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
               <div className="bg-[#abebc6] py-6 px-8">
-                <h1 className="text-2xl font-bold text-[#145a32]">Personality Test</h1>
-                <p className="text-[#145a32] mt-2"><b>Instructions for Section 2</b></p>
-              </div>
-
-              <div className="p-8">
-                <div className="flex items-center space-x-3 mb-6">
+                <h1 className="text-2xl font-bold text-[#145a32]">Career Guidance Assessment</h1>
+                {/* <p className="text-[#145a32] mt-2"><b>Instructions for Section 2</b></p> */}
+                 <div className="flex items-center space-x-3 mt-6">
                   <div className="h-12 w-12 rounded-full bg-yellow-100 flex items-center justify-center">
                     <Clock size={24} className="text-yellow-600" />
                   </div>
                   <h2 className="text-xl font-bold text-gray-800">Section 2: Aptitude Assessment</h2>
                 </div>
+              </div>
+
+              <div className="p-8">
+               
                 
                 <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-4 mb-6">
                   <div className="flex items-center">
@@ -1146,7 +1153,7 @@ setCookie("user_email", formData.email, 1);
                     <li>You will have <b>7 minutes</b> to complete the entire test, which includes 25 questions.</li>
                     <li><b>Aim to attempt as many questions as possible within the time limit.</b></li>
                     <li><b>If you are unsure about an answer, it's advisable to move on to the next question to avoid wasting time.</b></li>
-                    <li>Rough work on paper is aloud but<b> calculator </b>is not aloud</li>
+                    <li>Rough work on paper is allowed but<b> calculator </b>is not allowed</li>
                   
                   </ul>
                   <p className="font-semibold text-gray-700 mt-4">Good luck!</p>
@@ -1163,7 +1170,7 @@ setCookie("user_email", formData.email, 1);
                       className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     />
                     <label htmlFor="agree-section2" className="ml-3 block text-sm font-medium text-gray-700">
-                      I understand the time limit and I'm ready to begin Section 2
+                      I've read all the instruction and understood the time limit, I'm ready to begin Section 2
                     </label>
                   </div>
                 </div>

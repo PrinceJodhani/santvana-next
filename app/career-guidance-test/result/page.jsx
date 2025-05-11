@@ -2067,16 +2067,16 @@ setUserData(user);
         >
           {/* Header with Logo */}
           <div className="bg-[#abebc6] py-8 px-12 flex items-center">
-            <div className="h-16  relative flex-shrink-0">
+            <div className="h-30  relative flex-shrink-0">
               <img 
                 src="/images/logo.png" 
                 alt="Logo" 
-                style={{ width: "140px", height: "auto" }}
+                style={{ width: "180px", height: "auto" }}
                 
                 className="rounded-md"
               />
             </div>
-            <h1 className="ml-4 text-xl sm:text-2xl  font-bold text-[#186a3b]">APTITUDE ASSESSMENT PROFILE</h1>
+            <h1 className="ml-10 text-xl sm:text-2xl  font-bold text-[#186a3b]">APTITUDE ASSESSMENT PROFILE</h1>
           </div>
 
           {/* User Information */}
@@ -2084,67 +2084,69 @@ setUserData(user);
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Name</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.name || "Test Taker"}</p>
+                  <p className="text-lg font-bold text-gray-500">Name</p>
+                  <p className="font-bold text-lg text-[#ec7063]">{userData?.name || "Test Taker"}</p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Date of Birth</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.dob || "01/01/2000"}</p>
+                  <p className="text-lg font-bold text-gray-500">Date of Birth</p>
+                  <p className="text-lg font-bold text-[#ec7063]">{userData?.dob || "01/01/2000"}</p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Age</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.age || "25"}</p>
+                  <p className="text-lg font-bold text-gray-500">Age</p>
+                  <p className="text-lg font-bold text-[#ec7063]">{userData?.age || "25"}</p>
                 </div>
               </div>
               <div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Education</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.education || "12th Science"}</p>
+                  <p className="text-lg font-bold text-gray-500">Education</p>
+                  <p className="text-lg font-bold text-[#ec7063]">{userData?.education || "12th Science"}</p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Contact Number</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.contact || "(+91) XXXXXXXXXX"}</p>
+                  <p className="text-lg font-bold text-gray-500">Contact Number</p>
+                  <p className="text-lg font-bold text-[#ec7063]">{userData?.contact || "(+91) XXXXXXXXXX"}</p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-[#ec7063]">{userData?.email || "email@example.com"}</p>
+                  <p className="text-lg font-bold text-gray-500">Email</p>
+                  <p className="text-lg font-bold text-[#ec7063]">{userData?.email || "email@example.com"}</p>
                 </div>
               </div>
             </div>
           </div>
 
+        
+
           {/* Definitions */}
           <div className="p-6 sm:p-8 border-b border-gray-200 bg-gray-50">
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Aptitude?</h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 text-lg">
                 Aptitude refers to an <b className="text-[#ca6f1e]"> individual's natural ability </b>or <b className="text-[#ca6f1e]"> talent </b> to learn and perform specific tasks or skills. 
                 In the context of a career, aptitude encompasses the capabilities that enable a person to succeed in certain job functions or fields.
               </p>
             </div>
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Personality?</h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 text-lg">
                 Personality refers to the<b className="text-[#ca6f1e]">  unique set of traits, characteristics, and behaviors </b> that define an individual. 
                 In the context of career, personality influences how a person approaches work, interacts with others, and makes decisions about their professional life.
               </p>
             </div>
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Interest?</h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 text-lg">
                 An interest is a subjective attitude to the activities or subjects an individual<b className="text-[#ca6f1e]"> naturally enjoys and is drawn to</b>. 
               </p>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-[#784212] mb-2">How do together they help in choosing a career? </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-700 text-lg">
               Aptitude, personality, and interest together form the foundation for making a smart and satisfying career choice. When all three align, you're more likely to choose a career where you perform well, feel comfortable, and stay motivated. This integration helps ensure not just success, but long-term satisfaction and growth in your chosen field. 
               </p>
             </div>
           </div>
 
-          {/* Results Summary */}
+            {/* Results Summary */}
           <div className="p-6 sm:p-8 border-b border-gray-200">
             <h2 className="text-xl font-bold text-[#784212] mb-6">Your Result Summary</h2>
             
@@ -2162,9 +2164,9 @@ setUserData(user);
             
             <div className="mb-6">
               <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
-              <ul className="list-disc pl-6 space-y-1">
+              <ul className="list-disc pl-6  space-y-1">
                 {careerRecommendations?.interestAreas?.map((interest, index) => (
-                  <li key={index} className="text-gray-700">
+                  <li key={index} className="text-[#145a32] font-medium">
                     {interest}
                   </li>
                 )) || (
@@ -2184,26 +2186,7 @@ setUserData(user);
               </p>
             </div>
             
-            {/* Recommended Courses Section */}
-            <div className="mb-6">
-              <p className="font-medium text-[#ec7063] mb-2">Recommended Courses:</p>
-              <div className="bg-[#ebfaf1] p-4 rounded-lg border border-[#abebc6]">
-                <ul className="space-y-2">
-                  {(careerRecommendations?.recommendedCourses || [
-                    "B.Sc. in Computer Science",
-                    "B.Sc. in Mathematics",
-                    "B.Com. with focus on Finance"
-                  ]).map((course, index) => (
-                    <li key={index} className="flex items-start">
-                      <div className="flex-shrink-0 h-5 w-5 mt-0.5 text-[#145a32]">
-                        <BookOpen size={18} />
-                      </div>
-                      <span className="ml-2 text-gray-700">{course}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+           
             
             <div>
               <p className="font-medium text-[#ec7063] mb-2">Potential Career Fields:</p>
@@ -2216,12 +2199,33 @@ setUserData(user);
                   "Research Scientist"
                 ]).map((career, index) => (
                   <div key={index} className="flex items-start">
-                    <div className="flex-shrink-0 h-5 w-5 text-indigo-500">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#145a32]">
                       <CheckCircle size={20} />
                     </div>
-                    <span className="ml-2 text-gray-700">{career}</span>
+                    <b><span className="ml-2  text-gray-700">{career}</span></b>
                   </div>
                 ))}
+              </div>
+            </div>
+
+             {/* Recommended Courses Section */}
+            <div className="mb-6 mt-6">
+              <p className="font-medium text-[#ec7063] mb-2">Recommended Courses:</p>
+              <div className="bg-[#ebfaf1] p-4 rounded-lg border border-[#abebc6]">
+                <ul className="space-y-2">
+                  {(careerRecommendations?.recommendedCourses || [
+                    "B.Sc. in Computer Science",
+                    "B.Sc. in Mathematics",
+                    "B.Com. with focus on Finance"
+                  ]).map((course, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="flex-shrink-0 h-5 w-5 mt-0.5 text-[#145a32]">
+                        <BookOpen size={18} />
+                      </div>
+                    <b>  <span className="ml-2 text-gray-700">{course}</span></b>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -2250,8 +2254,8 @@ setUserData(user);
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="font-medium text-[#F08080] mt-2">Ms. Poonam Vipani</p>
-                <p className="text-sm text-[#117a65]">Clinical Psychologist (Associate) </p><p className="text-sm text-[#117a65]"> A105297 (RCI Registered)</p>
+                <p className="font-bold text-[#F08080] mt-2">Ms. Poonam Vipani</p>
+                <p className="text-sm font-bold text-[#117a65]">Associate Clinical Psychologist </p><p className="text-sm font-bold text-[#117a65]"> A105297 (RCI Registered)</p>
               </div>
               <div className="text-center">
                 <div className="h-20 w-40 mx-auto relative">
@@ -2262,21 +2266,36 @@ setUserData(user);
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="font-medium text-[#F08080] mt-2">Ms. Rajvee Shah</p>
-                <p className="text-sm text-[#117a65]">Psychologist</p>
+                <p className="font-bold text-[#F08080] mt-2">Ms. Rajvee Shah</p>
+                <p className="text-sm font-bold text-[#117a65]">Psychologist</p>
               </div>
             </div>
           </div>
 
           {/* Contact Footer */}
-          <div className="p-6 bg-[#117864] text-white text-center">
+          <div className="bg-green-200 py-8 w-full px-12 flex items-center justify-center">
+  <div className="flex flex-col items-center">
+    <img 
+      src="/images/logo.png" 
+      alt="Logo"
+      className="w-44 h-auto rounded-md mb-2"
+    />
+    <p className="text-sm font-bold text-center">
+      98242 18278 | 97230 69261
+    </p>
+    <p className="text-sm font-bold text-center">
+      www.santvana.co.in | santvana27@gmail.com
+    </p>
+  </div>
+</div>
+          {/* <div className="p-6 bg-[#117864] text-white text-center">
             <p className="text-sm">
               98242 18278 | 97230 69261
             </p>
             <p className="text-sm">
               www.santvana.co.in | santvana27@gmail.com
             </p>
-          </div>
+          </div> */}
         </motion.div>
 
         {/* Additional Actions */}
