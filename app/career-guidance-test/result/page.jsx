@@ -1969,6 +1969,7 @@ function fixSignatureImages(signatureElement) {
 }
 
 // Helper function to apply CSS adjustments
+// Helper function to apply CSS adjustments
 function applyCSSAdjustments(clonedDoc, isIOS) {
   if (isIOS) {
     const styles = clonedDoc.createElement('style');
@@ -2016,6 +2017,42 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         margin-top: 2px !important;
         margin-bottom: 2px !important;
         line-height: 1.3 !important;
+      }
+      
+      /* Make the "What is Aptitude?" text smaller */
+      div:contains("What is Aptitude"), 
+      div:contains("What is Personality"),
+      div:contains("What is Interest"),
+      div:contains("How do together") {
+        font-size: 85% !important;
+        line-height: 1.2 !important;
+      }
+      
+      /* Target the answer texts specifically to make them smaller */
+      div:contains("What is Aptitude") p, 
+      div:contains("What is Personality") p,
+      div:contains("What is Interest") p,
+      div:contains("How do together") p,
+      div:contains("Aptitude refers to") p,
+      div:contains("Personality refers to") p,
+      div:contains("An interest is") p {
+        font-size: 80% !important;
+        line-height: 1.2 !important;
+        margin-top: 1px !important;
+        margin-bottom: 1px !important;
+      }
+      
+      /* Target the colored/highlighted text */
+      [style*="color:#"], [style*="color: #"],
+      span[style*="color"], span.text-amber-800,
+      span[class*="text-"], strong, b {
+        font-size: inherit !important;
+      }
+      
+      /* Target specifically the answer paragraphs */
+      div.p-6 > p, div.sm\\:p-8 > p {
+        font-size: 80% !important;
+        line-height: 1.2 !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
