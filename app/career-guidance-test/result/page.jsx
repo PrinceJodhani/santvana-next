@@ -12,1565 +12,1261 @@ import {
   RefreshCcw,
   CheckCircle,
   BookOpen,
-  Link
+  Link,
 } from "lucide-react";
 import { updateTestResults } from "./actions";
 
 // Import your complete careerMapping object here
 // Career mapping based on aptitude and personality types
 const careerMapping = {
-    "Numerical-Realistic-Investigative": {
-      streams: ["Science", "Commerce (Maths required)"],
-      interestAreas: [
-        "Scientific",
-        "Money Analysis",
-        "Research",
-        "Computer networks"
-      ],
-      careerFields: [
-        "Computer / Data Scientist",
-        "Mechanical /  Electrical / Civil Engineer",
-        "Chemist (B.Sc in Chemistry)",
-        "Financial Analyst",
-        "Accountant"
-      ],
-      recommendedCourses: [
-        "B.Sc in Chemistry",
-        "B.Sc. in AI & ML"
-      ]
-    },
-    "Numerical-Realistic-Artistic": {
-      streams: ["Science (Maths required)"],
-      interestAreas: [
-        "Data management",
-        "Aesthetics",
-        "Machines"
-      ],
-      careerFields: [
-        "Architectural Drafter",
-        "Animator",
-        "Game developer",
-        "Industrial Designer",
-        "Data Analyst",
-        "Product Designer"
-      ],
-      recommendedCourses: [
-        "B.Com. / B.Sc. in Computer Application (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)"
-      ]
-    },
-    "Numerical-Realistic-Social": {
-      streams: ["Science", "Commerce"],
-      interestAreas: [
-        "Community service",
-        "Helping",
-        "Working outdoors"
-      ],
-      careerFields: [
-        "Financial Advisor (Maths required)",
-        "Healthcare Consultant",
-        "Healthcare Analyst",
-        "Occupational Therapy Assistant",
-        "Maths / Statistic Professor (Maths Required)"
-      ],
-      recommendedCourses: [
-        "B.Com. B.Ed. / B.Sc B.Ed",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Numerical-Realistic-Enterprising": {
-      streams: ["Commerce", "Science (Maths required)"],
-      interestAreas: [
-        "Business management",
-        "Entrepreneurship",
-        "Investing"
-      ],
-      careerFields: [
-        "Construction Project Manager",
-        "Accountant",
-        "Investment Banker",
-        "Business Analyst",
-        "Marketing Manager",
-        "Statistician"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Statistics",
-        "B.Com. Regular"
-      ]
-    },
-    "Numerical-Realistic-Conventional": {
-      streams: ["Commerce", "Science (Maths required)"],
-      interestAreas: [
-        "Data management",
-        "Accounting",
-        "Organization"
-      ],
-      careerFields: [
-        "Quality Control Analyst",
-        "Accountant",
-        "Auditor",
-        "Financial Analyst",
-        "Actuarial Scientist"
-      ],
-      recommendedCourses: [
-        "B.Com. Regular",
-        "B.Sc. in Statistics"
-      ]
-    },
-    "Numerical-Investigative-Artistic": {
-      streams: ["Science", "Commerce (Maths required)"],
-      interestAreas: [
-        "Mathematics",
-        "Research",
-        "Self-expression"
-      ],
-      careerFields: [
-        "Data Visualization Specialist",
-        "Financial Analyst (Creative Industries)",
-        "Game Designer",
-        "Scientific Animator",
-        "Info graphic Designer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Data Science / Computer Science",
-        "B.Com. in Computer Application"
-      ]
-    },
-    "Numerical-Investigative-Social": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Analysing",
-        "Helping",
-        "Research",
-        "Communication"
-      ],
-      careerFields: [
-        "Epidemiologist",
-        "Education Researcher",
-        "Health Policy Analyst",
-        "Industrial / Forensic Psychologist"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology",
-        "B.Sc. in Cyber Security (Maths Required)"
-      ]
-    },
-    "Numerical-Investigative-Enterprising": {
-      streams: ["Commerce", "Science (Maths required)"],
-      interestAreas: [
-        "Mathematics",
-        "Research",
-        "Business",
-        "Entrepreneurship"
-      ],
-      careerFields: [
-        "Investment Banker",
-        "Market Research Analyst",
-        "Actuary",
-        "Chartered Financial Analyst",
-        "Data / Computer Scientist"
-      ],
-      recommendedCourses: [
-        "B.Com. Regular / Business Management",
-        "B.Sc. in Data Science"
-      ]
-    },
-    "Numerical-Investigative-Conventional": {
-      streams: ["Commerce", "Science (Maths required)"],
-      interestAreas: [
-        "Mathematics",
-        "Data management",
-        "Research",
-        "Accounting"
-      ],
-      careerFields: [
-        "Statistician",
-        "Chartered Accountant",
-        "Budget Analyst",
-        "Aviation Inspector",
-        "CFA",
-        "Pharmacist"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Math & Chemistry",
-        "B.Sc. in Statistics",
-        "B.Com. Regular"
-      ]
-    },
-    "Numerical-Artistic-Social": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Computer Programming",
-        "Communication",
-        "Helping",
-        "Culture"
-      ],
-      careerFields: [
-        "Art Program Coordinator",
-        "Event Planner (Budget Focus)",
-        "Content creation",
-        "UI/UX Designer",
-        "Social Media Analyst"
-      ],
-      recommendedCourses: [
-        "B.Com Regular",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Numerical-Artistic-Enterprising": {
-      streams: ["Commerce", "Arts"],
-      interestAreas: [
-        "Mathematics",
-        "Business",
-        "Self-expression",
-        "Entrepreneurship"
-      ],
-      careerFields: [
-        "Film Producer",
-        "Advertising Account Manager",
-        "Data Visualization (Maths required)",
-        "Creative Marketing Manager",
-        "Product Manager"
-      ],
-      recommendedCourses: [
-        "B.A. in any Subject",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Numerical-Artistic-Conventional": {
-      streams: ["Commerce", "Arts", "Science"],
-      interestAreas: [
-        "Mathematics",
-        "Data management",
-        "Aesthetics",
-        "Art appreciation"
-      ],
-      careerFields: [
-        "Creative Project Accountant (Maths required)",
-        "Graphic / Product / Interior Designer",
-        "Budget Analyst (Maths required)",
-        "Animator",
-        "Landscape Architecture"
-      ],
-      recommendedCourses: [
-        "B.Com. B.Ed.",
-        "B.Sc. B.Ed."
-      ]
-    },
-    "Numerical-Social-Enterprising": {
-      streams: ["Commerce", "Arts"],
-      interestAreas: [
-        "Business",
-        "Helping",
-        "Leadership",
-        "Well Being"
-      ],
-      careerFields: [
-        "NGO Director",
-        "Healthcare Administrator",
-        "Business Manager",
-        "Financial Adviser",
-        "Economist",
-        "Computer Scientist"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.A. in Economics"
-      ]
-    },
-    "Numerical-Social-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Mathematics",
-        "Data management",
-        "Helping",
-        "Organization"
-      ],
-      careerFields: [
-        "Human Resources Analyst",
-        "Policy Analyst",
-        "Banker",
-        "Business Manager / Administrative",
-        "Accountant"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. Regular"
-      ]
-    },
-    "Numerical-Enterprising-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Mathematics",
-        "Business",
-        "Accounting",
-        "Investing"
-      ],
-      careerFields: [
-        "Accountant",
-        "Banking Executive",
-        "Financial Manager",
-        "Management Consultant",
-        "Business Consultant",
-        "Project Manager"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. Regular",
-        "B.Com. in International Business"
-      ]
-    },
-    "Spatial-Realistic-Investigative": {
-      streams: ["Science (Maths required)"],
-      interestAreas: [
-        "Computer networks",
-        "Science",
-        "Research",
-        "Mathematics"
-      ],
-      careerFields: [
-        "Civil / Mechanical Engineer",
-        "Geospatial Analyst",
-        "CAD Technician",
-        "Robotics Engineer",
-        "Mechanical Designer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Science",
-        "B.Sc. in Botany & EVS"
-      ]
-    },
-    "Spatial-Realistic-Artistic": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Machines",
-        "Self-expression",
-        "Computer networks",
-        "Designing",
-        "Hospitality"
-      ],
-      careerFields: [
-        "Architect",
-        "Industrial Designer",
-        "3D Animator",
-        "Game Designer",
-        "Interior / Fashion / Jewelry Designer",
-        "Fine Arts",
-        "Culinary Chef"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)"
-      ]
-    },
-    "Spatial-Realistic-Social": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Working outdoors",
-        "Helping",
-        "Teamwork",
-        "Designing"
-      ],
-      careerFields: [
-        "Occupational Therapist",
-        "Sports Coach",
-        "AutoCAD Designer",
-        "Community Architect",
-        "Real Estate Development"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)"
-      ]
-    },
-    "Spatial-Realistic-Enterprising": {
-      streams: ["Commerce", "Science"],
-      interestAreas: [
-        "Machines",
-        "Business",
-        "Leadership",
-        "Entrepreneurship"
-      ],
-      careerFields: [
-        "Construction Manager",
-        "Real Estate Developer",
-        "Product Design Entrepreneur",
-        "Event Manager",
-        "Interior / Jewelry Designer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Spatial-Realistic-Conventional": {
-      streams: ["Science", "Commerce (Maths required)"],
-      interestAreas: [
-        "Designing",
-        "Practical",
-        "Analysis",
-        "Detailing"
-      ],
-      careerFields: [
-        "Architectural Draftsman",
-        "Architecture",
-        "Surveyor",
-        "Technical Illustrator",
-        "Computer-Aided Design (CAD) Specialist"
-      ],
-      recommendedCourses: [
-        "B.Sc. in NS & NT",
-        "B.Sc. in Information Technology"
-      ]
-    },
-    "Spatial-Investigative-Artistic": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Computer networks",
-        "Aesthetics",
-        "Detailing",
-        "Visualization"
-      ],
-      careerFields: [
-        "UX/UI Designer",
-        "Architecture",
-        "Game Developer",
-        "Animation Designer",
-        "Forensic Sketch Artist",
-        "Fine Arts"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)"
-      ]
-    },
-    "Spatial-Investigative-Social": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Research",
-        "Science",
-        "Helping",
-        "Teamwork"
-      ],
-      careerFields: [
-        "Speech & Language Therapist",
-        "Medical Imaging Technologist (MRI/CT)",
-        "Neuropsychologist",
-        "Architecture",
-        "Graphic / Web Designer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "BA in Psychology"
-      ]
-    },
-    "Spatial-Investigative-Enterprising": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Research",
-        "Business",
-        "Entrepreneurship",
-        "Leadership"
-      ],
-      careerFields: [
-        "Forensic Scientist",
-        "Data Scientist / AI",
-        "Designer Entrepreneur",
-        "Drone Mapping Specialist",
-        "Game Developer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in AI & ML (Maths Required)",
-        "B.Sc. in Computer Application (Maths Required)"
-      ]
-    },
-    "Spatial-Investigative-Conventional": {
-      streams: ["Science", "Commerce (Maths required)"],
-      interestAreas: [
-        "Data management",
-        "Research",
-        "Dynamic space management",
-        "Organization"
-      ],
-      careerFields: [
-        "Data Analyst",
-        "Graphic / Interior Designer",
-        "Statistician for Spatial Studies",
-        "Computer Scientist",
-        "Software Engineer"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Statistics",
-        "B.Sc. in Cyber & Digital Science",
-        "B.Sc. in Cyber Security (Maths Required)"
-      ]
-    },
-    "Spatial-Artistic-Social": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Self-expression",
-        "Communication",
-        "Helping",
-        "Visual Art"
-      ],
-      careerFields: [
-        "Art Therapist",
-        "Set Designer (Theater)",
-        "Interior / Jewelry / Fashion Designer",
-        "Visual Storyteller",
-        "Photographer",
-        "Architecture",
-        "Wedding Planner"
-      ],
-      recommendedCourses: [
-        "BA in Psychology",
-        "B.Sc. in Computer Application (Maths Required)"
-      ]
-    },
-    "Spatial-Artistic-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Visual Art",
-        "Aesthetics",
-        "Business",
-        "Creativity"
-      ],
-      careerFields: [
-        "Film Art Director",
-        "Fashion / Graphic Designer",
-        "UX Designer",
-        "Photographer",
-        "Wedding Planner",
-        "Architecture"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Spatial-Artistic-Conventional": {
-      streams: ["Arts", "Commerce", "Science"],
-      interestAreas: [
-        "Data management",
-        "Organization",
-        "Aesthetics",
-        "Visualization"
-      ],
-      careerFields: [
-        "Graphic / Textile Designer",
-        "Visual Merchandiser",
-        "Interior Designer",
-        "Architect",
-        "Photographer",
-        "Data Scientist (Maths Required)"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Data Science (Maths Required)",
-        "BA in any subject"
-      ]
-    },
-    "Spatial-Social-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Client Interaction and management",
-        "Leadership",
-        "Teamwork",
-        "Business"
-      ],
-      careerFields: [
-        "Event / Fashion / Jewelry Designer",
-        "Wedding Planner",
-        "Design Consultant",
-        "Photographer",
-        "Graphic Designer"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Spatial-Social-Conventional": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Helping",
-        "Organization",
-        "Designing",
-        "Management"
-      ],
-      careerFields: [
-        "School Admin",
-        "Library Assistant",
-        "Hotel Manager",
-        "Civil Engineer (Maths Required)",
-        "Architect (Maths Required)",
-        "Fashion / Jewelry Designer"
-      ],
-      recommendedCourses: [
-        "B.Com Regular",
-        "BA in any subject"
-      ]
-    },
-    "Spatial-Enterprising-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Business",
-        "Communication Organization and Management",
-        "Problem Solving"
-      ],
-      careerFields: [
-        "Operations Manager (Design Firm)",
-        "Project Coordinator (Architecture)",
-        "Business Analyst (Spatial Tech)",
-        "Design Project Manager",
-        "Printing Business Owner"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Logical-Realistic-Investigative": {
-      streams: ["Science (Maths Required)"],
-      interestAreas: [
-        "Mechanical",
-        "Research",
-        "Technology",
-        "Innovation"
-      ],
-      careerFields: [
-        "Mechanical Engineer",
-        "Data Scientist",
-        "Robotics Technician",
-        "Software Developer",
-        "Lab Technician",
-        "Pharmacist"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
-        "B.Sc. in Data Science (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)"
-      ]
-    },
-    "Logical-Realistic-Artistic": {
-      streams: ["Science"],
-      interestAreas: [
-        "Programming",
-        "Aesthetics",
-        "Technology",
-        "Designing"
-      ],
-      careerFields: [
-        "Game / Furniture / Graphic Designer",
-        "UX Designer",
-        "Audio Engineer",
-        "Animation Programmer",
-        "Digital Artist"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Science (Maths Required)",
-        "B.Sc. in Computer Application (Maths Required)"
-      ]
-    },
-    "Logical-Realistic-Social": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Scientific",
-        "Practical applications",
-        "Machinery",
-        "Self Expression"
-      ],
-      careerFields: [
-        "Occupational / Speech Therapist",
-        "Physical Therapist",
-        "Lawyer",
-        "Physiotherapist"
-      ],
-      recommendedCourses: [
-        "BA in Psychology"
-      ]
-    },
-    "Logical-Realistic-Enterprising": {
-      streams: ["Commerce", "Science (Maths Required)"],
-      interestAreas: [
-        "Business management",
-        "Analysis",
-        "Technology",
-        "Innovation"
-      ],
-      careerFields: [
-        "Business Analyst",
-        "Entrepreneur",
-        "Software Developer",
-        "Computer Scientist (AI)",
-        "Entrepreneur"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Science (Maths Required)",
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Logical-Realistic-Conventional": {
-      streams: ["Science", "Commerce"],
-      interestAreas: [
-        "Data Management",
-        "Analysing",
-        "Organising",
-        "Investing"
-      ],
-      careerFields: [
-        "Auditor",
-        "Accountant",
-        "Financial / Cybersecurity Analyst",
-        "Computer Scientist (Maths Required)",
-        "Banker",
-        "Business Manager"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Cyber Security (Maths Required)",
-        "B.Sc. in Computer Science (Maths Required)",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Logical-Investigative-Artistic": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Technology",
-        "Scientific",
-        "Visualization",
-        "Problem Solving"
-      ],
-      careerFields: [
-        "AI Algorithm Designer",
-        "Research-Based Game Developer",
-        "Data Visualization Expert",
-        "Physicists",
-        "Psychologist"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
-        "B.Sc. in Data Science (Maths Required)",
-        "BA in Psychology"
-      ]
-    },
-    "Logical-Investigative-Social": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Research",
-        "Intervention",
-        "Communication",
-        "Execution"
-      ],
-      careerFields: [
-        "Clinical / Educational Psychologist",
-        "Behavioral Economist",
-        "College Professor",
-        "Lawyer",
-        "Journalist",
-        "Doctor",
-        "Physiotherapist"
-      ],
-      recommendedCourses: [
-        "B.A. in Psychology",
-        "Integrated BA B.Ed"
-      ]
-    },
-    "Logical-Investigative-Enterprising": {
-      streams: ["Commerce", "Science (Maths Required)"],
-      interestAreas: [
-        "Management",
-        "Technology",
-        "Organization",
-        "Business"
-      ],
-      careerFields: [
-        "Management Consultant",
-        "Tech Entrepreneur",
-        "Product Manager",
-        "Economist",
-        "Statistician / Data Analyst"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Data Science (Maths Required)",
-        "B.Sc. in Information Technology",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Logical-Investigative-Conventional": {
-      streams: ["Science", "Commerce"],
-      interestAreas: [
-        "Organization",
-        "Analytical Thinking",
-        "Documentation",
-        "Technology"
-      ],
-      careerFields: [
-        "Statistician (Maths Required)",
-        "Criminal Psychologist",
-        "Epidemiologist",
-        "Market Researcher",
-        "Forensic Lab Technician",
-        "Accountant (Maths Required)",
-        "Company Secretary",
-        "Doctor"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Statistics",
-        "B.Sc. in Maths & Chemistry",
-        "B.Com Regular"
-      ]
-    },
-    "Logical-Artistic-Social": {
-      streams: ["Arts"],
-      interestAreas: [
-        "Storytelling",
-        "Training",
-        "Creative solutions",
-        "Communication"
-      ],
-      careerFields: [
-        "Art / Drama Therapist",
-        "Special Educator",
-        "Museum Curator",
-        "Social Media Manager",
-        "Journalist",
-        "Design Teacher"
-      ],
-      recommendedCourses: [
-        "B.A. in English",
-        "B.A. in Psychology"
-      ]
-    },
-    "Logical-Artistic-Enterprising": {
-      streams: ["Science", "Commerce"],
-      interestAreas: [
-        "Marketing",
-        "Designing",
-        "Management",
-        "Technology"
-      ],
-      careerFields: [
-        "Software Engineer (Maths Required)",
-        "Interior / Animation Designer",
-        "Data Science Analyst (Maths Required)",
-        "Content Marketing Manager"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Information Technology",
-        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
-        "B.Sc. in Data Science (Maths Required)"
-      ]
-    },
-    "Logical-Artistic-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Spatial Accommodation",
-        "Aesthetics",
-        "Analysis",
-        "Creative thinking"
-      ],
-      careerFields: [
-        "UX Designer",
-        "Web Designer",
-        "Graphic / Industrial Designer",
-        "Digital Media Manager",
-        "Event Manager"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Logical-Social-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Communication",
-        "Training",
-        "Business",
-        "Analytics"
-      ],
-      careerFields: [
-        "Public Relation Officer",
-        "Political Analyst",
-        "Educational Consultant",
-        "Sales Manager",
-        "Corporate Trainer",
-        "Healthcare Administrator"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "Integrated BA B.Ed",
-        "Integrated B.Com B.Ed"
-      ]
-    },
-    "Logical-Social-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Guidance",
-        "Training",
-        "Organizing",
-        "Communication"
-      ],
-      careerFields: [
-        "School Counsellor",
-        "HR Manager",
-        "Training Programme Coordinator",
-        "Rehabilitation Psychologist",
-        "Office Administrator"
-      ],
-      recommendedCourses: [
-        "B.A. in Psychology",
-        "B.Com. in Business Management",
-        "Integrated BA B.Ed"
-      ]
-    },
-    "Logical-Enterprising-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Business Management",
-        "Investing",
-        "Data Management",
-        "Problem Solving"
-      ],
-      careerFields: [
-        "Business Analyst",
-        "Operations / Project Manager",
-        "Management Consultant",
-        "Banking Officer",
-        "CFA/ Chartered Accountant",
-        "Company Secretary"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Clerical-Realistic-Investigative": {
-      streams: ["Science", "Commerce"],
-      interestAreas: [
-        "Research",
-        "Data Management",
-        "Documentation",
-        "Organizing"
-      ],
-      careerFields: [
-        "Data Entry for R&D (Maths Required)",
-        "Field Researcher (Maths Required)",
-        "Lab Technician (Maths Required)",
-        "Inventory Manager",
-        "Quality Control Inspector"
-      ],
-      recommendedCourses: [
-        "B.Sc. in Computer Application (Maths Required)",
-        "B.Sc. in Statistics",
-        "B.Sc. in Data Science (Maths Required)"
-      ]
-    },
-    "Clerical-Realistic-Artistic": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Visual arts",
-        "Designing",
-        "Management",
-        "Creative thinking"
-      ],
-      careerFields: [
-        "Photographer",
-        "Art Gallery Administrator",
-        "Design Project Coordinator",
-        "Graphic / Interior Design Assistant",
-        "Craft-based Businessman"
-      ],
-      recommendedCourses: [
-        "BA in any subject",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Clerical-Realistic-Social": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Communication",
-        "Organization",
-        "Training",
-        "Social Interaction"
-      ],
-      careerFields: [
-        "Front Desk Executive",
-        "Office Assistant",
-        "Rehabilitation Psychologist",
-        "Special Educator",
-        "Social Worker"
-      ],
-      recommendedCourses: [
-        "BA in Psychology",
-        "B.Com Regular"
-      ]
-    },
-    "Clerical-Realistic-Enterprising": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Working Outdoors",
-        "Business",
-        "Data Management",
-        "Organization"
-      ],
-      careerFields: [
-        "Real Estate Developer",
-        "Logistics Administrator",
-        "Sales Support Assistant",
-        "Accountant",
-        "Office Assistant"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Clerical-Realistic-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Organization",
-        "Planning",
-        "Back end Management",
-        "Record Keeping"
-      ],
-      careerFields: [
-        "Warehouse Clerk",
-        "Bank Clerk",
-        "Data Entry Operator",
-        "Office Assistant",
-        "Administrator"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Clerical-Investigative-Artistic": {
-      streams: ["Arts"],
-      interestAreas: [
-        "Literature",
-        "Aesthetic",
-        "Research",
-        "Organization"
-      ],
-      careerFields: [
-        "Librarian",
-        "Editor",
-        "Publishing Assistant",
-        "Museum Assistant",
-        "Art Researcher",
-        "Digital Content Curator"
-      ],
-      recommendedCourses: [
-        "B.A. in English",
-        "B.Com. - Regular"
-      ]
-    },
-    "Clerical-Investigative-Social": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Research",
-        "Data Management",
-        "Organization",
-        "Helping"
-      ],
-      careerFields: [
-        "School Research Assistant",
-        "Medical Record Manager",
-        "Research Assistant",
-        "NGO Project Clerk",
-        "Administrator"
-      ],
-      recommendedCourses: [
-        "Integrated BA B.Ed",
-        "BA in Psychology"
-      ]
-    },
-    "Clerical-Investigative-Enterprising": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Research",
-        "Analysis",
-        "Business",
-        "Organization"
-      ],
-      careerFields: [
-        "Market Research Assistant",
-        "Project Manager",
-        "Sales Data Analyst",
-        "Business Development Assistant"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Clerical-Investigative-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Organization",
-        "Planning",
-        "Research",
-        "Data Management"
-      ],
-      careerFields: [
-        "Data Entry Specialist",
-        "Research Assistant",
-        "Accountant",
-        "Technical Support Clerk",
-        "Bank Clerk"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "B.Com. in Computer Application (Maths Required)"
-      ]
-    },
-    "Clerical-Artistic-Social": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Aesthetic",
-        "Organization",
-        "Execution",
-        "Communication"
-      ],
-      careerFields: [
-        "Art Event Manager",
-        "Social Media Manager",
-        "Gallery Assistant",
-        "Public Relation Officer",
-        "Customer Care Executive"
-      ],
-      recommendedCourses: [
-        "BA in English, Psychology",
-        "B.Com Regular"
-      ]
-    },
-    "Clerical-Artistic-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Designing",
-        "Business",
-        "Management",
-        "Client Interaction"
-      ],
-      careerFields: [
-        "Advertising Coordinator",
-        "Event / Wedding Planner Assistant",
-        "Brand / Marketing Assistant",
-        "Interior / Fashion Designer Assistant"
-      ],
-      recommendedCourses: [
-        "B.Com. - Regular",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Clerical-Artistic-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Aesthetic",
-        "Communication",
-        "Management",
-        "Organization"
-      ],
-      careerFields: [
-        "Publishing Assistant",
-        "Graphic Designer",
-        "Fashion / Interior Designer Assistant",
-        "Admin Worker",
-        "Event Coordinator"
-      ],
-      recommendedCourses: [
-        "B.Com. in Business Management",
-        "B.A in English"
-      ]
-    },
-    "Clerical-Social-Enterprising": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Communication",
-        "Organization",
-        "Relationship Management",
-        "Planning"
-      ],
-      careerFields: [
-        "HR Manager",
-        "Sales Manager",
-        "Front Desk Executive",
-        "Training Coordinator",
-        "Office Assistant"
-      ],
-      recommendedCourses: [
-        "B.Com. Business Management",
-        "B.Com Regular"
-      ]
-    },
-    "Clerical-Social-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Communication",
-        "Planning",
-        "Data Handling",
-        "Relationship Management"
-      ],
-      careerFields: [
-        "School Office Assistant",
-        "HR Assistant",
-        "Medical Assistant",
-        "Data Entry Clerk",
-        "Front Desk Officer",
-        "Banker"
-      ],
-      recommendedCourses: [
-        "B.Com. Regular",
-        "BA in any subject"
-      ]
-    },
-    "Clerical-Enterprising-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Management",
-        "Business",
-        "Planning",
-        "Organization"
-      ],
-      careerFields: [
-        "Office / Corporate Administrator",
-        "Business Analyst",
-        "Insurance Executive",
-        "Banking Clerk",
-        "Hotel Management"
-      ],
-      recommendedCourses: [
-        "B.Com. Business Management",
-        "B.Com. Regular"
-      ]
-    },
-    "Verbal-Realistic-Investigative": {
-      streams: ["Science", "Arts"],
-      interestAreas: [
-        "Communication",
-        "Creative Solutions",
-        "Practicality",
-        "Research"
-      ],
-      careerFields: [
-        "Creative Writer",
-        "Clinical / Forensic Psychologist",
-        "Health Educator",
-        "Reporter",
-        "Lawyer"
-      ],
-      recommendedCourses: [
-        "B.A. in Psychology",
-        "B.Com. Regular"
-      ]
-    },
-    "Verbal-Realistic-Artistic": {
-      streams: ["Arts"],
-      interestAreas: [
-        "Communication",
-        "Execution",
-        "Organization",
-        "Creativity"
-      ],
-      careerFields: [
-        "Art /Dance Therapist",
-        "Scriptwriter (Documentaries)",
-        "Voice over artist",
-        "Blog Writer",
-        "Stage Manager",
-        "Content Creator",
-        "Anchor"
-      ],
-      recommendedCourses: [
-        "B.A. in Psychology",
-        "B.A. in English"
-      ]
-    },
-    "Verbal-Realistic-Social": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Communication",
-        "Relationship Management",
-        "Social Welfare",
-        "Training"
-      ],
-      careerFields: [
-        "Speech Therapist",
-        "Vocational Trainer",
-        "Motivational Speaker",
-        "Public Relations Officer",
-        "Counselling Psychologist",
-        "Social Worker"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology",
-        "B.Com. Business Management"
-      ]
-    },
-    "Verbal-Realistic-Enterprising": {
-      streams: ["Commerce", "Arts"],
-      interestAreas: [
-        "Working Outdoors",
-        "Management",
-        "Business",
-        "Communication"
-      ],
-      careerFields: [
-        "Sales Representative",
-        "Real Estate Agent",
-        "Business Consultant",
-        "Marketing Manager",
-        "Entrepreneur"
-      ],
-      recommendedCourses: [
-        "B.Com. Business Management",
-        "B.Com. in International Business"
-      ]
-    },
-    "Verbal-Realistic-Conventional": {
-      streams: ["Commerce", "Arts"],
-      interestAreas: [
-        "Organizing",
-        "Relationship Management",
-        "Analyzing",
-        "Communication"
-      ],
-      careerFields: [
-        "Administrative Executive",
-        "Account Manager",
-        "Human Resources Specialist",
-        "Customer Support",
-        "Researcher"
-      ],
-      recommendedCourses: [
-        "B.Com. Regular",
-        "B.A. Psychology"
-      ]
-    },
-    "Verbal-Investigative-Artistic": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Scientific",
-        "Execution",
-        "Planning",
-        "Creative thinking"
-      ],
-      careerFields: [
-        "Science Journalist",
-        "Clinical Psychologist",
-        "Researcher",
-        "Academic Writer",
-        "Podcast Creator",
-        "Documentary Filmmaker",
-        "Educational YouTuber"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology",
-        "B.A. English"
-      ]
-    },
-    "Verbal-Investigative-Social": {
-      streams: ["Arts", "Science"],
-      interestAreas: [
-        "Analysing",
-        "Research",
-        "Detailing",
-        "Problem Solving"
-      ],
-      careerFields: [
-        "Clinical / Forensic Psychologist",
-        "Journalist",
-        "Psychotherapist",
-        "ABA Therapist",
-        "Policy / Research Analyst",
-        "Police",
-        "Lawyer"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology",
-        "B.Sc. B.Ed.",
-        "LLB"
-      ]
-    },
-    "Verbal-Investigative-Enterprising": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Communication",
-        "Business",
-        "Management",
-        "Research"
-      ],
-      careerFields: [
-        "Corporate Trainer",
-        "Market Researcher",
-        "Business Consultant",
-        "Public Relation Officer",
-        "Lawyer",
-        "Sales Manager"
-      ],
-      recommendedCourses: [
-        "B.Com. in International Business",
-        "B.Com. in Business Management"
-      ]
-    },
-    "Verbal-Investigative-Conventional": {
-      streams: ["Commerce", "Science"],
-      interestAreas: [
-        "Data Management",
-        "Technology",
-        "Analysis",
-        "Scientific"
-      ],
-      careerFields: [
-        "Research Editor",
-        "Data Analyst",
-        "Data Report Writer",
-        "Lawyer",
-        "News Reporter",
-        "Intelligence Officer"
-      ],
-      recommendedCourses: [
-        "B.Com. in International Business",
-        "B.Sc. in Data Science (Maths Required)"
-      ]
-    },
-    "Verbal-Artistic-Social": {
-      streams: ["Arts"],
-      interestAreas: [
-        "Aesthetic",
-        "Creative thinking",
-        "Social relationship",
-        "Communication"
-      ],
-      careerFields: [
-        "Drama Teacher",
-        "Comedian",
-        "Art / Drama / Music Therapist",
-        "Content Creator",
-        "Radio Jockey / Podcast Creator",
-        "News Anchor"
-      ],
-      recommendedCourses: [
-        "B.A. B.Ed.",
-        "B.A. English / Psychology"
-      ]
-    },
-    "Verbal-Artistic-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Marketing",
-        "Entrepreneurship",
-        "Technology",
-        "Aesthetics"
-      ],
-      careerFields: [
-        "Advertising Copywriter",
-        "Film Director",
-        "Brand Strategist",
-        "Social Media Influencer / Youtuber",
-        "Event Manager",
-        "Public Relation Officer"
-      ],
-      recommendedCourses: [
-        "BA", 
-        "B.Com."
-      ]
-    },
-    "Verbal-Artistic-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Aesthetics",
-        "Organizing",
-        "Management",
-        "Planning"
-      ],
-      careerFields: [
-        "Editor",
-        "Graphic Designer",
-        "Social Media Manager",
-        "Marketing Manager",
-        "Librarian"
-      ],
-      recommendedCourses: [
-        "B.A. B.Ed.",
-        "B.Com."
-      ]
-    },
-    "Verbal-Social-Enterprising": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Communication",
-        "Client Interaction",
-        "Management",
-        "Creative Solutions"
-      ],
-      careerFields: [
-        "Psychologist",
-        "Public Relations Specialist",
-        "Event / HR Manager",
-        "Wedding Planner",
-        "Business Development Manager",
-        "Hotel Management"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology",
-        "B.Com. Business Management"
-      ]
-    },
-    "Verbal-Social-Conventional": {
-      streams: ["Arts", "Commerce"],
-      interestAreas: [
-        "Communication",
-        "Planning",
-        "Organization",
-        "Management"
-      ],
-      careerFields: [
-        "School Counselor",
-        "HR Manager",
-        "Event Manager",
-        "Front Desk Executive",
-        "Trainer",
-        "Developmental Psychologist",
-        "Hotel Management"
-      ],
-      recommendedCourses: [
-        "B.A. Psychology / English",
-        "B.Com. Regular"
-      ]
-    },
-    "Verbal-Enterprising-Conventional": {
-      streams: ["Commerce"],
-      interestAreas: [
-        "Data Management",
-        "Business",
-        "Problem Solving",
-        "Communication"
-      ],
-      careerFields: [
-        "Banking Executive (Maths Required)",
-        "Insurance Advisor",
-        "Real Estate Agent",
-        "Retailer",
-        "Business Management Officer",
-        "Trainer",
-        "Company Secretary"
-      ],
-      recommendedCourses: [
-        "B.Com Regular",
-        "B.Com. International Business"
-      ]
-    }
-  };
+  "Numerical-Realistic-Investigative": {
+    streams: ["Science", "Commerce (Maths required)"],
+    interestAreas: [
+      "Scientific",
+      "Money Analysis",
+      "Research",
+      "Computer networks",
+    ],
+    careerFields: [
+      "Computer / Data Scientist",
+      "Mechanical /  Electrical / Civil Engineer",
+      "Chemist (B.Sc in Chemistry)",
+      "Financial Analyst",
+      "Accountant",
+    ],
+    recommendedCourses: ["B.Sc in Chemistry", "B.Sc. in AI & ML"],
+  },
+  "Numerical-Realistic-Artistic": {
+    streams: ["Science (Maths required)"],
+    interestAreas: ["Data management", "Aesthetics", "Machines"],
+    careerFields: [
+      "Architectural Drafter",
+      "Animator",
+      "Game developer",
+      "Industrial Designer",
+      "Data Analyst",
+      "Product Designer",
+    ],
+    recommendedCourses: [
+      "B.Com. / B.Sc. in Computer Application (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+    ],
+  },
+  "Numerical-Realistic-Social": {
+    streams: ["Science", "Commerce"],
+    interestAreas: ["Community service", "Helping", "Working outdoors"],
+    careerFields: [
+      "Financial Advisor (Maths required)",
+      "Healthcare Consultant",
+      "Healthcare Analyst",
+      "Occupational Therapy Assistant",
+      "Maths / Statistic Professor (Maths Required)",
+    ],
+    recommendedCourses: [
+      "B.Com. B.Ed. / B.Sc B.Ed",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Numerical-Realistic-Enterprising": {
+    streams: ["Commerce", "Science (Maths required)"],
+    interestAreas: ["Business management", "Entrepreneurship", "Investing"],
+    careerFields: [
+      "Construction Project Manager",
+      "Accountant",
+      "Investment Banker",
+      "Business Analyst",
+      "Marketing Manager",
+      "Statistician",
+    ],
+    recommendedCourses: ["B.Sc. in Statistics", "B.Com. Regular"],
+  },
+  "Numerical-Realistic-Conventional": {
+    streams: ["Commerce", "Science (Maths required)"],
+    interestAreas: ["Data management", "Accounting", "Organization"],
+    careerFields: [
+      "Quality Control Analyst",
+      "Accountant",
+      "Auditor",
+      "Financial Analyst",
+      "Actuarial Scientist",
+    ],
+    recommendedCourses: ["B.Com. Regular", "B.Sc. in Statistics"],
+  },
+  "Numerical-Investigative-Artistic": {
+    streams: ["Science", "Commerce (Maths required)"],
+    interestAreas: ["Mathematics", "Research", "Self-expression"],
+    careerFields: [
+      "Data Visualization Specialist",
+      "Financial Analyst (Creative Industries)",
+      "Game Designer",
+      "Scientific Animator",
+      "Info graphic Designer",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Data Science / Computer Science",
+      "B.Com. in Computer Application",
+    ],
+  },
+  "Numerical-Investigative-Social": {
+    streams: ["Science", "Arts"],
+    interestAreas: ["Analysing", "Helping", "Research", "Communication"],
+    careerFields: [
+      "Epidemiologist",
+      "Education Researcher",
+      "Health Policy Analyst",
+      "Industrial / Forensic Psychologist",
+    ],
+    recommendedCourses: [
+      "B.A. Psychology",
+      "B.Sc. in Cyber Security (Maths Required)",
+    ],
+  },
+  "Numerical-Investigative-Enterprising": {
+    streams: ["Commerce", "Science (Maths required)"],
+    interestAreas: ["Mathematics", "Research", "Business", "Entrepreneurship"],
+    careerFields: [
+      "Investment Banker",
+      "Market Research Analyst",
+      "Actuary",
+      "Chartered Financial Analyst",
+      "Data / Computer Scientist",
+    ],
+    recommendedCourses: [
+      "B.Com. Regular / Business Management",
+      "B.Sc. in Data Science",
+    ],
+  },
+  "Numerical-Investigative-Conventional": {
+    streams: ["Commerce", "Science (Maths required)"],
+    interestAreas: ["Mathematics", "Data management", "Research", "Accounting"],
+    careerFields: [
+      "Statistician",
+      "Chartered Accountant",
+      "Budget Analyst",
+      "Aviation Inspector",
+      "CFA",
+      "Pharmacist",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Math & Chemistry",
+      "B.Sc. in Statistics",
+      "B.Com. Regular",
+    ],
+  },
+  "Numerical-Artistic-Social": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Computer Programming",
+      "Communication",
+      "Helping",
+      "Culture",
+    ],
+    careerFields: [
+      "Art Program Coordinator",
+      "Event Planner (Budget Focus)",
+      "Content creation",
+      "UI/UX Designer",
+      "Social Media Analyst",
+    ],
+    recommendedCourses: [
+      "B.Com Regular",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Numerical-Artistic-Enterprising": {
+    streams: ["Commerce", "Arts"],
+    interestAreas: [
+      "Mathematics",
+      "Business",
+      "Self-expression",
+      "Entrepreneurship",
+    ],
+    careerFields: [
+      "Film Producer",
+      "Advertising Account Manager",
+      "Data Visualization (Maths required)",
+      "Creative Marketing Manager",
+      "Product Manager",
+    ],
+    recommendedCourses: [
+      "B.A. in any Subject",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Numerical-Artistic-Conventional": {
+    streams: ["Commerce", "Arts", "Science"],
+    interestAreas: [
+      "Mathematics",
+      "Data management",
+      "Aesthetics",
+      "Art appreciation",
+    ],
+    careerFields: [
+      "Creative Project Accountant (Maths required)",
+      "Graphic / Product / Interior Designer",
+      "Budget Analyst (Maths required)",
+      "Animator",
+      "Landscape Architecture",
+    ],
+    recommendedCourses: ["B.Com. B.Ed.", "B.Sc. B.Ed."],
+  },
+  "Numerical-Social-Enterprising": {
+    streams: ["Commerce", "Arts"],
+    interestAreas: ["Business", "Helping", "Leadership", "Well Being"],
+    careerFields: [
+      "NGO Director",
+      "Healthcare Administrator",
+      "Business Manager",
+      "Financial Adviser",
+      "Economist",
+      "Computer Scientist",
+    ],
+    recommendedCourses: ["B.Com. in Business Management", "B.A. in Economics"],
+  },
+  "Numerical-Social-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Mathematics",
+      "Data management",
+      "Helping",
+      "Organization",
+    ],
+    careerFields: [
+      "Human Resources Analyst",
+      "Policy Analyst",
+      "Banker",
+      "Business Manager / Administrative",
+      "Accountant",
+    ],
+    recommendedCourses: ["B.Com. in Business Management", "B.Com. Regular"],
+  },
+  "Numerical-Enterprising-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: ["Mathematics", "Business", "Accounting", "Investing"],
+    careerFields: [
+      "Accountant",
+      "Banking Executive",
+      "Financial Manager",
+      "Management Consultant",
+      "Business Consultant",
+      "Project Manager",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. Regular",
+      "B.Com. in International Business",
+    ],
+  },
+  "Spatial-Realistic-Investigative": {
+    streams: ["Science (Maths required)"],
+    interestAreas: ["Computer networks", "Science", "Research", "Mathematics"],
+    careerFields: [
+      "Civil / Mechanical Engineer",
+      "Geospatial Analyst",
+      "CAD Technician",
+      "Robotics Engineer",
+      "Mechanical Designer",
+    ],
+    recommendedCourses: ["B.Sc. in Computer Science", "B.Sc. in Botany & EVS"],
+  },
+  "Spatial-Realistic-Artistic": {
+    streams: ["Science", "Arts"],
+    interestAreas: [
+      "Machines",
+      "Self-expression",
+      "Computer networks",
+      "Designing",
+      "Hospitality",
+    ],
+    careerFields: [
+      "Architect",
+      "Industrial Designer",
+      "3D Animator",
+      "Game Designer",
+      "Interior / Fashion / Jewelry Designer",
+      "Fine Arts",
+      "Culinary Chef",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+    ],
+  },
+  "Spatial-Realistic-Social": {
+    streams: ["Science", "Arts"],
+    interestAreas: ["Working outdoors", "Helping", "Teamwork", "Designing"],
+    careerFields: [
+      "Occupational Therapist",
+      "Sports Coach",
+      "AutoCAD Designer",
+      "Community Architect",
+      "Real Estate Development",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+    ],
+  },
+  "Spatial-Realistic-Enterprising": {
+    streams: ["Commerce", "Science"],
+    interestAreas: ["Machines", "Business", "Leadership", "Entrepreneurship"],
+    careerFields: [
+      "Construction Manager",
+      "Real Estate Developer",
+      "Product Design Entrepreneur",
+      "Event Manager",
+      "Interior / Jewelry Designer",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Spatial-Realistic-Conventional": {
+    streams: ["Science", "Commerce (Maths required)"],
+    interestAreas: ["Designing", "Practical", "Analysis", "Detailing"],
+    careerFields: [
+      "Architectural Draftsman",
+      "Architecture",
+      "Surveyor",
+      "Technical Illustrator",
+      "Computer-Aided Design (CAD) Specialist",
+    ],
+    recommendedCourses: ["B.Sc. in NS & NT", "B.Sc. in Information Technology"],
+  },
+  "Spatial-Investigative-Artistic": {
+    streams: ["Science", "Arts"],
+    interestAreas: [
+      "Computer networks",
+      "Aesthetics",
+      "Detailing",
+      "Visualization",
+    ],
+    careerFields: [
+      "UX/UI Designer",
+      "Architecture",
+      "Game Developer",
+      "Animation Designer",
+      "Forensic Sketch Artist",
+      "Fine Arts",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+    ],
+  },
+  "Spatial-Investigative-Social": {
+    streams: ["Science", "Arts"],
+    interestAreas: ["Research", "Science", "Helping", "Teamwork"],
+    careerFields: [
+      "Speech & Language Therapist",
+      "Medical Imaging Technologist (MRI/CT)",
+      "Neuropsychologist",
+      "Architecture",
+      "Graphic / Web Designer",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "BA in Psychology",
+    ],
+  },
+  "Spatial-Investigative-Enterprising": {
+    streams: ["Science", "Arts"],
+    interestAreas: ["Research", "Business", "Entrepreneurship", "Leadership"],
+    careerFields: [
+      "Forensic Scientist",
+      "Data Scientist / AI",
+      "Designer Entrepreneur",
+      "Drone Mapping Specialist",
+      "Game Developer",
+    ],
+    recommendedCourses: [
+      "B.Sc. in AI & ML (Maths Required)",
+      "B.Sc. in Computer Application (Maths Required)",
+    ],
+  },
+  "Spatial-Investigative-Conventional": {
+    streams: ["Science", "Commerce (Maths required)"],
+    interestAreas: [
+      "Data management",
+      "Research",
+      "Dynamic space management",
+      "Organization",
+    ],
+    careerFields: [
+      "Data Analyst",
+      "Graphic / Interior Designer",
+      "Statistician for Spatial Studies",
+      "Computer Scientist",
+      "Software Engineer",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Statistics",
+      "B.Sc. in Cyber & Digital Science",
+      "B.Sc. in Cyber Security (Maths Required)",
+    ],
+  },
+  "Spatial-Artistic-Social": {
+    streams: ["Arts", "Science"],
+    interestAreas: [
+      "Self-expression",
+      "Communication",
+      "Helping",
+      "Visual Art",
+    ],
+    careerFields: [
+      "Art Therapist",
+      "Set Designer (Theater)",
+      "Interior / Jewelry / Fashion Designer",
+      "Visual Storyteller",
+      "Photographer",
+      "Architecture",
+      "Wedding Planner",
+    ],
+    recommendedCourses: [
+      "BA in Psychology",
+      "B.Sc. in Computer Application (Maths Required)",
+    ],
+  },
+  "Spatial-Artistic-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Visual Art", "Aesthetics", "Business", "Creativity"],
+    careerFields: [
+      "Film Art Director",
+      "Fashion / Graphic Designer",
+      "UX Designer",
+      "Photographer",
+      "Wedding Planner",
+      "Architecture",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Spatial-Artistic-Conventional": {
+    streams: ["Arts", "Commerce", "Science"],
+    interestAreas: [
+      "Data management",
+      "Organization",
+      "Aesthetics",
+      "Visualization",
+    ],
+    careerFields: [
+      "Graphic / Textile Designer",
+      "Visual Merchandiser",
+      "Interior Designer",
+      "Architect",
+      "Photographer",
+      "Data Scientist (Maths Required)",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Data Science (Maths Required)",
+      "BA in any subject",
+    ],
+  },
+  "Spatial-Social-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Client Interaction and management",
+      "Leadership",
+      "Teamwork",
+      "Business",
+    ],
+    careerFields: [
+      "Event / Fashion / Jewelry Designer",
+      "Wedding Planner",
+      "Design Consultant",
+      "Photographer",
+      "Graphic Designer",
+    ],
+    recommendedCourses: ["B.Com. - Regular", "B.Com. in Business Management"],
+  },
+  "Spatial-Social-Conventional": {
+    streams: ["Arts", "Science"],
+    interestAreas: ["Helping", "Organization", "Designing", "Management"],
+    careerFields: [
+      "School Admin",
+      "Library Assistant",
+      "Hotel Manager",
+      "Civil Engineer (Maths Required)",
+      "Architect (Maths Required)",
+      "Fashion / Jewelry Designer",
+    ],
+    recommendedCourses: ["B.Com Regular", "BA in any subject"],
+  },
+  "Spatial-Enterprising-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Business",
+      "Communication Organization and Management",
+      "Problem Solving",
+    ],
+    careerFields: [
+      "Operations Manager (Design Firm)",
+      "Project Coordinator (Architecture)",
+      "Business Analyst (Spatial Tech)",
+      "Design Project Manager",
+      "Printing Business Owner",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Logical-Realistic-Investigative": {
+    streams: ["Science (Maths Required)"],
+    interestAreas: ["Mechanical", "Research", "Technology", "Innovation"],
+    careerFields: [
+      "Mechanical Engineer",
+      "Data Scientist",
+      "Robotics Technician",
+      "Software Developer",
+      "Lab Technician",
+      "Pharmacist",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+      "B.Sc. in Data Science (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+    ],
+  },
+  "Logical-Realistic-Artistic": {
+    streams: ["Science"],
+    interestAreas: ["Programming", "Aesthetics", "Technology", "Designing"],
+    careerFields: [
+      "Game / Furniture / Graphic Designer",
+      "UX Designer",
+      "Audio Engineer",
+      "Animation Programmer",
+      "Digital Artist",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Science (Maths Required)",
+      "B.Sc. in Computer Application (Maths Required)",
+    ],
+  },
+  "Logical-Realistic-Social": {
+    streams: ["Science", "Arts"],
+    interestAreas: [
+      "Scientific",
+      "Practical applications",
+      "Machinery",
+      "Self Expression",
+    ],
+    careerFields: [
+      "Occupational / Speech Therapist",
+      "Physical Therapist",
+      "Lawyer",
+      "Physiotherapist",
+    ],
+    recommendedCourses: ["BA in Psychology"],
+  },
+  "Logical-Realistic-Enterprising": {
+    streams: ["Commerce", "Science (Maths Required)"],
+    interestAreas: [
+      "Business management",
+      "Analysis",
+      "Technology",
+      "Innovation",
+    ],
+    careerFields: [
+      "Business Analyst",
+      "Entrepreneur",
+      "Software Developer",
+      "Computer Scientist (AI)",
+      "Entrepreneur",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Science (Maths Required)",
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Logical-Realistic-Conventional": {
+    streams: ["Science", "Commerce"],
+    interestAreas: ["Data Management", "Analysing", "Organising", "Investing"],
+    careerFields: [
+      "Auditor",
+      "Accountant",
+      "Financial / Cybersecurity Analyst",
+      "Computer Scientist (Maths Required)",
+      "Banker",
+      "Business Manager",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Cyber Security (Maths Required)",
+      "B.Sc. in Computer Science (Maths Required)",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Logical-Investigative-Artistic": {
+    streams: ["Science", "Arts"],
+    interestAreas: [
+      "Technology",
+      "Scientific",
+      "Visualization",
+      "Problem Solving",
+    ],
+    careerFields: [
+      "AI Algorithm Designer",
+      "Research-Based Game Developer",
+      "Data Visualization Expert",
+      "Physicists",
+      "Psychologist",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+      "B.Sc. in Data Science (Maths Required)",
+      "BA in Psychology",
+    ],
+  },
+  "Logical-Investigative-Social": {
+    streams: ["Science", "Arts"],
+    interestAreas: ["Research", "Intervention", "Communication", "Execution"],
+    careerFields: [
+      "Clinical / Educational Psychologist",
+      "Behavioral Economist",
+      "College Professor",
+      "Lawyer",
+      "Journalist",
+      "Doctor",
+      "Physiotherapist",
+    ],
+    recommendedCourses: ["B.A. in Psychology", "Integrated BA B.Ed"],
+  },
+  "Logical-Investigative-Enterprising": {
+    streams: ["Commerce", "Science (Maths Required)"],
+    interestAreas: ["Management", "Technology", "Organization", "Business"],
+    careerFields: [
+      "Management Consultant",
+      "Tech Entrepreneur",
+      "Product Manager",
+      "Economist",
+      "Statistician / Data Analyst",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Data Science (Maths Required)",
+      "B.Sc. in Information Technology",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Logical-Investigative-Conventional": {
+    streams: ["Science", "Commerce"],
+    interestAreas: [
+      "Organization",
+      "Analytical Thinking",
+      "Documentation",
+      "Technology",
+    ],
+    careerFields: [
+      "Statistician (Maths Required)",
+      "Criminal Psychologist",
+      "Epidemiologist",
+      "Market Researcher",
+      "Forensic Lab Technician",
+      "Accountant (Maths Required)",
+      "Company Secretary",
+      "Doctor",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Statistics",
+      "B.Sc. in Maths & Chemistry",
+      "B.Com Regular",
+    ],
+  },
+  "Logical-Artistic-Social": {
+    streams: ["Arts"],
+    interestAreas: [
+      "Storytelling",
+      "Training",
+      "Creative solutions",
+      "Communication",
+    ],
+    careerFields: [
+      "Art / Drama Therapist",
+      "Special Educator",
+      "Museum Curator",
+      "Social Media Manager",
+      "Journalist",
+      "Design Teacher",
+    ],
+    recommendedCourses: ["B.A. in English", "B.A. in Psychology"],
+  },
+  "Logical-Artistic-Enterprising": {
+    streams: ["Science", "Commerce"],
+    interestAreas: ["Marketing", "Designing", "Management", "Technology"],
+    careerFields: [
+      "Software Engineer (Maths Required)",
+      "Interior / Animation Designer",
+      "Data Science Analyst (Maths Required)",
+      "Content Marketing Manager",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Information Technology",
+      "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+      "B.Sc. in Data Science (Maths Required)",
+    ],
+  },
+  "Logical-Artistic-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Spatial Accommodation",
+      "Aesthetics",
+      "Analysis",
+      "Creative thinking",
+    ],
+    careerFields: [
+      "UX Designer",
+      "Web Designer",
+      "Graphic / Industrial Designer",
+      "Digital Media Manager",
+      "Event Manager",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Logical-Social-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Communication", "Training", "Business", "Analytics"],
+    careerFields: [
+      "Public Relation Officer",
+      "Political Analyst",
+      "Educational Consultant",
+      "Sales Manager",
+      "Corporate Trainer",
+      "Healthcare Administrator",
+    ],
+    recommendedCourses: [
+      "B.Com. - Regular",
+      "Integrated BA B.Ed",
+      "Integrated B.Com B.Ed",
+    ],
+  },
+  "Logical-Social-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Guidance", "Training", "Organizing", "Communication"],
+    careerFields: [
+      "School Counsellor",
+      "HR Manager",
+      "Training Programme Coordinator",
+      "Rehabilitation Psychologist",
+      "Office Administrator",
+    ],
+    recommendedCourses: [
+      "B.A. in Psychology",
+      "B.Com. in Business Management",
+      "Integrated BA B.Ed",
+    ],
+  },
+  "Logical-Enterprising-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Business Management",
+      "Investing",
+      "Data Management",
+      "Problem Solving",
+    ],
+    careerFields: [
+      "Business Analyst",
+      "Operations / Project Manager",
+      "Management Consultant",
+      "Banking Officer",
+      "CFA/ Chartered Accountant",
+      "Company Secretary",
+    ],
+    recommendedCourses: ["B.Com. - Regular", "B.Com. in Business Management"],
+  },
+  "Clerical-Realistic-Investigative": {
+    streams: ["Science", "Commerce"],
+    interestAreas: [
+      "Research",
+      "Data Management",
+      "Documentation",
+      "Organizing",
+    ],
+    careerFields: [
+      "Data Entry for R&D (Maths Required)",
+      "Field Researcher (Maths Required)",
+      "Lab Technician (Maths Required)",
+      "Inventory Manager",
+      "Quality Control Inspector",
+    ],
+    recommendedCourses: [
+      "B.Sc. in Computer Application (Maths Required)",
+      "B.Sc. in Statistics",
+      "B.Sc. in Data Science (Maths Required)",
+    ],
+  },
+  "Clerical-Realistic-Artistic": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Visual arts",
+      "Designing",
+      "Management",
+      "Creative thinking",
+    ],
+    careerFields: [
+      "Photographer",
+      "Art Gallery Administrator",
+      "Design Project Coordinator",
+      "Graphic / Interior Design Assistant",
+      "Craft-based Businessman",
+    ],
+    recommendedCourses: ["BA in any subject", "B.Com. in Business Management"],
+  },
+  "Clerical-Realistic-Social": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Communication",
+      "Organization",
+      "Training",
+      "Social Interaction",
+    ],
+    careerFields: [
+      "Front Desk Executive",
+      "Office Assistant",
+      "Rehabilitation Psychologist",
+      "Special Educator",
+      "Social Worker",
+    ],
+    recommendedCourses: ["BA in Psychology", "B.Com Regular"],
+  },
+  "Clerical-Realistic-Enterprising": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Working Outdoors",
+      "Business",
+      "Data Management",
+      "Organization",
+    ],
+    careerFields: [
+      "Real Estate Developer",
+      "Logistics Administrator",
+      "Sales Support Assistant",
+      "Accountant",
+      "Office Assistant",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Clerical-Realistic-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Organization",
+      "Planning",
+      "Back end Management",
+      "Record Keeping",
+    ],
+    careerFields: [
+      "Warehouse Clerk",
+      "Bank Clerk",
+      "Data Entry Operator",
+      "Office Assistant",
+      "Administrator",
+    ],
+    recommendedCourses: ["B.Com. - Regular", "B.Com. in Business Management"],
+  },
+  "Clerical-Investigative-Artistic": {
+    streams: ["Arts"],
+    interestAreas: ["Literature", "Aesthetic", "Research", "Organization"],
+    careerFields: [
+      "Librarian",
+      "Editor",
+      "Publishing Assistant",
+      "Museum Assistant",
+      "Art Researcher",
+      "Digital Content Curator",
+    ],
+    recommendedCourses: ["B.A. in English", "B.Com. - Regular"],
+  },
+  "Clerical-Investigative-Social": {
+    streams: ["Arts", "Science"],
+    interestAreas: ["Research", "Data Management", "Organization", "Helping"],
+    careerFields: [
+      "School Research Assistant",
+      "Medical Record Manager",
+      "Research Assistant",
+      "NGO Project Clerk",
+      "Administrator",
+    ],
+    recommendedCourses: ["Integrated BA B.Ed", "BA in Psychology"],
+  },
+  "Clerical-Investigative-Enterprising": {
+    streams: ["Commerce"],
+    interestAreas: ["Research", "Analysis", "Business", "Organization"],
+    careerFields: [
+      "Market Research Assistant",
+      "Project Manager",
+      "Sales Data Analyst",
+      "Business Development Assistant",
+    ],
+    recommendedCourses: [
+      "B.Com. in Business Management",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Clerical-Investigative-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: ["Organization", "Planning", "Research", "Data Management"],
+    careerFields: [
+      "Data Entry Specialist",
+      "Research Assistant",
+      "Accountant",
+      "Technical Support Clerk",
+      "Bank Clerk",
+    ],
+    recommendedCourses: [
+      "B.Com. - Regular",
+      "B.Com. in Computer Application (Maths Required)",
+    ],
+  },
+  "Clerical-Artistic-Social": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Aesthetic", "Organization", "Execution", "Communication"],
+    careerFields: [
+      "Art Event Manager",
+      "Social Media Manager",
+      "Gallery Assistant",
+      "Public Relation Officer",
+      "Customer Care Executive",
+    ],
+    recommendedCourses: ["BA in English, Psychology", "B.Com Regular"],
+  },
+  "Clerical-Artistic-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Designing",
+      "Business",
+      "Management",
+      "Client Interaction",
+    ],
+    careerFields: [
+      "Advertising Coordinator",
+      "Event / Wedding Planner Assistant",
+      "Brand / Marketing Assistant",
+      "Interior / Fashion Designer Assistant",
+    ],
+    recommendedCourses: ["B.Com. - Regular", "B.Com. in Business Management"],
+  },
+  "Clerical-Artistic-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Aesthetic", "Communication", "Management", "Organization"],
+    careerFields: [
+      "Publishing Assistant",
+      "Graphic Designer",
+      "Fashion / Interior Designer Assistant",
+      "Admin Worker",
+      "Event Coordinator",
+    ],
+    recommendedCourses: ["B.Com. in Business Management", "B.A in English"],
+  },
+  "Clerical-Social-Enterprising": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Communication",
+      "Organization",
+      "Relationship Management",
+      "Planning",
+    ],
+    careerFields: [
+      "HR Manager",
+      "Sales Manager",
+      "Front Desk Executive",
+      "Training Coordinator",
+      "Office Assistant",
+    ],
+    recommendedCourses: ["B.Com. Business Management", "B.Com Regular"],
+  },
+  "Clerical-Social-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Communication",
+      "Planning",
+      "Data Handling",
+      "Relationship Management",
+    ],
+    careerFields: [
+      "School Office Assistant",
+      "HR Assistant",
+      "Medical Assistant",
+      "Data Entry Clerk",
+      "Front Desk Officer",
+      "Banker",
+    ],
+    recommendedCourses: ["B.Com. Regular", "BA in any subject"],
+  },
+  "Clerical-Enterprising-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: ["Management", "Business", "Planning", "Organization"],
+    careerFields: [
+      "Office / Corporate Administrator",
+      "Business Analyst",
+      "Insurance Executive",
+      "Banking Clerk",
+      "Hotel Management",
+    ],
+    recommendedCourses: ["B.Com. Business Management", "B.Com. Regular"],
+  },
+  "Verbal-Realistic-Investigative": {
+    streams: ["Science", "Arts"],
+    interestAreas: [
+      "Communication",
+      "Creative Solutions",
+      "Practicality",
+      "Research",
+    ],
+    careerFields: [
+      "Creative Writer",
+      "Clinical / Forensic Psychologist",
+      "Health Educator",
+      "Reporter",
+      "Lawyer",
+    ],
+    recommendedCourses: ["B.A. in Psychology", "B.Com. Regular"],
+  },
+  "Verbal-Realistic-Artistic": {
+    streams: ["Arts"],
+    interestAreas: ["Communication", "Execution", "Organization", "Creativity"],
+    careerFields: [
+      "Art /Dance Therapist",
+      "Scriptwriter (Documentaries)",
+      "Voice over artist",
+      "Blog Writer",
+      "Stage Manager",
+      "Content Creator",
+      "Anchor",
+    ],
+    recommendedCourses: ["B.A. in Psychology", "B.A. in English"],
+  },
+  "Verbal-Realistic-Social": {
+    streams: ["Arts", "Science"],
+    interestAreas: [
+      "Communication",
+      "Relationship Management",
+      "Social Welfare",
+      "Training",
+    ],
+    careerFields: [
+      "Speech Therapist",
+      "Vocational Trainer",
+      "Motivational Speaker",
+      "Public Relations Officer",
+      "Counselling Psychologist",
+      "Social Worker",
+    ],
+    recommendedCourses: ["B.A. Psychology", "B.Com. Business Management"],
+  },
+  "Verbal-Realistic-Enterprising": {
+    streams: ["Commerce", "Arts"],
+    interestAreas: [
+      "Working Outdoors",
+      "Management",
+      "Business",
+      "Communication",
+    ],
+    careerFields: [
+      "Sales Representative",
+      "Real Estate Agent",
+      "Business Consultant",
+      "Marketing Manager",
+      "Entrepreneur",
+    ],
+    recommendedCourses: [
+      "B.Com. Business Management",
+      "B.Com. in International Business",
+    ],
+  },
+  "Verbal-Realistic-Conventional": {
+    streams: ["Commerce", "Arts"],
+    interestAreas: [
+      "Organizing",
+      "Relationship Management",
+      "Analyzing",
+      "Communication",
+    ],
+    careerFields: [
+      "Administrative Executive",
+      "Account Manager",
+      "Human Resources Specialist",
+      "Customer Support",
+      "Researcher",
+    ],
+    recommendedCourses: ["B.Com. Regular", "B.A. Psychology"],
+  },
+  "Verbal-Investigative-Artistic": {
+    streams: ["Arts", "Science"],
+    interestAreas: ["Scientific", "Execution", "Planning", "Creative thinking"],
+    careerFields: [
+      "Science Journalist",
+      "Clinical Psychologist",
+      "Researcher",
+      "Academic Writer",
+      "Podcast Creator",
+      "Documentary Filmmaker",
+      "Educational YouTuber",
+    ],
+    recommendedCourses: ["B.A. Psychology", "B.A. English"],
+  },
+  "Verbal-Investigative-Social": {
+    streams: ["Arts", "Science"],
+    interestAreas: ["Analysing", "Research", "Detailing", "Problem Solving"],
+    careerFields: [
+      "Clinical / Forensic Psychologist",
+      "Journalist",
+      "Psychotherapist",
+      "ABA Therapist",
+      "Policy / Research Analyst",
+      "Police",
+      "Lawyer",
+    ],
+    recommendedCourses: ["B.A. Psychology", "B.Sc. B.Ed.", "LLB"],
+  },
+  "Verbal-Investigative-Enterprising": {
+    streams: ["Commerce"],
+    interestAreas: ["Communication", "Business", "Management", "Research"],
+    careerFields: [
+      "Corporate Trainer",
+      "Market Researcher",
+      "Business Consultant",
+      "Public Relation Officer",
+      "Lawyer",
+      "Sales Manager",
+    ],
+    recommendedCourses: [
+      "B.Com. in International Business",
+      "B.Com. in Business Management",
+    ],
+  },
+  "Verbal-Investigative-Conventional": {
+    streams: ["Commerce", "Science"],
+    interestAreas: ["Data Management", "Technology", "Analysis", "Scientific"],
+    careerFields: [
+      "Research Editor",
+      "Data Analyst",
+      "Data Report Writer",
+      "Lawyer",
+      "News Reporter",
+      "Intelligence Officer",
+    ],
+    recommendedCourses: [
+      "B.Com. in International Business",
+      "B.Sc. in Data Science (Maths Required)",
+    ],
+  },
+  "Verbal-Artistic-Social": {
+    streams: ["Arts"],
+    interestAreas: [
+      "Aesthetic",
+      "Creative thinking",
+      "Social relationship",
+      "Communication",
+    ],
+    careerFields: [
+      "Drama Teacher",
+      "Comedian",
+      "Art / Drama / Music Therapist",
+      "Content Creator",
+      "Radio Jockey / Podcast Creator",
+      "News Anchor",
+    ],
+    recommendedCourses: ["B.A. B.Ed.", "B.A. English / Psychology"],
+  },
+  "Verbal-Artistic-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Marketing",
+      "Entrepreneurship",
+      "Technology",
+      "Aesthetics",
+    ],
+    careerFields: [
+      "Advertising Copywriter",
+      "Film Director",
+      "Brand Strategist",
+      "Social Media Influencer / Youtuber",
+      "Event Manager",
+      "Public Relation Officer",
+    ],
+    recommendedCourses: ["BA", "B.Com."],
+  },
+  "Verbal-Artistic-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Aesthetics", "Organizing", "Management", "Planning"],
+    careerFields: [
+      "Editor",
+      "Graphic Designer",
+      "Social Media Manager",
+      "Marketing Manager",
+      "Librarian",
+    ],
+    recommendedCourses: ["B.A. B.Ed.", "B.Com."],
+  },
+  "Verbal-Social-Enterprising": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: [
+      "Communication",
+      "Client Interaction",
+      "Management",
+      "Creative Solutions",
+    ],
+    careerFields: [
+      "Psychologist",
+      "Public Relations Specialist",
+      "Event / HR Manager",
+      "Wedding Planner",
+      "Business Development Manager",
+      "Hotel Management",
+    ],
+    recommendedCourses: ["B.A. Psychology", "B.Com. Business Management"],
+  },
+  "Verbal-Social-Conventional": {
+    streams: ["Arts", "Commerce"],
+    interestAreas: ["Communication", "Planning", "Organization", "Management"],
+    careerFields: [
+      "School Counselor",
+      "HR Manager",
+      "Event Manager",
+      "Front Desk Executive",
+      "Trainer",
+      "Developmental Psychologist",
+      "Hotel Management",
+    ],
+    recommendedCourses: ["B.A. Psychology / English", "B.Com. Regular"],
+  },
+  "Verbal-Enterprising-Conventional": {
+    streams: ["Commerce"],
+    interestAreas: [
+      "Data Management",
+      "Business",
+      "Problem Solving",
+      "Communication",
+    ],
+    careerFields: [
+      "Banking Executive (Maths Required)",
+      "Insurance Advisor",
+      "Real Estate Agent",
+      "Retailer",
+      "Business Management Officer",
+      "Trainer",
+      "Company Secretary",
+    ],
+    recommendedCourses: ["B.Com Regular", "B.Com. International Business"],
+  },
+};
 
 // Simple client-side cookie functions
 const getCookie = (name) => {
-  if (typeof window === 'undefined') return null;
-  
+  if (typeof window === "undefined") return null;
+
   try {
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    const match = document.cookie.match(
+      new RegExp("(^| )" + name + "=([^;]+)")
+    );
     if (match) {
       const value = match[2];
       try {
@@ -1589,8 +1285,8 @@ const getCookie = (name) => {
 };
 
 const clearAllCookies = () => {
-  if (typeof window === 'undefined') return;
-  
+  if (typeof window === "undefined") return;
+
   const cookies = document.cookie.split(";");
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i];
@@ -1608,46 +1304,46 @@ export default function TestResults() {
   const [careerRecommendations, setCareerRecommendations] = useState(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [isSavingResults, setIsSavingResults] = useState(false);
-  
+
   const router = useRouter();
   const reportRef = useRef(null);
 
   // Calculate the top 2 personality types from section 1
   const getTopPersonalityTypes = (results) => {
     if (!results) return [];
-    
+
     const sortedTypes = Object.entries(results)
       .sort((a, b) => b[1] - a[1])
       .map(([type, score]) => ({ type, score }));
-    
+
     return sortedTypes.slice(0, 2);
   };
-  
+
   // Calculate the top aptitude from section 2
   const getTopAptitude = (section2Answers) => {
     if (!section2Answers) return "Numerical"; // Default fallback
-    
+
     const categories = {
-      "Verbal": 0,
-      "Spatial": 0,
-      "Numerical": 0,
-      "Clerical": 0,
-      "Logical": 0
+      Verbal: 0,
+      Spatial: 0,
+      Numerical: 0,
+      Clerical: 0,
+      Logical: 0,
     };
-    
+
     // The correct answers for each category
     const correctAnswers = {
-      "Verbal": ["B", "C", "B", "D", "A"],
-      "Spatial": ["D", "D", "C", "A", "D"],
-      "Numerical": ["C", "B", "D", "B", "A"],
-      "Clerical": ["C", "C", "B", "A", "C"],
-      "Logical": ["B", "B", "A", "B", "C"]
+      Verbal: ["B", "C", "B", "D", "A"],
+      Spatial: ["D", "D", "C", "A", "D"],
+      Numerical: ["C", "B", "D", "B", "A"],
+      Clerical: ["C", "C", "B", "A", "C"],
+      Logical: ["B", "B", "A", "B", "C"],
     };
-    
+
     // Count correct answers per category
     Object.entries(section2Answers).forEach(([questionId, answer]) => {
       const qId = parseInt(questionId);
-      
+
       // Verbal Aptitude (Questions 1-5)
       if (qId >= 1 && qId <= 5) {
         if (answer === correctAnswers.Verbal[qId - 1]) {
@@ -1679,97 +1375,103 @@ export default function TestResults() {
         }
       }
     });
-    
+
     // Find the highest scoring category
     let topCategory = null;
     let maxScore = -1;
-    
+
     Object.entries(categories).forEach(([category, score]) => {
       if (score > maxScore) {
         topCategory = category;
         maxScore = score;
       }
     });
-    
+
     return topCategory || "Numerical"; // Default fallback
   };
-  
+
   // Generate career recommendations based on aptitude and personality
   const generateRecommendations = (aptitude, personalityTypes) => {
     if (!aptitude || !personalityTypes || personalityTypes.length < 2) {
       return {
         aptitude: aptitude || "Numerical",
-        personalityTypes: personalityTypes?.map(pt => pt.type) || ["Realistic", "Investigative"],
+        personalityTypes: personalityTypes?.map((pt) => pt.type) || [
+          "Realistic",
+          "Investigative",
+        ],
         streams: ["Science", "Commerce"],
         interestAreas: [
           "Scientific",
           "Analytical",
           "Research-based",
-          "Practical"
+          "Practical",
         ],
         careerFields: [
           "Software Engineer",
           "Data Analyst",
           "Financial Analyst",
           "Business Consultant",
-          "Research Scientist"
+          "Research Scientist",
         ],
         recommendedCourses: [
           "B.Sc. in Computer Science",
           "B.Sc. in Mathematics",
-          "B.Com. with focus on Finance"
-        ]
+          "B.Com. with focus on Finance",
+        ],
       };
     }
-    
+
     const key = `${aptitude}-${personalityTypes[0].type}-${personalityTypes[1].type}`;
     const altKey = `${aptitude}-${personalityTypes[1].type}-${personalityTypes[0].type}`;
-    
+
     // Check if we have a direct match in careerMapping
     if (careerMapping[key]) {
       return {
         ...careerMapping[key],
         aptitude,
-        personalityTypes: [personalityTypes[0].type, personalityTypes[1].type]
+        personalityTypes: [personalityTypes[0].type, personalityTypes[1].type],
       };
     }
-    
+
     // Check if we have a match with reversed personality types
     if (careerMapping[altKey]) {
       return {
         ...careerMapping[altKey],
         aptitude,
-        personalityTypes: [personalityTypes[1].type, personalityTypes[0].type]
+        personalityTypes: [personalityTypes[1].type, personalityTypes[0].type],
       };
     }
-    
+
     // If no exact match, return a default
     return {
       aptitude: aptitude || "Numerical",
-      personalityTypes: personalityTypes?.map(pt => pt.type) || ["Realistic", "Investigative"],
+      personalityTypes: personalityTypes?.map((pt) => pt.type) || [
+        "Realistic",
+        "Investigative",
+      ],
       streams: ["Science", "Commerce"],
       interestAreas: [
         "Scientific",
         "Analytical",
         "Research-based",
-        "Practical"
+        "Practical",
       ],
       careerFields: [
         "Software Engineer",
         "Data Analyst",
         "Financial Analyst",
         "Business Consultant",
-        "Research Scientist"
+        "Research Scientist",
       ],
       recommendedCourses: [
         "B.Sc. in Computer Science",
         "B.Sc. in Mathematics",
-        "B.Com. with focus on Finance"
-      ]
+        "B.Com. with focus on Finance",
+      ],
     };
   };
 
- const handleDownloadPDF = async () => {
+  const handleDownloadPDF = async () => {
   if (!reportRef.current) return;
   
   try {
@@ -1811,7 +1513,7 @@ export default function TestResults() {
     // Find the footer
     const footerElement = reportElement.querySelector('div.bg-green-200');
     
-    // ========================= FIRST PAGE (SAME FOR BOTH) =========================
+    // ========================= FIRST PAGE (MODIFIED FOR iOS) =========================
     // Get elements before the result summary section (for first page)
     const firstPageContent = document.createElement('div');
     firstPageContent.style.width = contentWidth;
@@ -1825,9 +1527,74 @@ export default function TestResults() {
       const children = Array.from(parent.children);
       const resultSummaryIndex = children.indexOf(resultSummaryElement);
       
-      // Clone and append all elements before result summary
-      for (let i = 0; i < resultSummaryIndex; i++) {
-        firstPageContent.appendChild(children[i].cloneNode(true));
+      // For iOS: Create a container for side-by-side layout
+      if (isIOS) {
+        // Clone the first element (typically the header) as is
+        const headerElement = children[0].cloneNode(true);
+        firstPageContent.appendChild(headerElement);
+        
+        // Create a flex container for the personal information
+        const infoContainer = document.createElement('div');
+        infoContainer.style.display = 'flex';
+        infoContainer.style.flexWrap = 'wrap';
+        infoContainer.style.justifyContent = 'space-between';
+        infoContainer.style.padding = '0 12px';
+        
+        // Find all personal info fields (typically from index 1 to ~6)
+        // These would include Name, DOB, Age, Education, Contact, Email
+        const personalInfoSections = [];
+        
+        // Identify personal info sections (typically these are short sections with labels and values)
+        let personalInfoEndIndex = 1; // Start after header
+        for (let i = 1; i < resultSummaryIndex && i < 10; i++) {
+          // Check if this element looks like a personal info field
+          const el = children[i];
+          const text = el.textContent || '';
+          
+          // Check for common personal info fields - we'll create a side-by-side layout for these
+          if (
+            text.includes('Name') || 
+            text.includes('Date of Birth') || 
+            text.includes('Age') || 
+            text.includes('Education') || 
+            text.includes('Contact') || 
+            text.includes('Email') ||
+            text.length < 100 // Short sections are likely personal info
+          ) {
+            personalInfoSections.push(el);
+            personalInfoEndIndex = i;
+          } else {
+            // Found something that's not personal info, stop looking
+            break;
+          }
+        }
+        
+        // Create side-by-side layout for personal info fields
+        personalInfoSections.forEach(section => {
+          const content = section.innerHTML || '';
+          
+          // Create a container for this info field
+          const fieldContainer = document.createElement('div');
+          fieldContainer.style.width = '48%'; // Almost half-width for 2 columns
+          fieldContainer.style.marginBottom = '12px';
+          fieldContainer.innerHTML = content;
+          
+          // Add to the flex container
+          infoContainer.appendChild(fieldContainer);
+        });
+        
+        // Add the flex container to the first page
+        firstPageContent.appendChild(infoContainer);
+        
+        // Add remaining elements after personal info
+        for (let i = personalInfoEndIndex + 1; i < resultSummaryIndex; i++) {
+          firstPageContent.appendChild(children[i].cloneNode(true));
+        }
+      } else {
+        // For Android: Keep the original layout
+        for (let i = 0; i < resultSummaryIndex; i++) {
+          firstPageContent.appendChild(children[i].cloneNode(true));
+        }
       }
     }
     
@@ -2017,7 +1784,7 @@ export default function TestResults() {
     
     // Use an optimized scale based on device
     // For iOS, use a more aggressive scale reduction to ensure content fits properly
-    const renderScale = isIOS ? 1.15 : 1.5;
+    const renderScale = isIOS ? 1.1 : 1.5;
     
     // Generate first page canvas
     const canvas1 = await html2canvas(firstPageContent, {
@@ -2214,8 +1981,8 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
       p, h1, h2, h3, h4, h5, h6 {
         width: auto !important;
         font-size: 90% !important;
-        margin-top: 8px !important;
-        margin-bottom: 8px !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
       }
       div {
         page-break-inside: avoid;
@@ -2223,20 +1990,32 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         padding-bottom: 2px !important;
       }
       .p-6, .sm\\:p-8 {
-        padding: 12px !important;
+        padding: 8px !important;
       }
       .mb-6 {
-        margin-bottom: 12px !important;
-      }
-      .mb-4 {
         margin-bottom: 8px !important;
       }
-      .mb-2 {
+      .mb-4 {
         margin-bottom: 4px !important;
       }
-      /* Ensure text doesn't get too close to page edges */
+      .mb-2 {
+        margin-bottom: 2px !important;
+      }
+      /* Reduce vertical spacing */
       [class*="border-b"] {
-        padding-bottom: 6px !important;
+        padding-bottom: 4px !important;
+        margin-bottom: 4px !important;
+        border-width: 1px !important;
+      }
+      /* Make border-b lighter to save ink but still be visible */
+      .border-b, .border-gray-200 {
+        border-color: #eee !important;
+      }
+      /* Optimize aptitude and personality explanation sections */
+      div.p-6.sm\\:p-8.border-b.border-gray-200 p {
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        line-height: 1.3 !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
@@ -2249,19 +2028,24 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
   };
 
   // Save results to database
-  const saveResultsToDatabase = async (userId, section1Results, section2Results, aptitudeSummary) => {
+  const saveResultsToDatabase = async (
+    userId,
+    section1Results,
+    section2Results,
+    aptitudeSummary
+  ) => {
     if (!userId) return false;
-    
+
     try {
       setIsSavingResults(true);
-      
+
       const result = await updateTestResults({
         userId,
         section1Results,
         section2Results,
-        aptitudeSummary
+        aptitudeSummary,
       });
-      
+
       return result.success;
     } catch (error) {
       console.error("Error saving results to database:", error);
@@ -2274,63 +2058,87 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
   useEffect(() => {
     const loadResults = async () => {
       try {
-        if (typeof window === 'undefined') return;
-        
-       // Get user info from cookies
-const userInfoCookie = getCookie("user_info");
-const userId = getCookie("user_id");
-const formDataCookie = getCookie("form_data");
+        if (typeof window === "undefined") return;
 
-// Get section 1 results (personality)
-const s1Results = getCookie("section1_results");
+        // Get user info from cookies
+        const userInfoCookie = getCookie("user_info");
+        const userId = getCookie("user_id");
+        const formDataCookie = getCookie("form_data");
 
-// Get section 2 results (answers from aptitude test)
-const s2AnswersCookie = getCookie("section2_answers");
+        // Get section 1 results (personality)
+        const s1Results = getCookie("section1_results");
 
-// If missing essential data, go back to test
-if (!userInfoCookie || !s1Results) {
-  router.push("/personality-test");
-  return;
-}
+        // Get section 2 results (answers from aptitude test)
+        const s2AnswersCookie = getCookie("section2_answers");
 
-// Get individual cookie values for each field to ensure we get all user data
-const userFullNameCookie = document.cookie.match(new RegExp('(^| )user_full_name=([^;]+)'));
-const userDobCookie = document.cookie.match(new RegExp('(^| )user_dob=([^;]+)'));
-const userAgeCookie = document.cookie.match(new RegExp('(^| )user_age=([^;]+)'));
-const userEducationCookie = document.cookie.match(new RegExp('(^| )user_education=([^;]+)'));
-const userContactCookie = document.cookie.match(new RegExp('(^| )user_contact=([^;]+)'));
-const userEmailCookie = document.cookie.match(new RegExp('(^| )user_email=([^;]+)'));
+        // If missing essential data, go back to test
+        if (!userInfoCookie || !s1Results) {
+          router.push("/personality-test");
+          return;
+        }
 
-// Process user data
-const user = {
-  id: userId,
-  name: userFullNameCookie ? decodeURIComponent(userFullNameCookie[2]) : (userInfoCookie.name || "Test Taker"),
-  email: userEmailCookie ? decodeURIComponent(userEmailCookie[2]) : (userInfoCookie.email || "email@example.com"),
-  dob: userDobCookie ? decodeURIComponent(userDobCookie[2]) : (formDataCookie?.dob || "01/01/2000"),
-  age: userAgeCookie ? decodeURIComponent(userAgeCookie[2]) : (formDataCookie?.age || "25"),
-  education: userEducationCookie ? decodeURIComponent(userEducationCookie[2]) : (formDataCookie?.std || "12th Science"),
-  contact: userContactCookie ? decodeURIComponent(userContactCookie[2]) : (formDataCookie?.contact || "+91 XXXXXXXXXX")
-};
+        // Get individual cookie values for each field to ensure we get all user data
+        const userFullNameCookie = document.cookie.match(
+          new RegExp("(^| )user_full_name=([^;]+)")
+        );
+        const userDobCookie = document.cookie.match(
+          new RegExp("(^| )user_dob=([^;]+)")
+        );
+        const userAgeCookie = document.cookie.match(
+          new RegExp("(^| )user_age=([^;]+)")
+        );
+        const userEducationCookie = document.cookie.match(
+          new RegExp("(^| )user_education=([^;]+)")
+        );
+        const userContactCookie = document.cookie.match(
+          new RegExp("(^| )user_contact=([^;]+)")
+        );
+        const userEmailCookie = document.cookie.match(
+          new RegExp("(^| )user_email=([^;]+)")
+        );
 
-console.log("User data loaded:", user); // For debugging
+        // Process user data
+        const user = {
+          id: userId,
+          name: userFullNameCookie
+            ? decodeURIComponent(userFullNameCookie[2])
+            : userInfoCookie.name || "Test Taker",
+          email: userEmailCookie
+            ? decodeURIComponent(userEmailCookie[2])
+            : userInfoCookie.email || "email@example.com",
+          dob: userDobCookie
+            ? decodeURIComponent(userDobCookie[2])
+            : formDataCookie?.dob || "01/01/2000",
+          age: userAgeCookie
+            ? decodeURIComponent(userAgeCookie[2])
+            : formDataCookie?.age || "25",
+          education: userEducationCookie
+            ? decodeURIComponent(userEducationCookie[2])
+            : formDataCookie?.std || "12th Science",
+          contact: userContactCookie
+            ? decodeURIComponent(userContactCookie[2])
+            : formDataCookie?.contact || "+91 XXXXXXXXXX",
+        };
 
-setUserData(user);
+        console.log("User data loaded:", user); // For debugging
+
+        setUserData(user);
         setSection1Results(s1Results);
-        
+
         // Get top personality types from section 1
         const topPersonalityTypes = getTopPersonalityTypes(s1Results);
-        
+
         // Get top aptitude from section 2
         const topAptitude = getTopAptitude(s2AnswersCookie);
-        
+
         // Generate career recommendations
         const recommendations = generateRecommendations(
           topAptitude,
           topPersonalityTypes
         );
-        
+
         setCareerRecommendations(recommendations);
-        
+
         // Save results to database
         if (userId) {
           await saveResultsToDatabase(
@@ -2351,26 +2159,26 @@ setUserData(user);
             "Scientific",
             "Analytical",
             "Research-based",
-            "Practical"
+            "Practical",
           ],
           careerFields: [
             "Software Engineer",
             "Data Analyst",
-            "Financial Analyst", 
+            "Financial Analyst",
             "Business Consultant",
-            "Research Scientist"
+            "Research Scientist",
           ],
           recommendedCourses: [
             "B.Sc. in Computer Science",
             "B.Sc. in Mathematics",
-            "B.Com. with focus on Finance"
-          ]
+            "B.Com. with focus on Finance",
+          ],
         });
       } finally {
         setLoading(false);
       }
     };
-    
+
     loadResults();
   }, [router]);
 
@@ -2417,7 +2225,7 @@ setUserData(user);
               <RefreshCcw className="h-4 w-4 mr-2" />
               Visit Our Website
             </a>
-             <button
+            <button
               onClick={handleTakeNewTest}
               className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
             >
@@ -2460,19 +2268,20 @@ setUserData(user);
                   </p>
                 </div>
                 <div className="mb-4">
-               <p className="text-lg font-bold text-gray-500">
-  Date of Birth
-</p>
-<p className="text-lg font-bold text-[#ec7063]">
-  {userData?.dob ? 
-    new Date(userData.dob).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).replace(/\//g, '-') :
-    "01-01-2000"
-  }
-</p>
+                  <p className="text-lg font-bold text-gray-500">
+                    Date of Birth
+                  </p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.dob
+                      ? new Date(userData.dob)
+                          .toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          })
+                          .replace(/\//g, "-")
+                      : "01-01-2000"}
+                  </p>
                 </div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Age</p>
@@ -2592,44 +2401,62 @@ setUserData(user);
             </div>
 
             <div className="mb-2">
-  <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
-  <div className="flex flex-row space-x-4">
-    {/* Left Column */}
-    <div className="flex-1">
-      <ul className="list-disc pl-6 space-y-1">
-        {careerRecommendations?.interestAreas
-          ?.slice(0, Math.ceil((careerRecommendations.interestAreas.length)/2))
-          ?.map((interest, index) => (
-            <li key={index} className="text-[#145a32] font-medium">
-              {interest}
-            </li>
-          )) || (
-            <>
-              <li className="text-gray-700">Scientific</li>
-              <li className="text-gray-700">Analytical</li>
-            </>
-          )}
-      </ul>
-    </div>
-    {/* Right Column */}
-    <div className="flex-1">
-      <ul className="list-disc pl-6 space-y-1">
-        {careerRecommendations?.interestAreas
-          ?.slice(Math.ceil((careerRecommendations.interestAreas.length)/2))
-          ?.map((interest, index) => (
-            <li key={index + Math.ceil((careerRecommendations?.interestAreas?.length || 0)/2)} className="text-[#145a32] font-medium">
-              {interest}
-            </li>
-          )) || (
-            <>
-              <li className="text-gray-700">Research-based</li>
-              <li className="text-gray-700">Practical</li>
-            </>
-          )}
-      </ul>
-    </div>
-  </div>
-</div>
+              <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
+              <div className="flex flex-row space-x-4">
+                {/* Left Column */}
+                <div className="flex-1">
+                  <ul className="list-disc pl-6 space-y-1">
+                    {careerRecommendations?.interestAreas
+                      ?.slice(
+                        0,
+                        Math.ceil(
+                          careerRecommendations.interestAreas.length / 2
+                        )
+                      )
+                      ?.map((interest, index) => (
+                        <li key={index} className="text-[#145a32] font-medium">
+                          {interest}
+                        </li>
+                      )) || (
+                      <>
+                        <li className="text-gray-700">Scientific</li>
+                        <li className="text-gray-700">Analytical</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+                {/* Right Column */}
+                <div className="flex-1">
+                  <ul className="list-disc pl-6 space-y-1">
+                    {careerRecommendations?.interestAreas
+                      ?.slice(
+                        Math.ceil(
+                          careerRecommendations.interestAreas.length / 2
+                        )
+                      )
+                      ?.map((interest, index) => (
+                        <li
+                          key={
+                            index +
+                            Math.ceil(
+                              (careerRecommendations?.interestAreas?.length ||
+                                0) / 2
+                            )
+                          }
+                          className="text-[#145a32] font-medium"
+                        >
+                          {interest}
+                        </li>
+                      )) || (
+                      <>
+                        <li className="text-gray-700">Research-based</li>
+                        <li className="text-gray-700">Practical</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             <div className="mb-2">
               <p className="font-medium text-[#ec7063]">
@@ -2755,17 +2582,23 @@ setUserData(user);
           </div>
 
           {/* Contact Footer */}
-        {/* Contact Footer */}
-<div className="bg-green-200 py-4 w-full px-12 flex justify-between items-center">
-  <div className="flex flex-col">
-    <p className="text-md font-bold text-[#145a32]">SANTVANA</p>
-    <p className="text-sm text-[#145a32]">Psychological Well-being Center</p>
-  </div>
-  <div className="flex flex-col items-end">
-    <p className="text-sm text-[#145a32]">98242 18278 | 97230 69261</p>
-    <p className="text-sm text-[#145a32]">www.santvana.co.in | santvana27@gmail.com</p>
-  </div>
-</div>
+          {/* Contact Footer */}
+          <div className="bg-green-200 py-4 w-full px-12 flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="text-md font-bold text-[#145a32]">SANTVANA</p>
+              <p className="text-sm text-[#145a32]">
+                Psychological Well-being Center
+              </p>
+            </div>
+            <div className="flex flex-col items-end">
+              <p className="text-sm text-[#145a32]">
+                98242 18278 | 97230 69261
+              </p>
+              <p className="text-sm text-[#145a32]">
+                www.santvana.co.in | santvana27@gmail.com
+              </p>
+            </div>
+          </div>
           {/* <div className="p-6 bg-[#117864] text-white text-center">
             <p className="text-sm">
               98242 18278 | 97230 69261
@@ -2803,12 +2636,12 @@ setUserData(user);
             Visit Our Website
           </a>
           <button
-              onClick={handleTakeNewTest}
-              className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
-            >
-              <RefreshCcw className="h-4 w-4 mr-2" />
-              Take New Test
-            </button>
+            onClick={handleTakeNewTest}
+            className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
+          >
+            <RefreshCcw className="h-4 w-4 mr-2" />
+            Take New Test
+          </button>
         </div>
       </div>
     </div>
