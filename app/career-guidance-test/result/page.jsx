@@ -1798,6 +1798,12 @@ export default function TestResults() {
       resultSummaryElement = resultSummarySection.closest('div.p-6.sm\\:p-8.border-b.border-gray-200');
     }
     
+    // Find the signature section
+    const signatureSection = reportElement.querySelector('div.p-6.sm\\:p-8.border-b.border-gray-200:nth-last-of-type(2)');
+    
+    // Find the footer - it might have changed, so use a more generic selector
+    const footerElement = reportElement.querySelector('div.bg-green-200');
+    
     // Get elements before the result summary section (for first page)
     const firstPageContent = document.createElement('div');
     if (resultSummaryElement && resultSummaryElement.parentNode) {
@@ -1814,89 +1820,144 @@ export default function TestResults() {
       console.warn("Could not find result summary section, using default split");
     }
     
+    // Create the second page content container
+    const secondPageContent = document.createElement('div');
+    secondPageContent.style.width = "794px";
+    secondPageContent.style.position = "absolute";
+    secondPageContent.style.left = "-9999px";
+    secondPageContent.style.background = "white";
+    
+    if (resultSummaryElement) {
+      // First, add the result summary section
+      secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+      
+      // Add everything between result summary and signatures
+      let currentElement = resultSummaryElement.nextElementSibling;
+      while (currentElement && currentElement !== signatureSection && currentElement !== footerElement) {
+        secondPageContent.appendChild(currentElement.cloneNode(true));
+        currentElement = currentElement.nextElementSibling;
+      }
+      
+      // Add the signature section
+      if (signatureSection) {
+        const signatureClone = signatureSection.cloneNode(true);
+        secondPageContent.appendChild(signatureClone);
+        
+        // Fix signature images in the clone
+        const imageContainers = signatureClone.querySelectorAll('.h-20.w-40.mx-auto.relative');
+        imageContainers.forEach((container, index) => {
+          // Create img elements to replace Next.js Image components
+          const imgElement = document.createElement('img');
+          imgElement.src = index === 0 ? '/sign/1.png' : '/sign/2.png';
+          imgElement.alt = 'Signature';
+          imgElement.style.width = '100%';
+          imgElement.style.height = '100%';
+          imgElement.style.objectFit = 'contain';
+          
+          // Clear the container and add the img
+          container.innerHTML = '';
+          container.appendChild(imgElement);
+        });
+      }
+      
+      // Create and add the new custom footer
+      const customFooter = document.createElement('div');
+      customFooter.className = 'bg-green-200 py-4 w-full px-12 flex justify-between items-center';
+      customFooter.style.backgroundColor = '#abebc6'; // Match bg-green-200
+      customFooter.style.padding = '16px 48px';
+      customFooter.style.display = 'flex';
+      customFooter.style.justifyContent = 'space-between';
+      customFooter.style.alignItems = 'center';
+      
+      const leftSection = document.createElement('div');
+      leftSection.style.display = 'flex';
+      leftSection.style.flexDirection = 'column';
+      
+      const centerName = document.createElement('p');
+      centerName.textContent = 'SANTVANA';
+      centerName.style.fontWeight = 'bold';
+      centerName.style.color = '#145a32';
+      centerName.style.fontSize = '16px';
+      leftSection.appendChild(centerName);
+      
+      const centerDesc = document.createElement('p');
+      centerDesc.textContent = 'Psychological Guidance Center';
+      centerDesc.style.color = '#145a32';
+      centerDesc.style.fontSize = '14px';
+      leftSection.appendChild(centerDesc);
+      
+      const rightSection = document.createElement('div');
+      rightSection.style.display = 'flex';
+      rightSection.style.flexDirection = 'column';
+      rightSection.style.alignItems = 'flex-end';
+      
+      const phoneNumbers = document.createElement('p');
+      phoneNumbers.textContent = '98242 18278 | 97230 69261';
+      phoneNumbers.style.color = '#145a32';
+      phoneNumbers.style.fontSize = '14px';
+      rightSection.appendChild(phoneNumbers);
+      
+      const contactInfo = document.createElement('p');
+      contactInfo.textContent = 'www.santvana.co.in | santvana27@gmail.com';
+      contactInfo.style.color = '#145a32';
+      contactInfo.style.fontSize = '14px';
+      rightSection.appendChild(contactInfo);
+      
+      customFooter.appendChild(leftSection);
+      customFooter.appendChild(rightSection);
+      
+      secondPageContent.appendChild(customFooter);
+    }
+    
     // Configure PDF in portrait orientation (A4)
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: 'a4'
+      format: 'a4',
+      compress: true // Enable compression
     });
     
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Generate first page (elements before result summary)
-    let canvas1;
-    if (firstPageContent.children.length > 0) {
-      // If we successfully identified sections, use our custom first page
-      document.body.appendChild(firstPageContent);
-      firstPageContent.style.width = "794px";
-      firstPageContent.style.position = "absolute";
-      firstPageContent.style.left = "-9999px";
-      
-      canvas1 = await html2canvas(firstPageContent, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        width: 794,
-        height: firstPageContent.scrollHeight
-      });
-      
-      document.body.removeChild(firstPageContent);
-    } else {
-      // Fallback to original approach with fixed height
-      canvas1 = await html2canvas(reportElement, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        width: 794,
-        height: 1200 // Fixed height for first page
-      });
-    }
+    // Prepare containers for canvas rendering
+    document.body.appendChild(firstPageContent);
+    firstPageContent.style.width = "794px";
+    firstPageContent.style.position = "absolute";
+    firstPageContent.style.left = "-9999px";
     
-    // Generate second page starting from result summary
-    let canvas2;
-    if (resultSummaryElement) {
-      // Create a container for the second page content
-      const secondPageContent = document.createElement('div');
-      secondPageContent.style.width = "794px";
-      secondPageContent.style.position = "absolute";
-      secondPageContent.style.left = "-9999px";
-      
-      // Copy the result summary and all subsequent elements
-      const parent = resultSummaryElement.parentNode;
-      const children = Array.from(parent.children);
-      const resultSummaryIndex = children.indexOf(resultSummaryElement);
-      
-      for (let i = resultSummaryIndex; i < children.length; i++) {
-        secondPageContent.appendChild(children[i].cloneNode(true));
-      }
-      
-      document.body.appendChild(secondPageContent);
-      
-      canvas2 = await html2canvas(secondPageContent, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        width: 794
-      });
-      
-      document.body.removeChild(secondPageContent);
-    } else {
-      // Fallback - capture the bottom part of the report
-      canvas2 = await html2canvas(reportElement, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        width: 794,
-        y: 1200,
-        height: reportElement.scrollHeight - 1200
-      });
-    }
+    document.body.appendChild(secondPageContent);
     
-    // Add first page to PDF - ensure content fits properly
+    // Generate first page canvas
+    const canvas1 = await html2canvas(firstPageContent, {
+      scale: 1.5, // Reduced scale for smaller file size
+      useCORS: true,
+      logging: false,
+      width: 794,
+      imageTimeout: 15000
+    });
+    
+    // Generate second page canvas
+    const canvas2 = await html2canvas(secondPageContent, {
+      scale: 1.5, // Reduced scale for smaller file size
+      useCORS: true,
+      logging: false,
+      width: 794,
+      imageTimeout: 15000
+    });
+    
+    // Clean up
+    document.body.removeChild(firstPageContent);
+    document.body.removeChild(secondPageContent);
+    
+    // Compress canvas images before adding to PDF
+    const compressedImage1 = canvas1.toDataURL('image/jpeg', 0.8); // Use JPEG with 80% quality
+    const compressedImage2 = canvas2.toDataURL('image/jpeg', 0.8); // Use JPEG with 80% quality
+    
+    // Add first page to PDF
     const imgWidth1 = pdfWidth - 10; // Add small margin
     const imgHeight1 = (canvas1.height * imgWidth1) / canvas1.width;
-    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 5, 5, imgWidth1, imgHeight1);
+    pdf.addImage(compressedImage1, 'JPEG', 5, 5, imgWidth1, imgHeight1);
     
     // Add second page
     pdf.addPage();
@@ -1904,15 +1965,20 @@ export default function TestResults() {
     // Add the second page content
     const imgWidth2 = pdfWidth - 10; // Add small margin
     const imgHeight2 = (canvas2.height * imgWidth2) / canvas2.width;
-    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 5, 5, imgWidth2, imgHeight2);
+    pdf.addImage(compressedImage2, 'JPEG', 5, 5, imgWidth2, imgHeight2);
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
     reportElement.style.height = originalStyles.height;
     reportElement.style.overflow = originalStyles.overflow;
     
-    // Save the PDF
-    pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`);
+    // Save the PDF with optimized settings
+    const pdfOptions = {
+      compress: true,
+      precision: 2
+    };
+    
+    pdf.save(`personality_test_results_${userData?.name || 'report'}.pdf`, pdfOptions);
     
   } catch (error) {
     console.error("Error generating PDF:", error);
@@ -2256,7 +2322,7 @@ setUserData(user);
               </p>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-2">
               <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
               <ul className="list-disc pl-6  space-y-1">
                 {careerRecommendations?.interestAreas?.map(
@@ -2276,7 +2342,7 @@ setUserData(user);
               </ul>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-2">
               <p className="font-medium text-[#ec7063]">
                 Potential Stream:{" "}
                 <span className="text-[#145a32]">
@@ -2287,7 +2353,7 @@ setUserData(user);
             </div>
 
             <div>
-              <p className="font-medium text-[#ec7063] mb-2">
+              <p className="font-medium text-[#ec7063] mb-1">
                 Potential Career Fields:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
@@ -2342,7 +2408,7 @@ setUserData(user);
           </div>
 
           {/* Note */}
-          <div className="p-6 sm:p-8 border-b border-gray-200 bg-indigo-50">
+          <div className="p-4 sm:p-4 border-b border-gray-200 bg-indigo-50">
             <h3 className="text-lg font-semibold text-[#784212] mb-2">Note:</h3>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
               <li>
@@ -2362,7 +2428,7 @@ setUserData(user);
           </div>
 
           {/* Footer with Signatures */}
-          <div className="p-6 sm:p-8 border-b border-gray-200">
+          <div className="p-2 sm:p-2 border-b border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="text-center">
                 <div className="h-20 w-40 mx-auto relative">
@@ -2400,23 +2466,15 @@ setUserData(user);
           </div>
 
           {/* Contact Footer */}
-         <div className="bg-green-200 py-8 w-full px-12 flex justify-center">
-  <div className="flex items-center">
-    <div className="mr-6">
-      <img 
-        src="/images/logo.png" 
-        alt="Logo"
-        className="w-44 h-auto rounded-md"
-      />
-    </div>
-    <div>
-      <p className="text-sm">
-        98242 18278 | 97230 69261
-      </p>
-      <p className="text-sm">
-        www.santvana.co.in | santvana27@gmail.com
-      </p>
-    </div>
+        {/* Contact Footer */}
+<div className="bg-green-200 py-4 w-full px-12 flex justify-between items-center">
+  <div className="flex flex-col">
+    <p className="text-md font-bold text-[#145a32]">SANTVANA</p>
+    <p className="text-sm text-[#145a32]">Psychological Guidance Center</p>
+  </div>
+  <div className="flex flex-col items-end">
+    <p className="text-sm text-[#145a32]">98242 18278 | 97230 69261</p>
+    <p className="text-sm text-[#145a32]">www.santvana.co.in | santvana27@gmail.com</p>
   </div>
 </div>
           {/* <div className="p-6 bg-[#117864] text-white text-center">
