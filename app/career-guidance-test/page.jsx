@@ -306,7 +306,8 @@ export default function PersonalityTest() {
   const [userId, setUserId] = useState(null);
   const [timeLeft, setTimeLeft] = useState(7 * 60); // 7 minutes in seconds
   const [timerActive, setTimerActive] = useState(false);
-  const [isManualNavigation, setIsManualNavigation] = useState(false);
+  const [skipAutoAdvance, setSkipAutoAdvance] = useState(false);
+  
   const router = useRouter();
   const timerRef = useRef(null);
   const educationOptions = ["12th Arts", "12th Science", "12th Commerce"];
@@ -438,29 +439,28 @@ export default function PersonalityTest() {
   }, [section1Answers, currentQuestionIndex, currentSection1Question, currentStep, totalSection1Questions]);
 
   // Auto-advance to next question after selection in section 2
- useEffect(() => {
-  if (!currentSection2Question || isManualNavigation) {
-    // Clear the manual navigation flag after skipping the auto-advance once
-    if (isManualNavigation) {
-      setIsManualNavigation(false);
-    }
-    return;
-  }
-  
-  if (currentStep === "section2" && currentSection2Question.id) {
-    const hasSelectedCurrentQuestion = section2Answers[currentSection2Question.id] !== undefined;
+  useEffect(() => {
+    if (!currentSection2Question) return;
     
-    if (hasSelectedCurrentQuestion) {
-      const timer = setTimeout(() => {
-        if (currentSection2QuestionIndex < totalSection2Questions - 1) {
-          setCurrentQuestionIndex(prev => prev + 1);
-        }
-      }, 500);
+    if (currentStep === "section2" && currentSection2Question.id) {
+      const hasSelectedCurrentQuestion = section2Answers[currentSection2Question.id] !== undefined;
       
-      return () => clearTimeout(timer);
+      if (hasSelectedCurrentQuestion && !skipAutoAdvance) {
+        const timer = setTimeout(() => {
+          if (currentSection2QuestionIndex < totalSection2Questions - 1) {
+            setCurrentQuestionIndex(prev => prev + 1);
+          }
+        }, 500);
+        
+        return () => clearTimeout(timer);
+      }
+      
+      // Reset the skip flag after one cycle
+      if (skipAutoAdvance) {
+        setSkipAutoAdvance(false);
+      }
     }
-  }
-}, [section2Answers, currentSection2QuestionIndex, currentSection2Question, currentStep, totalSection2Questions, isManualNavigation]);
+  }, [section2Answers, currentSection2QuestionIndex, currentSection2Question, currentStep, totalSection2Questions, skipAutoAdvance]);
 
   // Form validation
   const validateForm = () => {
@@ -544,11 +544,11 @@ export default function PersonalityTest() {
         }, 1);
 
         setCookie("user_full_name", formData.full_name, 1);
-setCookie("user_dob", formData.dob, 1);
-setCookie("user_age", formData.age, 1);
-setCookie("user_education", formData.std, 1);
-setCookie("user_contact", formData.contact, 1);
-setCookie("user_email", formData.email, 1);
+        setCookie("user_dob", formData.dob, 1);
+        setCookie("user_age", formData.age, 1);
+        setCookie("user_education", formData.std, 1);
+        setCookie("user_contact", formData.contact, 1);
+        setCookie("user_email", formData.email, 1);
         
         setUserId(result.id);
         
@@ -616,6 +616,7 @@ setCookie("user_email", formData.email, 1);
   // Navigate to previous question
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
+      setSkipAutoAdvance(true);
       setCurrentQuestionIndex(prev => prev - 1);
     }
   };
@@ -625,6 +626,7 @@ setCookie("user_email", formData.email, 1);
     const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
     
     if (currentQuestionIndex < maxQuestions - 1) {
+      setSkipAutoAdvance(true);
       setCurrentQuestionIndex(prev => prev + 1);
     }
   };
@@ -634,6 +636,7 @@ setCookie("user_email", formData.email, 1);
     const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
     
     if (currentQuestionIndex < maxQuestions - 1) {
+      setSkipAutoAdvance(true);
       setCurrentQuestionIndex(prev => prev + 1);
     }
   };
@@ -707,7 +710,7 @@ setCookie("user_email", formData.email, 1);
     };
   };
 
-  // Finish section 2 and navigate to results
+// Finish section 2 and navigate to results
   const handleFinishSection2 = async () => {
     try {
       setIsSubmitting(true);
@@ -721,7 +724,7 @@ setCookie("user_email", formData.email, 1);
       setCookie("current_section", "completed", 1);
       
       // Navigate to results page
-      router.push("/personality-test/result");
+      router.push("/career-guidance-test/result");
     } catch (error) {
       console.error("Error finishing section 2:", error);
       alert("There was an error completing the test. Please try again.");
@@ -1050,42 +1053,9 @@ setCookie("user_email", formData.email, 1);
                     </button>
                   </div>
 
-                  <div className="mt-8 flex justify-between items-center">
-                    <button
-                      onClick={handlePrevQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      className={`flex items-center py-2 px-4 rounded-md text-sm font-medium ${
-                        currentQuestionIndex === 0
-                          ? "text-gray-400 cursor-not-allowed"
-                          : "text-indigo-600 hover:text-indigo-700"
-                      }`}
-                    >
-                      <ArrowLeft size={16} className="mr-1" />
-                      Previous
-                    </button>
-
-                    <button
-                      onClick={handleSkipQuestion}
-                      disabled={currentQuestionIndex === totalSection1Questions - 1}
-                      className={`py-2 px-4 rounded-md text-sm font-medium ${
-                        currentQuestionIndex === totalSection1Questions - 1
-                          ? "text-gray-400 cursor-not-allowed"
-                          : "text-gray-600 hover:text-gray-800"
-                      }`}
-                    >
-                      Skip
-                    </button>
-
-                    {/* Navigation buttons */}
-                    {currentQuestionIndex < totalSection1Questions - 1 ? (
-                      <button
-                        onClick={handleNextQuestion}
-                        className="flex items-center py-2 px-4 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Next
-                        <ArrowRight size={16} className="ml-1" />
-                      </button>
-                    ) : (
+                  {/* MODIFIED: Removed navigation buttons and only show Finish button at the end */}
+                  <div className="mt-8 flex justify-end">
+                    {currentQuestionIndex === totalSection1Questions - 1 && (
                       <button
                         onClick={handleFinishSection1}
                         disabled={isSubmitting}

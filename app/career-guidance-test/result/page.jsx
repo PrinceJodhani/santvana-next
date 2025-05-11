@@ -1785,16 +1785,34 @@ export default function TestResults() {
     };
     
     // Set up for PDF generation - A4 portrait optimized
-    reportElement.style.width = "800px"; // Optimal width for A4 portrait
+    reportElement.style.width = "794px"; // Standard A4 width in pixels
     reportElement.style.height = "auto";
     reportElement.style.overflow = "visible";
     
-    // First, measure total height
-    const totalHeight = reportElement.scrollHeight;
+    // Find the "Your Result Summary" element to ensure it starts on page 2
+    const resultSummarySection = reportElement.querySelector('h2.text-xl.font-bold.text-\\[\\#784212\\].mb-6');
+    let resultSummaryElement = null;
     
-    // Calculate split point - find approximately 60% for first page
-    // This will ensure proper content distribution
-    const firstPageHeight = Math.floor(totalHeight * 0.60);
+    if (resultSummarySection) {
+      // Get the parent div containing the entire "Your Result Summary" section
+      resultSummaryElement = resultSummarySection.closest('div.p-6.sm\\:p-8.border-b.border-gray-200');
+    }
+    
+    // Get elements before the result summary section (for first page)
+    const firstPageContent = document.createElement('div');
+    if (resultSummaryElement && resultSummaryElement.parentNode) {
+      const parent = resultSummaryElement.parentNode;
+      const children = Array.from(parent.children);
+      const resultSummaryIndex = children.indexOf(resultSummaryElement);
+      
+      // Clone and append all elements before result summary
+      for (let i = 0; i < resultSummaryIndex; i++) {
+        firstPageContent.appendChild(children[i].cloneNode(true));
+      }
+    } else {
+      // Fallback if we can't find the result summary section
+      console.warn("Could not find result summary section, using default split");
+    }
     
     // Configure PDF in portrait orientation (A4)
     const pdf = new jsPDF({
@@ -1806,66 +1824,87 @@ export default function TestResults() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Identify the footer element
-    const footer = reportElement.querySelector('.bg-\\[\\#117864\\]'); // Footer with blue background
-    let footerHeight = 0;
-    if (footer) {
-      footerHeight = footer.offsetHeight;
-    }
-    
-    // Generate first page (top portion)
-    const canvas1 = await html2canvas(reportElement, {
-      scale: 2, // Higher scale for better quality
-      useCORS: true,
-      logging: false,
-      windowWidth: 800,
-      height: firstPageHeight,
-      y: 0
-    });
-    
-    // For the second page, we need to capture from the split point to the end
-    // but exclude the footer which we'll add separately
-    const secondPageCanvas = await html2canvas(reportElement, {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      windowWidth: 800,
-      height: totalHeight - firstPageHeight + 50, // Add overlap
-      y: firstPageHeight - 50 // Start with slight overlap to ensure no content is lost
-    });
-    
-    // Capture footer separately with higher quality
-    let footerCanvas = null;
-    if (footer) {
-      footerCanvas = await html2canvas(footer, {
-        scale: 2.5, // Even higher scale for footer to ensure text clarity
+    // Generate first page (elements before result summary)
+    let canvas1;
+    if (firstPageContent.children.length > 0) {
+      // If we successfully identified sections, use our custom first page
+      document.body.appendChild(firstPageContent);
+      firstPageContent.style.width = "794px";
+      firstPageContent.style.position = "absolute";
+      firstPageContent.style.left = "-9999px";
+      
+      canvas1 = await html2canvas(firstPageContent, {
+        scale: 2,
         useCORS: true,
-        backgroundColor: '#117864' // Ensure background color is preserved
+        logging: false,
+        width: 794,
+        height: firstPageContent.scrollHeight
+      });
+      
+      document.body.removeChild(firstPageContent);
+    } else {
+      // Fallback to original approach with fixed height
+      canvas1 = await html2canvas(reportElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: 794,
+        height: 1200 // Fixed height for first page
       });
     }
     
-    // Add first page to PDF
-    const imgWidth = canvas1.width;
-    const imgHeight = canvas1.height;
-    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-    const imgX = (pdfWidth - imgWidth * ratio) / 2;
-    const imgY = 5; // Position closer to top
+    // Generate second page starting from result summary
+    let canvas2;
+    if (resultSummaryElement) {
+      // Create a container for the second page content
+      const secondPageContent = document.createElement('div');
+      secondPageContent.style.width = "794px";
+      secondPageContent.style.position = "absolute";
+      secondPageContent.style.left = "-9999px";
+      
+      // Copy the result summary and all subsequent elements
+      const parent = resultSummaryElement.parentNode;
+      const children = Array.from(parent.children);
+      const resultSummaryIndex = children.indexOf(resultSummaryElement);
+      
+      for (let i = resultSummaryIndex; i < children.length; i++) {
+        secondPageContent.appendChild(children[i].cloneNode(true));
+      }
+      
+      document.body.appendChild(secondPageContent);
+      
+      canvas2 = await html2canvas(secondPageContent, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: 794
+      });
+      
+      document.body.removeChild(secondPageContent);
+    } else {
+      // Fallback - capture the bottom part of the report
+      canvas2 = await html2canvas(reportElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: 794,
+        y: 1200,
+        height: reportElement.scrollHeight - 1200
+      });
+    }
     
-    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+    // Add first page to PDF - ensure content fits properly
+    const imgWidth1 = pdfWidth - 10; // Add small margin
+    const imgHeight1 = (canvas1.height * imgWidth1) / canvas1.width;
+    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 5, 5, imgWidth1, imgHeight1);
     
     // Add second page
     pdf.addPage();
     
-    // Add the second page content - stretch to fill more space
-    const secondRatio = Math.min(pdfWidth / secondPageCanvas.width, (pdfHeight - 20) / secondPageCanvas.height);
-    pdf.addImage(
-      secondPageCanvas.toDataURL('image/png'), 
-      'PNG', 
-      imgX, 
-      imgY, 
-      secondPageCanvas.width * secondRatio, 
-      secondPageCanvas.height * secondRatio
-    );
+    // Add the second page content
+    const imgWidth2 = pdfWidth - 10; // Add small margin
+    const imgHeight2 = (canvas2.height * imgWidth2) / canvas2.width;
+    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 5, 5, imgWidth2, imgHeight2);
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
@@ -2029,7 +2068,9 @@ setUserData(user);
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mt-20 mx-auto">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
-          <h1 className="text-2xl font-bold text-[#784212]">Your Personality Test Results</h1>
+          <h1 className="text-2xl font-bold text-[#784212]">
+            Your Personality Test Results
+          </h1>
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <button
               onClick={handleDownloadPDF}
@@ -2068,15 +2109,16 @@ setUserData(user);
           {/* Header with Logo */}
           <div className="bg-[#abebc6] py-8 px-12 flex items-center">
             <div className="h-30  relative flex-shrink-0">
-              <img 
-                src="/images/logo.png" 
-                alt="Logo" 
+              <img
+                src="/images/logo.png"
+                alt="Logo"
                 style={{ width: "180px", height: "auto" }}
-                
                 className="rounded-md"
               />
             </div>
-            <h1 className="ml-10 text-xl sm:text-2xl  font-bold text-[#186a3b]">APTITUDE ASSESSMENT PROFILE</h1>
+            <h1 className="ml-10 text-xl sm:text-2xl  font-bold text-[#186a3b]">
+              APTITUDE ASSESSMENT PROFILE
+            </h1>
           </div>
 
           {/* User Information */}
@@ -2085,91 +2127,145 @@ setUserData(user);
               <div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Name</p>
-                  <p className="font-bold text-lg text-[#ec7063]">{userData?.name || "Test Taker"}</p>
+                  <p className="font-bold text-lg text-[#ec7063]">
+                    {userData?.name || "Test Taker"}
+                  </p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-lg font-bold text-gray-500">Date of Birth</p>
-                  <p className="text-lg font-bold text-[#ec7063]">{userData?.dob || "01/01/2000"}</p>
+                  <p className="text-lg font-bold text-gray-500">
+                    Date of Birth
+                  </p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.dob || "01/01/2000"}
+                  </p>
                 </div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Age</p>
-                  <p className="text-lg font-bold text-[#ec7063]">{userData?.age || "25"}</p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.age || "25"}
+                  </p>
                 </div>
               </div>
               <div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Education</p>
-                  <p className="text-lg font-bold text-[#ec7063]">{userData?.education || "12th Science"}</p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.education || "12th Science"}
+                  </p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-lg font-bold text-gray-500">Contact Number</p>
-                  <p className="text-lg font-bold text-[#ec7063]">{userData?.contact || "(+91) XXXXXXXXXX"}</p>
+                  <p className="text-lg font-bold text-gray-500">
+                    Contact Number
+                  </p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.contact || "(+91) XXXXXXXXXX"}
+                  </p>
                 </div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Email</p>
-                  <p className="text-lg font-bold text-[#ec7063]">{userData?.email || "email@example.com"}</p>
+                  <p className="text-lg font-bold text-[#ec7063]">
+                    {userData?.email || "email@example.com"}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-        
-
           {/* Definitions */}
           <div className="p-6 sm:p-8 border-b border-gray-200 bg-gray-50">
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Aptitude?</h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">
+                What is Aptitude?
+              </h3>
               <p className="text-gray-700 text-lg">
-                Aptitude refers to an <b className="text-[#ca6f1e]"> individual's natural ability </b>or <b className="text-[#ca6f1e]"> talent </b> to learn and perform specific tasks or skills. 
-                In the context of a career, aptitude encompasses the capabilities that enable a person to succeed in certain job functions or fields.
+                Aptitude refers to an{" "}
+                <b className="text-[#ca6f1e]"> individual's natural ability </b>
+                or <b className="text-[#ca6f1e]"> talent </b> to learn and
+                perform specific tasks or skills. In the context of a career,
+                aptitude encompasses the capabilities that enable a person to
+                succeed in certain job functions or fields.
               </p>
             </div>
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Personality?</h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">
+                What is Personality?
+              </h3>
               <p className="text-gray-700 text-lg">
-                Personality refers to the<b className="text-[#ca6f1e]">  unique set of traits, characteristics, and behaviors </b> that define an individual. 
-                In the context of career, personality influences how a person approaches work, interacts with others, and makes decisions about their professional life.
+                Personality refers to the
+                <b className="text-[#ca6f1e]">
+                  {" "}
+                  unique set of traits, characteristics, and behaviors{" "}
+                </b>{" "}
+                that define an individual. In the context of career, personality
+                influences how a person approaches work, interacts with others,
+                and makes decisions about their professional life.
               </p>
             </div>
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-[#784212] mb-2">What is Interest?</h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">
+                What is Interest?
+              </h3>
               <p className="text-gray-700 text-lg">
-                An interest is a subjective attitude to the activities or subjects an individual<b className="text-[#ca6f1e]"> naturally enjoys and is drawn to</b>. 
+                An interest is a subjective attitude to the activities or
+                subjects an individual
+                <b className="text-[#ca6f1e]">
+                  {" "}
+                  naturally enjoys and is drawn to
+                </b>
+                .
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-[#784212] mb-2">How do together they help in choosing a career? </h3>
+              <h3 className="text-lg font-semibold text-[#784212] mb-2">
+                How do together they help in choosing a career?{" "}
+              </h3>
               <p className="text-gray-700 text-lg">
-              Aptitude, personality, and interest together form the foundation for making a smart and satisfying career choice. When all three align, you're more likely to choose a career where you perform well, feel comfortable, and stay motivated. This integration helps ensure not just success, but long-term satisfaction and growth in your chosen field. 
+                Aptitude, personality, and interest together form the foundation
+                for making a smart and satisfying career choice. When all three
+                align, you're more likely to choose a career where you perform
+                well, feel comfortable, and stay motivated. This integration
+                helps ensure not just success, but long-term satisfaction and
+                growth in your chosen field.
               </p>
             </div>
           </div>
 
-            {/* Results Summary */}
+          {/* Results Summary */}
           <div className="p-6 sm:p-8 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-[#784212] mb-6">Your Result Summary</h2>
-            
+            <h2 className="text-xl font-bold text-[#784212] mb-6">
+              Your Result Summary
+            </h2>
+
             <div className="mb-4">
               <p className="font-medium text-[#ec7063]">
-                Strong Aptitude area: <span className="text-[#145a32]">{careerRecommendations?.aptitude} Aptitude</span>
+                Strong Aptitude area:{" "}
+                <span className="text-[#145a32]">
+                  {careerRecommendations?.aptitude} Aptitude
+                </span>
               </p>
             </div>
-            
+
             <div className="mb-4">
               <p className="font-medium text-[#ec7063]">
-                Personality types: <span className="text-[#145a32]">{careerRecommendations?.personalityTypes?.join(' & ') || "Realistic & Investigative"}</span>
+                Personality types:{" "}
+                <span className="text-[#145a32]">
+                  {careerRecommendations?.personalityTypes?.join(" & ") ||
+                    "Realistic & Investigative"}
+                </span>
               </p>
             </div>
-            
+
             <div className="mb-6">
               <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
               <ul className="list-disc pl-6  space-y-1">
-                {careerRecommendations?.interestAreas?.map((interest, index) => (
-                  <li key={index} className="text-[#145a32] font-medium">
-                    {interest}
-                  </li>
-                )) || (
+                {careerRecommendations?.interestAreas?.map(
+                  (interest, index) => (
+                    <li key={index} className="text-[#145a32] font-medium">
+                      {interest}
+                    </li>
+                  )
+                ) || (
                   <>
                     <li className="text-gray-700">Scientific</li>
                     <li className="text-gray-700">Analytical</li>
@@ -2179,50 +2275,65 @@ setUserData(user);
                 )}
               </ul>
             </div>
-            
+
             <div className="mb-6">
               <p className="font-medium text-[#ec7063]">
-                Potential Stream: <span className="text-[#145a32]">{careerRecommendations?.streams?.join('/ ') || "Science/ Commerce"}</span>
+                Potential Stream:{" "}
+                <span className="text-[#145a32]">
+                  {careerRecommendations?.streams?.join("/ ") ||
+                    "Science/ Commerce"}
+                </span>
               </p>
             </div>
-            
-           
-            
+
             <div>
-              <p className="font-medium text-[#ec7063] mb-2">Potential Career Fields:</p>
+              <p className="font-medium text-[#ec7063] mb-2">
+                Potential Career Fields:
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                {(careerRecommendations?.careerFields || [
-                  "Software Engineer",
-                  "Data Analyst",
-                  "Financial Analyst",
-                  "Business Consultant",
-                  "Research Scientist"
-                ]).map((career, index) => (
+                {(
+                  careerRecommendations?.careerFields || [
+                    "Software Engineer",
+                    "Data Analyst",
+                    "Financial Analyst",
+                    "Business Consultant",
+                    "Research Scientist",
+                  ]
+                ).map((career, index) => (
                   <div key={index} className="flex items-start">
                     <div className="flex-shrink-0 h-5 w-5 text-[#145a32]">
                       <CheckCircle size={20} />
                     </div>
-                    <b><span className="ml-2  text-gray-700">{career}</span></b>
+                    <b>
+                      <span className="ml-2  text-gray-700">{career}</span>
+                    </b>
                   </div>
                 ))}
               </div>
             </div>
 
-             {/* Recommended Courses Section */}
+            {/* Recommended Courses Section */}
             <div className="mb-6 mt-6">
-              <p className="font-medium text-[#ec7063] mb-2">Recommended Courses:</p>
+              <p className="font-medium text-[#ec7063] mb-2">
+                Recommended Courses:
+              </p>
               <div className="bg-[#ebfaf1] p-4 rounded-lg border border-[#abebc6]">
                 <ul className="space-y-2">
-                  {(careerRecommendations?.recommendedCourses || [
-                    "B.Sc. in Computer Science",
-                    "B.Sc. in Mathematics",
-                    "B.Com. with focus on Finance"
-                  ]).map((course, index) => (
+                  {(
+                    careerRecommendations?.recommendedCourses || [
+                      "B.Sc. in Computer Science",
+                      "B.Sc. in Mathematics",
+                      "B.Com. with focus on Finance",
+                    ]
+                  ).map((course, index) => (
                     <li key={index} className="flex items-start">
                       <div className="flex-shrink-0 h-5 w-5 mt-0.5 text-[#145a32]">
                         <BookOpen size={18} />
                       </div>
-                    <b>  <span className="ml-2 text-gray-700">{course}</span></b>
+                      <b>
+                        {" "}
+                        <span className="ml-2 text-gray-700">{course}</span>
+                      </b>
                     </li>
                   ))}
                 </ul>
@@ -2234,11 +2345,19 @@ setUserData(user);
           <div className="p-6 sm:p-8 border-b border-gray-200 bg-indigo-50">
             <h3 className="text-lg font-semibold text-[#784212] mb-2">Note:</h3>
             <ul className="list-disc pl-6 space-y-2 text-gray-700">
-              <li>This is a preliminary aptitude assessment. For a more thorough and comprehensive analysis, we recommend undertaking a detailed evaluation.</li>
-              <li>Following the recommendations can greatly elevate the potential for success and long-term satisfaction in the chosen career.</li>
+              <li>
+                This is a preliminary aptitude assessment. For a more thorough
+                and comprehensive analysis, we recommend undertaking a detailed
+                evaluation.
+              </li>
+              <li>
+                Following the recommendations can greatly elevate the potential
+                for success and long-term satisfaction in the chosen career.
+              </li>
             </ul>
             <p className="mt-4 text-[#239b56] italic font-medium">
-              "Wishing you a future filled with success and endless possibilities in the career you choose!"
+              "Wishing you a future filled with success and endless
+              possibilities in the career you choose!"
             </p>
           </div>
 
@@ -2247,21 +2366,29 @@ setUserData(user);
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="text-center">
                 <div className="h-20 w-40 mx-auto relative">
-                  <Image 
-                    src="/sign/1.png" 
-                    alt="Signature" 
+                  <Image
+                    src="/sign/1.png"
+                    alt="Signature"
                     fill
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="font-bold text-[#F08080] mt-2">Ms. Poonam Vipani</p>
-                <p className="text-sm font-bold text-[#117a65]">Associate Clinical Psychologist </p><p className="text-sm font-bold text-[#117a65]"> A105297 (RCI Registered)</p>
+                <p className="font-bold text-[#F08080] mt-2">
+                  Ms. Poonam Vipani
+                </p>
+                <p className="text-sm font-bold text-[#117a65]">
+                  Associate Clinical Psychologist{" "}
+                </p>
+                <p className="text-sm font-bold text-[#117a65]">
+                  {" "}
+                  A105297 (RCI Registered)
+                </p>
               </div>
               <div className="text-center">
                 <div className="h-20 w-40 mx-auto relative">
-                  <Image 
-                    src="/sign/2.png" 
-                    alt="Signature" 
+                  <Image
+                    src="/sign/2.png"
+                    alt="Signature"
                     fill
                     style={{ objectFit: "contain" }}
                   />
@@ -2273,19 +2400,23 @@ setUserData(user);
           </div>
 
           {/* Contact Footer */}
-          <div className="bg-green-200 py-8 w-full px-12 flex items-center justify-center">
-  <div className="flex flex-col items-center">
-    <img 
-      src="/images/logo.png" 
-      alt="Logo"
-      className="w-44 h-auto rounded-md mb-2"
-    />
-    <p className="text-sm font-bold text-center">
-      98242 18278 | 97230 69261
-    </p>
-    <p className="text-sm font-bold text-center">
-      www.santvana.co.in | santvana27@gmail.com
-    </p>
+         <div className="bg-green-200 py-8 w-full px-12 flex justify-center">
+  <div className="flex items-center">
+    <div className="mr-6">
+      <img 
+        src="/images/logo.png" 
+        alt="Logo"
+        className="w-44 h-auto rounded-md"
+      />
+    </div>
+    <div>
+      <p className="text-sm">
+        98242 18278 | 97230 69261
+      </p>
+      <p className="text-sm">
+        www.santvana.co.in | santvana27@gmail.com
+      </p>
+    </div>
   </div>
 </div>
           {/* <div className="p-6 bg-[#117864] text-white text-center">
