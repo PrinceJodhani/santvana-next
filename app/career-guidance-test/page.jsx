@@ -310,6 +310,10 @@ export default function PersonalityTest() {
   
   const [justAnswered, setJustAnswered] = useState(false);
 
+  const [showCodePopup, setShowCodePopup] = useState(false);
+const [verificationCode, setVerificationCode] = useState("");
+const [codeError, setCodeError] = useState("");
+
   const router = useRouter();
   const timerRef = useRef(null);
   const educationOptions = ["12th Arts", "12th Science", "12th Commerce"];
@@ -695,6 +699,7 @@ const handleSkipQuestion = () => {
       
       // Move to section 2 instructions
       setCurrentStep("section2_instructions");
+      setShowCodePopup(true);
     } catch (error) {
       console.error("Error saving results:", error);
       alert("There was an error saving your results. Please try again.");
@@ -702,6 +707,25 @@ const handleSkipQuestion = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handleVerifyCode = () => {
+  // Check if the code is correct (case insensitive)
+  if (verificationCode.toUpperCase() === "ST2710") {
+    // Clear the code and error
+    setVerificationCode("");
+    setCodeError("");
+    
+    // Hide the popup
+    setShowCodePopup(false);
+    
+    // Proceed to section 2 instructions
+    setCookie("current_section", "section2_instructions", 1);
+    setCurrentStep("section2_instructions");
+  } else {
+    // Show error message
+    setCodeError("Incorrect code. Please try again.");
+  }
+};
 
   // Calculate section 2 results
   const calculateSection2Results = () => {
@@ -1322,6 +1346,55 @@ const handleSkipQuestion = () => {
           </motion.div>
         )}
       </div>
+
+      {/* Code Verification Popup */}
+{showCodePopup && (
+  <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+
+      <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+      <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="sm:flex sm:items-start">
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                Enter Verification Code
+              </h3>
+              <div className="mt-2">
+                <p className="text-sm text-gray-500 mb-4">
+                  Please enter the verification code to proceed to Section 2.
+                </p>
+                <input
+                  type="text"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  placeholder="Enter code"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                {codeError && (
+                  <p className="mt-2 text-sm text-red-600">{codeError}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <button
+            type="button"
+            onClick={handleVerifyCode}
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
+          >
+            Verify
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
