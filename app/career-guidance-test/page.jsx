@@ -308,6 +308,8 @@ export default function PersonalityTest() {
   const [timerActive, setTimerActive] = useState(false);
   const [skipAutoAdvance, setSkipAutoAdvance] = useState(false);
   
+  const [justAnswered, setJustAnswered] = useState(false);
+
   const router = useRouter();
   const timerRef = useRef(null);
   const educationOptions = ["12th Arts", "12th Science", "12th Commerce"];
@@ -438,31 +440,23 @@ export default function PersonalityTest() {
     }
   }, [section1Answers, currentQuestionIndex, currentSection1Question, currentStep, totalSection1Questions]);
 
-  // Auto-advance to next question after selection in section 2
-  useEffect(() => {
-    if (!currentSection2Question) return;
-    
-    if (currentStep === "section2" && currentSection2Question.id) {
-      const hasSelectedCurrentQuestion = section2Answers[currentSection2Question.id] !== undefined;
-      
-      if (hasSelectedCurrentQuestion && !skipAutoAdvance) {
-        const timer = setTimeout(() => {
-          if (currentSection2QuestionIndex < totalSection2Questions - 1) {
-            setCurrentQuestionIndex(prev => prev + 1);
-          }
-        }, 500);
-        
-        return () => clearTimeout(timer);
-      }
-      
-      // Reset the skip flag after one cycle
-      if (skipAutoAdvance) {
-        setSkipAutoAdvance(false);
-      }
-    }
-  }, [section2Answers, currentSection2QuestionIndex, currentSection2Question, currentStep, totalSection2Questions, skipAutoAdvance]);
 
-  // Form validation
+ useEffect(() => {
+  if (!currentSection2Question) return;
+  
+  if (currentStep === "section2" && justAnswered) {
+    const timer = setTimeout(() => {
+      if (currentSection2QuestionIndex < totalSection2Questions - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+      }
+      setJustAnswered(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }
+}, [justAnswered, currentSection2Question, currentStep, currentSection2QuestionIndex, totalSection2Questions]);
+
+// Form validation
   const validateForm = () => {
     const newErrors = {};
     
@@ -600,46 +594,65 @@ export default function PersonalityTest() {
   };
 
   // Handle section 2 question answers
-  const handleSection2Answer = (value) => {
-    const updatedAnswers = {
-      ...section2Answers,
-      [currentSection2Question.id]: value
-    };
+  // const handleSection2Answer = (value) => {
+  //   const updatedAnswers = {
+  //     ...section2Answers,
+  //     [currentSection2Question.id]: value
+  //   };
     
-    setSection2Answers(updatedAnswers);
+  //   setSection2Answers(updatedAnswers);
     
-    // Save answers and timer to cookies after each question
-    setCookie("section2_answers", updatedAnswers, 1);
-    setCookie("section2_time_left", timeLeft, 1);
+  //   // Save answers and timer to cookies after each question
+  //   setCookie("section2_answers", updatedAnswers, 1);
+  //   setCookie("section2_time_left", timeLeft, 1);
+  // };
+const handleSection2Answer = (value) => {
+  const updatedAnswers = {
+    ...section2Answers,
+    [currentSection2Question.id]: value
   };
-
-  // Navigate to previous question
-  const handlePrevQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setSkipAutoAdvance(true);
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
+  
+  setSection2Answers(updatedAnswers);
+  setJustAnswered(true);
+  
+  // Save answers and timer to cookies after each question
+  setCookie("section2_answers", updatedAnswers, 1);
+  setCookie("section2_time_left", timeLeft, 1);
+};
+// Navigate to previous question
+// Replace this entire function
+const handlePrevQuestion = () => {
+  if (currentQuestionIndex > 0) {
+    setSkipAutoAdvance(true);
+    setCurrentQuestionIndex(prev => prev - 1);
+  }
+};
 
   // Navigate to next question
-  const handleNextQuestion = () => {
-    const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
+  // const handleNextQuestion = () => {
+  //   const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
     
-    if (currentQuestionIndex < maxQuestions - 1) {
-      setSkipAutoAdvance(true);
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
-  };
-
-  // Skip current question
-  const handleSkipQuestion = () => {
-    const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
-    
-    if (currentQuestionIndex < maxQuestions - 1) {
-      setSkipAutoAdvance(true);
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
-  };
+  //   if (currentQuestionIndex < maxQuestions - 1) {
+  //     setSkipAutoAdvance(true);
+  //     setCurrentQuestionIndex(prev => prev + 1);
+  //   }
+  // };
+const handleNextQuestion = () => {
+  const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
+  
+  if (currentQuestionIndex < maxQuestions - 1) {
+    setCurrentQuestionIndex(prev => prev + 1);
+    setJustAnswered(false);
+  }
+};
+const handleSkipQuestion = () => {
+  const maxQuestions = currentStep === "section1" ? totalSection1Questions : totalSection2Questions;
+  
+  if (currentQuestionIndex < maxQuestions - 1) {
+    setCurrentQuestionIndex(prev => prev + 1);
+    setJustAnswered(false);
+  }
+};
 
   // Calculate results for section 1
   const calculateSection1Results = () => {
@@ -937,19 +950,20 @@ export default function PersonalityTest() {
           >
             <div className="bg-white shadow-xl rounded-xl overflow-hidden">
               <div className="bg-[#abebc6] py-6 px-8">
-                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Test</h1>
-                <p className="text-[#186a3b] mt-2">Instructions for Section 1</p>
-              </div>
-
-              <div className="p-8">
-                <div className="flex items-center space-x-3 mb-6">
+                <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Assessment</h1>
+                {/* <p className="text-[#186a3b] mt-2">Instructions for Section 1</p> */}
+                <div className="flex items-center space-x-3 mt-2">
                   <div className="h-12 w-12 rounded-full bg-[#abebc6] flex items-center justify-center">
                     <Info size={24} className="text-indigo-600" />
                   </div>
                   <h2 className="text-xl font-bold text-[#145a32]">Section 1: Interest & Personality Inventory</h2>
                 </div>
+              </div>
+
+              <div className="p-8">
                 
-                <div className="mt-6 prose prose-indigo">
+                
+                <div className="prose prose-indigo">
                   <h3 className="text-lg font-semibold">Instructions:</h3>
                   <ul className="list-disc list-outside pl-5 space-y-2 text-gray-700">
                     <li>This inventory is designed to help you identify your <b> interests and personality</b></li>
@@ -1123,7 +1137,7 @@ export default function PersonalityTest() {
                     <li>You will have <b>7 minutes</b> to complete the entire test, which includes 25 questions.</li>
                     <li><b>Aim to attempt as many questions as possible within the time limit.</b></li>
                     <li><b>If you are unsure about an answer, it's advisable to move on to the next question to avoid wasting time.</b></li>
-                    <li>Rough work on paper is allowed but<b> calculator </b>is not allowed</li>
+                    <li><b>Rough work on paper is allowed but calculator is not allowed</b></li>
                   
                   </ul>
                   <p className="font-semibold text-gray-700 mt-4">Good luck!</p>
@@ -1253,17 +1267,17 @@ export default function PersonalityTest() {
 
                   <div className="mt-8 flex justify-between items-center">
                     <button
-                      onClick={handlePrevQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      className={`flex items-center py-2 px-4 rounded-md text-sm font-medium ${
-                        currentQuestionIndex === 0
-                          ? "text-gray-400 cursor-not-allowed"
-                          : "text-indigo-600 hover:text-indigo-700"
-                      }`}
-                    >
-                      <ArrowLeft size={16} className="mr-1" />
-                      Previous
-                    </button>
+  onClick={handlePrevQuestion}
+  disabled={currentQuestionIndex === 0}
+  className={`flex items-center py-2 px-4 rounded-md text-sm font-medium ${
+    currentQuestionIndex === 0
+      ? "text-gray-400 cursor-not-allowed"
+      : "text-indigo-600 hover:text-indigo-700"
+  }`}
+>
+  <ArrowLeft size={16} className="mr-1" />
+  Previous
+</button>
 
                     <button
                       onClick={handleSkipQuestion}

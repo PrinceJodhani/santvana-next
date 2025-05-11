@@ -1768,7 +1768,7 @@ export default function TestResults() {
     };
   };
 
-  const handleDownloadPDF = async () => {
+ const handleDownloadPDF = async () => {
   if (!reportRef.current) return;
   
   try {
@@ -1777,6 +1777,9 @@ export default function TestResults() {
     // Get the report element
     const reportElement = reportRef.current;
     
+    // Detect iOS device to apply special handling
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
     // Store original styles
     const originalStyles = {
       width: reportElement.style.width,
@@ -1784,8 +1787,11 @@ export default function TestResults() {
       overflow: reportElement.style.overflow
     };
     
-    // Set up for PDF generation - A4 portrait optimized
-    reportElement.style.width = "794px"; // Standard A4 width in pixels
+    // Set up for PDF generation with device-specific adjustments
+    // Use a narrower width for iOS to prevent overflow
+    const contentWidth = isIOS ? "740px" : "794px"; 
+    
+    reportElement.style.width = contentWidth;
     reportElement.style.height = "auto";
     reportElement.style.overflow = "visible";
     
@@ -1801,11 +1807,17 @@ export default function TestResults() {
     // Find the signature section
     const signatureSection = reportElement.querySelector('div.p-6.sm\\:p-8.border-b.border-gray-200:nth-last-of-type(2)');
     
-    // Find the footer - it might have changed, so use a more generic selector
+    // Find the footer
     const footerElement = reportElement.querySelector('div.bg-green-200');
     
     // Get elements before the result summary section (for first page)
     const firstPageContent = document.createElement('div');
+    firstPageContent.style.width = contentWidth;
+    firstPageContent.style.position = "absolute";
+    firstPageContent.style.left = "-9999px";
+    firstPageContent.style.background = "white";
+    firstPageContent.style.overflow = "hidden"; // Prevent overflow
+    
     if (resultSummaryElement && resultSummaryElement.parentNode) {
       const parent = resultSummaryElement.parentNode;
       const children = Array.from(parent.children);
@@ -1815,17 +1827,15 @@ export default function TestResults() {
       for (let i = 0; i < resultSummaryIndex; i++) {
         firstPageContent.appendChild(children[i].cloneNode(true));
       }
-    } else {
-      // Fallback if we can't find the result summary section
-      console.warn("Could not find result summary section, using default split");
     }
     
     // Create the second page content container
     const secondPageContent = document.createElement('div');
-    secondPageContent.style.width = "794px";
+    secondPageContent.style.width = contentWidth;
     secondPageContent.style.position = "absolute";
     secondPageContent.style.left = "-9999px";
     secondPageContent.style.background = "white";
+    secondPageContent.style.overflow = "hidden"; // Prevent overflow
     
     if (resultSummaryElement) {
       // First, add the result summary section
@@ -1860,47 +1870,55 @@ export default function TestResults() {
         });
       }
       
-      // Create and add the new custom footer
+      // Create and add the new custom footer - with responsive styling
       const customFooter = document.createElement('div');
-      customFooter.className = 'bg-green-200 py-4 w-full px-12 flex justify-between items-center';
       customFooter.style.backgroundColor = '#abebc6'; // Match bg-green-200
-      customFooter.style.padding = '16px 48px';
+      customFooter.style.padding = isIOS ? '12px 24px' : '16px 48px';
       customFooter.style.display = 'flex';
       customFooter.style.justifyContent = 'space-between';
       customFooter.style.alignItems = 'center';
+      customFooter.style.width = '100%';
+      customFooter.style.boxSizing = 'border-box';
       
       const leftSection = document.createElement('div');
       leftSection.style.display = 'flex';
       leftSection.style.flexDirection = 'column';
+      leftSection.style.flex = '1';
       
       const centerName = document.createElement('p');
       centerName.textContent = 'SANTVANA';
       centerName.style.fontWeight = 'bold';
       centerName.style.color = '#145a32';
-      centerName.style.fontSize = '16px';
+      centerName.style.fontSize = isIOS ? '14px' : '16px';
+      centerName.style.margin = '0';
       leftSection.appendChild(centerName);
       
       const centerDesc = document.createElement('p');
       centerDesc.textContent = 'Psychological Guidance Center';
       centerDesc.style.color = '#145a32';
-      centerDesc.style.fontSize = '14px';
+      centerDesc.style.fontSize = isIOS ? '12px' : '14px';
+      centerDesc.style.margin = '0';
       leftSection.appendChild(centerDesc);
       
       const rightSection = document.createElement('div');
       rightSection.style.display = 'flex';
       rightSection.style.flexDirection = 'column';
       rightSection.style.alignItems = 'flex-end';
+      rightSection.style.flex = '1';
+      rightSection.style.textAlign = 'right';
       
       const phoneNumbers = document.createElement('p');
       phoneNumbers.textContent = '98242 18278 | 97230 69261';
       phoneNumbers.style.color = '#145a32';
-      phoneNumbers.style.fontSize = '14px';
+      phoneNumbers.style.fontSize = isIOS ? '12px' : '14px';
+      phoneNumbers.style.margin = '0';
       rightSection.appendChild(phoneNumbers);
       
       const contactInfo = document.createElement('p');
       contactInfo.textContent = 'www.santvana.co.in | santvana27@gmail.com';
       contactInfo.style.color = '#145a32';
-      contactInfo.style.fontSize = '14px';
+      contactInfo.style.fontSize = isIOS ? '12px' : '14px';
+      contactInfo.style.margin = '0';
       rightSection.appendChild(contactInfo);
       
       customFooter.appendChild(leftSection);
@@ -1920,52 +1938,93 @@ export default function TestResults() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Prepare containers for canvas rendering
+    // Append elements to body for rendering
     document.body.appendChild(firstPageContent);
-    firstPageContent.style.width = "794px";
-    firstPageContent.style.position = "absolute";
-    firstPageContent.style.left = "-9999px";
-    
     document.body.appendChild(secondPageContent);
+    
+    // Use a reduced scale for iOS to prevent overflows
+    const renderScale = isIOS ? 1.2 : 1.5;
     
     // Generate first page canvas
     const canvas1 = await html2canvas(firstPageContent, {
-      scale: 1.5, // Reduced scale for smaller file size
+      scale: renderScale,
       useCORS: true,
       logging: false,
-      width: 794,
-      imageTimeout: 15000
+      width: parseInt(contentWidth),
+      imageTimeout: 15000,
+      windowWidth: parseInt(contentWidth), // Force viewport width
+      onclone: (clonedDoc) => {
+        // Make CSS adjustments for iOS
+        if (isIOS) {
+          const styles = clonedDoc.createElement('style');
+          styles.textContent = `
+            * {
+              max-width: 100% !important;
+              box-sizing: border-box !important;
+              word-wrap: break-word !important;
+            }
+            p, h1, h2, h3, h4, h5, h6 {
+              width: auto !important;
+            }
+          `;
+          clonedDoc.head.appendChild(styles);
+        }
+      }
     });
     
     // Generate second page canvas
     const canvas2 = await html2canvas(secondPageContent, {
-      scale: 1.5, // Reduced scale for smaller file size
+      scale: renderScale,
       useCORS: true,
       logging: false,
-      width: 794,
-      imageTimeout: 15000
+      width: parseInt(contentWidth),
+      imageTimeout: 15000,
+      windowWidth: parseInt(contentWidth), // Force viewport width
+      onclone: (clonedDoc) => {
+        // Make CSS adjustments for iOS
+        if (isIOS) {
+          const styles = clonedDoc.createElement('style');
+          styles.textContent = `
+            * {
+              max-width: 100% !important;
+              box-sizing: border-box !important;
+              word-wrap: break-word !important;
+            }
+            p, h1, h2, h3, h4, h5, h6 {
+              width: auto !important;
+            }
+          `;
+          clonedDoc.head.appendChild(styles);
+        }
+      }
     });
     
     // Clean up
     document.body.removeChild(firstPageContent);
     document.body.removeChild(secondPageContent);
     
+    // Use a higher quality setting for iOS to maintain text readability
+    const imageQuality = isIOS ? 0.85 : 0.8;
+    
     // Compress canvas images before adding to PDF
-    const compressedImage1 = canvas1.toDataURL('image/jpeg', 0.8); // Use JPEG with 80% quality
-    const compressedImage2 = canvas2.toDataURL('image/jpeg', 0.8); // Use JPEG with 80% quality
+    const compressedImage1 = canvas1.toDataURL('image/jpeg', imageQuality);
+    const compressedImage2 = canvas2.toDataURL('image/jpeg', imageQuality);
+    
+    // For iOS, use smaller margins to maximize content space
+    const margin = isIOS ? 2 : 5;
     
     // Add first page to PDF
-    const imgWidth1 = pdfWidth - 10; // Add small margin
+    const imgWidth1 = pdfWidth - (2 * margin);
     const imgHeight1 = (canvas1.height * imgWidth1) / canvas1.width;
-    pdf.addImage(compressedImage1, 'JPEG', 5, 5, imgWidth1, imgHeight1);
+    pdf.addImage(compressedImage1, 'JPEG', margin, margin, imgWidth1, imgHeight1);
     
     // Add second page
     pdf.addPage();
     
     // Add the second page content
-    const imgWidth2 = pdfWidth - 10; // Add small margin
+    const imgWidth2 = pdfWidth - (2 * margin);
     const imgHeight2 = (canvas2.height * imgWidth2) / canvas2.width;
-    pdf.addImage(compressedImage2, 'JPEG', 5, 5, imgWidth2, imgHeight2);
+    pdf.addImage(compressedImage2, 'JPEG', margin, margin, imgWidth2, imgHeight2);
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
@@ -2323,24 +2382,44 @@ setUserData(user);
             </div>
 
             <div className="mb-2">
-              <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
-              <ul className="list-disc pl-6  space-y-1">
-                {careerRecommendations?.interestAreas?.map(
-                  (interest, index) => (
-                    <li key={index} className="text-[#145a32] font-medium">
-                      {interest}
-                    </li>
-                  )
-                ) || (
-                  <>
-                    <li className="text-gray-700">Scientific</li>
-                    <li className="text-gray-700">Analytical</li>
-                    <li className="text-gray-700">Research-based</li>
-                    <li className="text-gray-700">Practical</li>
-                  </>
-                )}
-              </ul>
-            </div>
+  <p className="font-medium text-[#ec7063] mb-2">Interest Areas:</p>
+  <div className="flex flex-row space-x-4">
+    {/* Left Column */}
+    <div className="flex-1">
+      <ul className="list-disc pl-6 space-y-1">
+        {careerRecommendations?.interestAreas
+          ?.slice(0, Math.ceil((careerRecommendations.interestAreas.length)/2))
+          ?.map((interest, index) => (
+            <li key={index} className="text-[#145a32] font-medium">
+              {interest}
+            </li>
+          )) || (
+            <>
+              <li className="text-gray-700">Scientific</li>
+              <li className="text-gray-700">Analytical</li>
+            </>
+          )}
+      </ul>
+    </div>
+    {/* Right Column */}
+    <div className="flex-1">
+      <ul className="list-disc pl-6 space-y-1">
+        {careerRecommendations?.interestAreas
+          ?.slice(Math.ceil((careerRecommendations.interestAreas.length)/2))
+          ?.map((interest, index) => (
+            <li key={index + Math.ceil((careerRecommendations?.interestAreas?.length || 0)/2)} className="text-[#145a32] font-medium">
+              {interest}
+            </li>
+          )) || (
+            <>
+              <li className="text-gray-700">Research-based</li>
+              <li className="text-gray-700">Practical</li>
+            </>
+          )}
+      </ul>
+    </div>
+  </div>
+</div>
 
             <div className="mb-2">
               <p className="font-medium text-[#ec7063]">
