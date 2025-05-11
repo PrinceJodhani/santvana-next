@@ -1811,6 +1811,7 @@ export default function TestResults() {
     // Find the footer
     const footerElement = reportElement.querySelector('div.bg-green-200');
     
+    // ========================= FIRST PAGE (SAME FOR BOTH) =========================
     // Get elements before the result summary section (for first page)
     const firstPageContent = document.createElement('div');
     firstPageContent.style.width = contentWidth;
@@ -1830,102 +1831,77 @@ export default function TestResults() {
       }
     }
     
-    // Create the second page content container
-    const secondPageContent = document.createElement('div');
-    secondPageContent.style.width = contentWidth;
-    secondPageContent.style.position = "absolute";
-    secondPageContent.style.left = "-9999px";
-    secondPageContent.style.background = "white";
-    secondPageContent.style.overflow = "hidden"; // Prevent overflow
+    // ========================= SECOND & THIRD PAGES (DIFFERENT HANDLING) =========================
+    let secondPageContent, thirdPageContent;
     
-    if (resultSummaryElement) {
-      // First, add the result summary section
-      secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+    if (isIOS) {
+      // --------- IPHONE: SPLIT INTO 2 PAGES ---------
+      // Create second page content container (Result Summary only)
+      secondPageContent = document.createElement('div');
+      secondPageContent.style.width = contentWidth;
+      secondPageContent.style.position = "absolute";
+      secondPageContent.style.left = "-9999px";
+      secondPageContent.style.background = "white";
+      secondPageContent.style.overflow = "hidden";
       
-      // Add everything between result summary and signatures
-      let currentElement = resultSummaryElement.nextElementSibling;
-      while (currentElement && currentElement !== signatureSection && currentElement !== footerElement) {
-        secondPageContent.appendChild(currentElement.cloneNode(true));
-        currentElement = currentElement.nextElementSibling;
-      }
+      // Create third page content container (Everything else)
+      thirdPageContent = document.createElement('div');
+      thirdPageContent.style.width = contentWidth;
+      thirdPageContent.style.position = "absolute";
+      thirdPageContent.style.left = "-9999px";
+      thirdPageContent.style.background = "white";
+      thirdPageContent.style.overflow = "hidden";
       
-      // Add the signature section
-      if (signatureSection) {
-        const signatureClone = signatureSection.cloneNode(true);
-        secondPageContent.appendChild(signatureClone);
+      if (resultSummaryElement) {
+        // First, add the result summary section to second page
+        secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
         
-        // Fix signature images in the clone
-        const imageContainers = signatureClone.querySelectorAll('.h-20.w-40.mx-auto.relative');
-        imageContainers.forEach((container, index) => {
-          // Create img elements to replace Next.js Image components
-          const imgElement = document.createElement('img');
-          imgElement.src = index === 0 ? '/sign/1.png' : '/sign/2.png';
-          imgElement.alt = 'Signature';
-          imgElement.style.width = '100%';
-          imgElement.style.height = '100%';
-          imgElement.style.objectFit = 'contain';
-          
-          // Clear the container and add the img
-          container.innerHTML = '';
-          container.appendChild(imgElement);
-        });
+        // Add a custom footer to the second page
+        secondPageContent.appendChild(createCustomFooter(isIOS));
+        
+        // For the third page, add everything after result summary
+        let currentElement = resultSummaryElement.nextElementSibling;
+        while (currentElement && currentElement !== footerElement) {
+          thirdPageContent.appendChild(currentElement.cloneNode(true));
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        // Add the custom footer to the third page as well
+        thirdPageContent.appendChild(createCustomFooter(isIOS));
       }
+    } else {
+      // --------- ANDROID: KEEP AS ONE PAGE ---------
+      // Create the second page content container (everything after first page)
+      secondPageContent = document.createElement('div');
+      secondPageContent.style.width = contentWidth;
+      secondPageContent.style.position = "absolute";
+      secondPageContent.style.left = "-9999px";
+      secondPageContent.style.background = "white";
+      secondPageContent.style.overflow = "hidden";
       
-      // Create and add the new custom footer - with responsive styling
-      const customFooter = document.createElement('div');
-      customFooter.style.backgroundColor = '#abebc6'; // Match bg-green-200
-      customFooter.style.padding = isIOS ? '12px 24px' : '16px 48px';
-      customFooter.style.display = 'flex';
-      customFooter.style.justifyContent = 'space-between';
-      customFooter.style.alignItems = 'center';
-      customFooter.style.width = '100%';
-      customFooter.style.boxSizing = 'border-box';
-      
-      const leftSection = document.createElement('div');
-      leftSection.style.display = 'flex';
-      leftSection.style.flexDirection = 'column';
-      leftSection.style.flex = '1';
-      
-      const centerName = document.createElement('p');
-      centerName.textContent = 'SANTVANA';
-      centerName.style.fontWeight = 'bold';
-      centerName.style.color = '#145a32';
-      centerName.style.fontSize = isIOS ? '14px' : '16px';
-      centerName.style.margin = '0';
-      leftSection.appendChild(centerName);
-      
-      const centerDesc = document.createElement('p');
-      centerDesc.textContent = 'Psychological Well-being Center';
-      centerDesc.style.color = '#145a32';
-      centerDesc.style.fontSize = isIOS ? '12px' : '14px';
-      centerDesc.style.margin = '0';
-      leftSection.appendChild(centerDesc);
-      
-      const rightSection = document.createElement('div');
-      rightSection.style.display = 'flex';
-      rightSection.style.flexDirection = 'column';
-      rightSection.style.alignItems = 'flex-end';
-      rightSection.style.flex = '1';
-      rightSection.style.textAlign = 'right';
-      
-      const phoneNumbers = document.createElement('p');
-      phoneNumbers.textContent = '98242 18278 | 97230 69261';
-      phoneNumbers.style.color = '#145a32';
-      phoneNumbers.style.fontSize = isIOS ? '12px' : '14px';
-      phoneNumbers.style.margin = '0';
-      rightSection.appendChild(phoneNumbers);
-      
-      const contactInfo = document.createElement('p');
-      contactInfo.textContent = 'www.santvana.co.in | santvana27@gmail.com';
-      contactInfo.style.color = '#145a32';
-      contactInfo.style.fontSize = isIOS ? '12px' : '14px';
-      contactInfo.style.margin = '0';
-      rightSection.appendChild(contactInfo);
-      
-      customFooter.appendChild(leftSection);
-      customFooter.appendChild(rightSection);
-      
-      secondPageContent.appendChild(customFooter);
+      if (resultSummaryElement) {
+        // First, add the result summary section
+        secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+        
+        // Add everything between result summary and signatures
+        let currentElement = resultSummaryElement.nextElementSibling;
+        while (currentElement && currentElement !== signatureSection && currentElement !== footerElement) {
+          secondPageContent.appendChild(currentElement.cloneNode(true));
+          currentElement = currentElement.nextElementSibling;
+        }
+        
+        // Add the signature section
+        if (signatureSection) {
+          const signatureClone = signatureSection.cloneNode(true);
+          secondPageContent.appendChild(signatureClone);
+          
+          // Fix signature images in the clone
+          fixSignatureImages(signatureClone);
+        }
+        
+        // Add custom footer
+        secondPageContent.appendChild(createCustomFooter(isIOS));
+      }
     }
     
     // Configure PDF in portrait orientation (A4)
@@ -1942,9 +1918,12 @@ export default function TestResults() {
     // Append elements to body for rendering
     document.body.appendChild(firstPageContent);
     document.body.appendChild(secondPageContent);
+    if (isIOS && thirdPageContent) {
+      document.body.appendChild(thirdPageContent);
+    }
     
     // Use a reduced scale for iOS to prevent overflows
-    const renderScale = isIOS ? 1.2 : 1.5;
+    const renderScale = isIOS ? 1.25 : 1.5;
     
     // Generate first page canvas
     const canvas1 = await html2canvas(firstPageContent, {
@@ -1953,23 +1932,9 @@ export default function TestResults() {
       logging: false,
       width: parseInt(contentWidth),
       imageTimeout: 15000,
-      windowWidth: parseInt(contentWidth), // Force viewport width
+      windowWidth: parseInt(contentWidth),
       onclone: (clonedDoc) => {
-        // Make CSS adjustments for iOS
-        if (isIOS) {
-          const styles = clonedDoc.createElement('style');
-          styles.textContent = `
-            * {
-              max-width: 100% !important;
-              box-sizing: border-box !important;
-              word-wrap: break-word !important;
-            }
-            p, h1, h2, h3, h4, h5, h6 {
-              width: auto !important;
-            }
-          `;
-          clonedDoc.head.appendChild(styles);
-        }
+        applyCSSAdjustments(clonedDoc, isIOS);
       }
     });
     
@@ -1980,29 +1945,34 @@ export default function TestResults() {
       logging: false,
       width: parseInt(contentWidth),
       imageTimeout: 15000,
-      windowWidth: parseInt(contentWidth), // Force viewport width
+      windowWidth: parseInt(contentWidth),
       onclone: (clonedDoc) => {
-        // Make CSS adjustments for iOS
-        if (isIOS) {
-          const styles = clonedDoc.createElement('style');
-          styles.textContent = `
-            * {
-              max-width: 100% !important;
-              box-sizing: border-box !important;
-              word-wrap: break-word !important;
-            }
-            p, h1, h2, h3, h4, h5, h6 {
-              width: auto !important;
-            }
-          `;
-          clonedDoc.head.appendChild(styles);
-        }
+        applyCSSAdjustments(clonedDoc, isIOS);
       }
     });
+    
+    // Generate third page canvas for iOS
+    let canvas3 = null;
+    if (isIOS && thirdPageContent) {
+      canvas3 = await html2canvas(thirdPageContent, {
+        scale: renderScale,
+        useCORS: true,
+        logging: false,
+        width: parseInt(contentWidth),
+        imageTimeout: 15000,
+        windowWidth: parseInt(contentWidth),
+        onclone: (clonedDoc) => {
+          applyCSSAdjustments(clonedDoc, isIOS);
+        }
+      });
+    }
     
     // Clean up
     document.body.removeChild(firstPageContent);
     document.body.removeChild(secondPageContent);
+    if (isIOS && thirdPageContent) {
+      document.body.removeChild(thirdPageContent);
+    }
     
     // Use a higher quality setting for iOS to maintain text readability
     const imageQuality = isIOS ? 0.85 : 0.8;
@@ -2010,6 +1980,10 @@ export default function TestResults() {
     // Compress canvas images before adding to PDF
     const compressedImage1 = canvas1.toDataURL('image/jpeg', imageQuality);
     const compressedImage2 = canvas2.toDataURL('image/jpeg', imageQuality);
+    let compressedImage3 = null;
+    if (isIOS && canvas3) {
+      compressedImage3 = canvas3.toDataURL('image/jpeg', imageQuality);
+    }
     
     // For iOS, use smaller margins to maximize content space
     const margin = isIOS ? 2 : 5;
@@ -2026,6 +2000,14 @@ export default function TestResults() {
     const imgWidth2 = pdfWidth - (2 * margin);
     const imgHeight2 = (canvas2.height * imgWidth2) / canvas2.width;
     pdf.addImage(compressedImage2, 'JPEG', margin, margin, imgWidth2, imgHeight2);
+    
+    // Add third page for iOS
+    if (isIOS && compressedImage3) {
+      pdf.addPage();
+      const imgWidth3 = pdfWidth - (2 * margin);
+      const imgHeight3 = (canvas3.height * imgWidth3) / canvas3.width;
+      pdf.addImage(compressedImage3, 'JPEG', margin, margin, imgWidth3, imgHeight3);
+    }
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
@@ -2047,6 +2029,105 @@ export default function TestResults() {
     setIsGeneratingPdf(false);
   }
 };
+
+// Helper function to create custom footer
+function createCustomFooter(isIOS) {
+  const customFooter = document.createElement('div');
+  customFooter.style.backgroundColor = '#abebc6'; // Match bg-green-200
+  customFooter.style.padding = isIOS ? '12px 24px' : '16px 48px';
+  customFooter.style.display = 'flex';
+  customFooter.style.justifyContent = 'space-between';
+  customFooter.style.alignItems = 'center';
+  customFooter.style.width = '100%';
+  customFooter.style.boxSizing = 'border-box';
+  
+  const leftSection = document.createElement('div');
+  leftSection.style.display = 'flex';
+  leftSection.style.flexDirection = 'column';
+  leftSection.style.flex = '1';
+  
+  const centerName = document.createElement('p');
+  centerName.textContent = 'SANTVANA';
+  centerName.style.fontWeight = 'bold';
+  centerName.style.color = '#145a32';
+  centerName.style.fontSize = isIOS ? '14px' : '16px';
+  centerName.style.margin = '0';
+  leftSection.appendChild(centerName);
+  
+  const centerDesc = document.createElement('p');
+  centerDesc.textContent = 'Psychological Well-being Center';
+  centerDesc.style.color = '#145a32';
+  centerDesc.style.fontSize = isIOS ? '12px' : '14px';
+  centerDesc.style.margin = '0';
+  leftSection.appendChild(centerDesc);
+  
+  const rightSection = document.createElement('div');
+  rightSection.style.display = 'flex';
+  rightSection.style.flexDirection = 'column';
+  rightSection.style.alignItems = 'flex-end';
+  rightSection.style.flex = '1';
+  rightSection.style.textAlign = 'right';
+  
+  const phoneNumbers = document.createElement('p');
+  phoneNumbers.textContent = '98242 18278 | 97230 69261';
+  phoneNumbers.style.color = '#145a32';
+  phoneNumbers.style.fontSize = isIOS ? '12px' : '14px';
+  phoneNumbers.style.margin = '0';
+  rightSection.appendChild(phoneNumbers);
+  
+  const contactInfo = document.createElement('p');
+  contactInfo.textContent = 'www.santvana.co.in | santvana27@gmail.com';
+  contactInfo.style.color = '#145a32';
+  contactInfo.style.fontSize = isIOS ? '12px' : '14px';
+  contactInfo.style.margin = '0';
+  rightSection.appendChild(contactInfo);
+  
+  customFooter.appendChild(leftSection);
+  customFooter.appendChild(rightSection);
+  
+  return customFooter;
+}
+
+// Helper function to fix signature images
+function fixSignatureImages(signatureElement) {
+  // Fix signature images in the clone
+  const imageContainers = signatureElement.querySelectorAll('.h-20.w-40.mx-auto.relative');
+  imageContainers.forEach((container, index) => {
+    // Create img elements to replace Next.js Image components
+    const imgElement = document.createElement('img');
+    imgElement.src = index === 0 ? '/sign/1.png' : '/sign/2.png';
+    imgElement.alt = 'Signature';
+    imgElement.style.width = '100%';
+    imgElement.style.height = '100%';
+    imgElement.style.objectFit = 'contain';
+    
+    // Clear the container and add the img
+    container.innerHTML = '';
+    container.appendChild(imgElement);
+  });
+}
+
+// Helper function to apply CSS adjustments
+function applyCSSAdjustments(clonedDoc, isIOS) {
+  if (isIOS) {
+    const styles = clonedDoc.createElement('style');
+    styles.textContent = `
+      * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        word-wrap: break-word !important;
+      }
+      p, h1, h2, h3, h4, h5, h6 {
+        width: auto !important;
+        font-size: 95% !important;
+      }
+      div {
+        page-break-inside: avoid;
+      }
+    `;
+    clonedDoc.head.appendChild(styles);
+  }
+}
 
   const handleTakeNewTest = () => {
     clearAllCookies();
