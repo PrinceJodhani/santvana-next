@@ -2460,12 +2460,19 @@ setUserData(user);
                   </p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-lg font-bold text-gray-500">
-                    Date of Birth
-                  </p>
-                  <p className="text-lg font-bold text-[#ec7063]">
-                    {userData?.dob || "2000-01-01"}
-                  </p>
+               <p className="text-lg font-bold text-gray-500">
+  Date of Birth
+</p>
+<p className="text-lg font-bold text-[#ec7063]">
+  {userData?.dob ? 
+    new Date(userData.dob).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).replace(/\//g, '-') :
+    "01-01-2000"
+  }
+</p>
                 </div>
                 <div className="mb-4">
                   <p className="text-lg font-bold text-gray-500">Age</p>
