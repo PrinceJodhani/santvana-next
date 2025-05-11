@@ -2321,7 +2321,7 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
               <h3 className="text-lg font-semibold text-[#784212] mb-2">
                 What is Aptitude?
               </h3>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-md">
                 Aptitude refers to an{" "}
                 <b className="text-[#ca6f1e]"> individual's natural ability </b>
                 or <b className="text-[#ca6f1e]"> talent </b> to learn and
@@ -2334,7 +2334,7 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
               <h3 className="text-lg font-semibold text-[#784212] mb-2">
                 What is Personality?
               </h3>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-md">
                 Personality refers to the
                 <b className="text-[#ca6f1e]">
                   {" "}
@@ -2349,7 +2349,7 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
               <h3 className="text-lg font-semibold text-[#784212] mb-2">
                 What is Interest?
               </h3>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-md">
                 An interest is a subjective attitude to the activities or
                 subjects an individual
                 <b className="text-[#ca6f1e]">
@@ -2364,7 +2364,7 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
               <h3 className="text-lg font-semibold text-[#784212] mb-2">
                 How do together they help in choosing a career?{" "}
               </h3>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-md">
                 Aptitude, personality, and interest together form the foundation
                 for making a smart and satisfying career choice. When all three
                 align, you're more likely to choose a career where you perform
@@ -2495,8 +2495,8 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
             </div>
 
             {/* Recommended Courses Section */}
-            <div className="mb-6 mt-6">
-              <p className="font-medium text-[#ec7063] mb-2">
+            <div className="mt-6">
+              <p className="font-medium text-[#ec7063] mb-5">
                 Recommended Courses:
               </p>
               <div className="bg-[#ebfaf1] p-4 rounded-lg border border-[#abebc6]">
