@@ -1790,7 +1790,7 @@ export default function TestResults() {
     
     // Set up for PDF generation with device-specific adjustments
     // Use a narrower width for iOS to prevent overflow
-    const contentWidth = isIOS ? "740px" : "794px"; 
+    const contentWidth = isIOS ? "720px" : "794px"; 
     
     reportElement.style.width = contentWidth;
     reportElement.style.height = "auto";
@@ -1835,39 +1835,132 @@ export default function TestResults() {
     let secondPageContent, thirdPageContent;
     
     if (isIOS) {
-      // --------- IPHONE: SPLIT INTO 2 PAGES ---------
-      // Create second page content container (Result Summary only)
-      secondPageContent = document.createElement('div');
-      secondPageContent.style.width = contentWidth;
-      secondPageContent.style.position = "absolute";
-      secondPageContent.style.left = "-9999px";
-      secondPageContent.style.background = "white";
-      secondPageContent.style.overflow = "hidden";
+      // --------- IPHONE: SPLIT INTO 3 PAGES WITH BETTER CONTENT DISTRIBUTION ---------
       
-      // Create third page content container (Everything else)
-      thirdPageContent = document.createElement('div');
-      thirdPageContent.style.width = contentWidth;
-      thirdPageContent.style.position = "absolute";
-      thirdPageContent.style.left = "-9999px";
-      thirdPageContent.style.background = "white";
-      thirdPageContent.style.overflow = "hidden";
-      
-      if (resultSummaryElement) {
-        // First, add the result summary section to second page
-        secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+      // Reduce first page content for iOS to prevent overflow
+      if (firstPageContent.children.length > 3) {
+        // Move the last child to the beginning of the second page to prevent overflow
+        const lastChild = firstPageContent.children[firstPageContent.children.length - 1];
+        firstPageContent.removeChild(lastChild);
         
-        // Add a custom footer to the second page
-        secondPageContent.appendChild(createCustomFooter(isIOS));
+        // We'll add this to the second page later
+        const overflowContent = lastChild;
         
-        // For the third page, add everything after result summary
-        let currentElement = resultSummaryElement.nextElementSibling;
-        while (currentElement && currentElement !== footerElement) {
-          thirdPageContent.appendChild(currentElement.cloneNode(true));
-          currentElement = currentElement.nextElementSibling;
+        // Create second page content container (Result Summary and half the content)
+        secondPageContent = document.createElement('div');
+        secondPageContent.style.width = contentWidth;
+        secondPageContent.style.position = "absolute";
+        secondPageContent.style.left = "-9999px";
+        secondPageContent.style.background = "white";
+        secondPageContent.style.overflow = "hidden";
+        
+        // Create third page content container (Rest of content + signature + footer)
+        thirdPageContent = document.createElement('div');
+        thirdPageContent.style.width = contentWidth;
+        thirdPageContent.style.position = "absolute";
+        thirdPageContent.style.left = "-9999px";
+        thirdPageContent.style.background = "white";
+        thirdPageContent.style.overflow = "hidden";
+        
+        if (resultSummaryElement) {
+          // First add the overflow content from the first page
+          secondPageContent.appendChild(overflowContent.cloneNode(true));
+          
+          // Then add the result summary section to second page
+          secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+          
+          // Count how many elements we have after resultSummaryElement
+          let elementCount = 0;
+          let elementList = [];
+          let currentElement = resultSummaryElement.nextElementSibling;
+          
+          while (currentElement && currentElement !== footerElement) {
+            elementList.push(currentElement);
+            elementCount++;
+            currentElement = currentElement.nextElementSibling;
+          }
+          
+          // Distribute content: put about half on second page, half on third
+          const halfIndex = Math.ceil(elementCount / 2);
+          
+          // Add first half of elements to second page
+          for (let i = 0; i < halfIndex && i < elementList.length; i++) {
+            secondPageContent.appendChild(elementList[i].cloneNode(true));
+          }
+          
+          // Add second half of elements to third page (including signature section)
+          for (let i = halfIndex; i < elementList.length; i++) {
+            thirdPageContent.appendChild(elementList[i].cloneNode(true));
+          }
+          
+          // Add the signature section to the third page if it's not already included
+          if (!elementList.includes(signatureSection) && signatureSection) {
+            const signatureClone = signatureSection.cloneNode(true);
+            thirdPageContent.appendChild(signatureClone);
+            
+            // Fix signature images
+            fixSignatureImages(signatureClone);
+          }
+          
+          // Add the custom footer to the third page ONLY
+          thirdPageContent.appendChild(createCustomFooter(isIOS));
         }
+      } else {
+        // Fallback if we can't reduce first page content
+        // Create second page content container
+        secondPageContent = document.createElement('div');
+        secondPageContent.style.width = contentWidth;
+        secondPageContent.style.position = "absolute";
+        secondPageContent.style.left = "-9999px";
+        secondPageContent.style.background = "white";
+        secondPageContent.style.overflow = "hidden";
         
-        // Add the custom footer to the third page as well
-        thirdPageContent.appendChild(createCustomFooter(isIOS));
+        // Create third page content container
+        thirdPageContent = document.createElement('div');
+        thirdPageContent.style.width = contentWidth;
+        thirdPageContent.style.position = "absolute";
+        thirdPageContent.style.left = "-9999px";
+        thirdPageContent.style.background = "white";
+        thirdPageContent.style.overflow = "hidden";
+        
+        if (resultSummaryElement) {
+          // Add the result summary section to second page
+          secondPageContent.appendChild(resultSummaryElement.cloneNode(true));
+          
+          // Count and collect elements after result summary
+          let elementList = [];
+          let currentElement = resultSummaryElement.nextElementSibling;
+          
+          while (currentElement && currentElement !== footerElement) {
+            elementList.push(currentElement);
+            currentElement = currentElement.nextElementSibling;
+          }
+          
+          // Calculate the midpoint to split content between pages
+          const midpoint = Math.ceil(elementList.length / 2);
+          
+          // Add first half to second page
+          for (let i = 0; i < midpoint; i++) {
+            secondPageContent.appendChild(elementList[i].cloneNode(true));
+          }
+          
+          // Add second half to third page
+          for (let i = midpoint; i < elementList.length; i++) {
+            thirdPageContent.appendChild(elementList[i].cloneNode(true));
+          }
+          
+          // Add signature section to third page if not already included
+          if (!elementList.includes(signatureSection) && signatureSection) {
+            const signatureClone = signatureSection.cloneNode(true);
+            thirdPageContent.appendChild(signatureClone);
+            
+            // Fix signature images
+            fixSignatureImages(signatureClone);
+          }
+          
+          // Add the custom footer only to the third page
+          thirdPageContent.appendChild(createCustomFooter(isIOS));
+        }
       }
     } else {
       // --------- ANDROID: KEEP AS ONE PAGE ---------
@@ -1922,8 +2015,9 @@ export default function TestResults() {
       document.body.appendChild(thirdPageContent);
     }
     
-    // Use a reduced scale for iOS to prevent overflows
-    const renderScale = isIOS ? 1.25 : 1.5;
+    // Use an optimized scale based on device
+    // For iOS, use a more aggressive scale reduction to ensure content fits properly
+    const renderScale = isIOS ? 1.15 : 1.5;
     
     // Generate first page canvas
     const canvas1 = await html2canvas(firstPageContent, {
@@ -1975,7 +2069,7 @@ export default function TestResults() {
     }
     
     // Use a higher quality setting for iOS to maintain text readability
-    const imageQuality = isIOS ? 0.85 : 0.8;
+    const imageQuality = isIOS ? 0.9 : 0.8;
     
     // Compress canvas images before adding to PDF
     const compressedImage1 = canvas1.toDataURL('image/jpeg', imageQuality);
@@ -1985,8 +2079,8 @@ export default function TestResults() {
       compressedImage3 = canvas3.toDataURL('image/jpeg', imageQuality);
     }
     
-    // For iOS, use smaller margins to maximize content space
-    const margin = isIOS ? 2 : 5;
+    // For iOS, use minimal margins to maximize content space
+    const margin = isIOS ? 1 : 5;
     
     // Add first page to PDF
     const imgWidth1 = pdfWidth - (2 * margin);
@@ -2119,10 +2213,30 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
       }
       p, h1, h2, h3, h4, h5, h6 {
         width: auto !important;
-        font-size: 95% !important;
+        font-size: 90% !important;
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
       }
       div {
         page-break-inside: avoid;
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+      }
+      .p-6, .sm\\:p-8 {
+        padding: 12px !important;
+      }
+      .mb-6 {
+        margin-bottom: 12px !important;
+      }
+      .mb-4 {
+        margin-bottom: 8px !important;
+      }
+      .mb-2 {
+        margin-bottom: 4px !important;
+      }
+      /* Ensure text doesn't get too close to page edges */
+      [class*="border-b"] {
+        padding-bottom: 6px !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
@@ -2350,7 +2464,7 @@ setUserData(user);
                     Date of Birth
                   </p>
                   <p className="text-lg font-bold text-[#ec7063]">
-                    {userData?.dob || "01/01/2000"}
+                    {userData?.dob || "2000-01-01"}
                   </p>
                 </div>
                 <div className="mb-4">
