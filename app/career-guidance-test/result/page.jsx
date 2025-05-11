@@ -1471,7 +1471,7 @@ export default function TestResults() {
     };
   };
 
-  const handleDownloadPDF = async () => {
+ const handleDownloadPDF = async () => {
   if (!reportRef.current) return;
   
   try {
@@ -1969,7 +1969,6 @@ function fixSignatureImages(signatureElement) {
 }
 
 // Helper function to apply CSS adjustments
-// Helper function to apply CSS adjustments - Just update this function
 function applyCSSAdjustments(clonedDoc, isIOS) {
   if (isIOS) {
     const styles = clonedDoc.createElement('style');
@@ -2017,31 +2016,6 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         margin-top: 2px !important;
         margin-bottom: 2px !important;
         line-height: 1.3 !important;
-      }
-      
-      /* Make the text in "What is" sections smaller */
-      div:contains("What is Aptitude"), 
-      div:contains("What is Personality"),
-      div:contains("What is Interest"),
-      div:contains("How do together") {
-        font-size: 75% !important;
-        line-height: 1.1 !important;
-      }
-      
-      /* Make all text in these sections smaller */
-      div:contains("What is Aptitude") p, 
-      div:contains("What is Personality") p,
-      div:contains("What is Interest") p,
-      div:contains("How do together") p {
-        font-size: 70% !important;
-        line-height: 1.1 !important;
-        margin-top: 1px !important;
-        margin-bottom: 1px !important;
-      }
-      
-      /* Make the highlight text (orange/amber colored text) smaller too */
-      span[style*="color"], .text-amber-800, [class*="text-amber"] {
-        font-size: inherit !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
