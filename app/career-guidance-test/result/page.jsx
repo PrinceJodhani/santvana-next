@@ -10,7 +10,8 @@ import {
   Download,
   Loader,
   RefreshCcw,
-  CheckCircle
+  CheckCircle,
+  BookOpen
 } from "lucide-react";
 import { updateTestResults } from "./actions";
 
@@ -31,6 +32,10 @@ const careerMapping = {
         "Chemist (B.Sc in Chemistry)",
         "Financial Analyst",
         "Accountant"
+      ],
+      recommendedCourses: [
+        "B.Sc in Chemistry",
+        "B.Sc. in AI & ML"
       ]
     },
     "Numerical-Realistic-Artistic": {
@@ -47,6 +52,10 @@ const careerMapping = {
         "Industrial Designer",
         "Data Analyst",
         "Product Designer"
+      ],
+      recommendedCourses: [
+        "B.Com. / B.Sc. in Computer Application (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)"
       ]
     },
     "Numerical-Realistic-Social": {
@@ -62,6 +71,10 @@ const careerMapping = {
         "Healthcare Analyst",
         "Occupational Therapy Assistant",
         "Maths / Statistic Professor (Maths Required)"
+      ],
+      recommendedCourses: [
+        "B.Com. B.Ed. / B.Sc B.Ed",
+        "B.Com. in Business Management"
       ]
     },
     "Numerical-Realistic-Enterprising": {
@@ -78,6 +91,10 @@ const careerMapping = {
         "Business Analyst",
         "Marketing Manager",
         "Statistician"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Statistics",
+        "B.Com. Regular"
       ]
     },
     "Numerical-Realistic-Conventional": {
@@ -93,6 +110,10 @@ const careerMapping = {
         "Auditor",
         "Financial Analyst",
         "Actuarial Scientist"
+      ],
+      recommendedCourses: [
+        "B.Com. Regular",
+        "B.Sc. in Statistics"
       ]
     },
     "Numerical-Investigative-Artistic": {
@@ -108,6 +129,10 @@ const careerMapping = {
         "Game Designer",
         "Scientific Animator",
         "Info graphic Designer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Data Science / Computer Science",
+        "B.Com. in Computer Application"
       ]
     },
     "Numerical-Investigative-Social": {
@@ -123,6 +148,10 @@ const careerMapping = {
         "Education Researcher",
         "Health Policy Analyst",
         "Industrial / Forensic Psychologist"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology",
+        "B.Sc. in Cyber Security (Maths Required)"
       ]
     },
     "Numerical-Investigative-Enterprising": {
@@ -139,6 +168,10 @@ const careerMapping = {
         "Actuary",
         "Chartered Financial Analyst",
         "Data / Computer Scientist"
+      ],
+      recommendedCourses: [
+        "B.Com. Regular / Business Management",
+        "B.Sc. in Data Science"
       ]
     },
     "Numerical-Investigative-Conventional": {
@@ -156,6 +189,11 @@ const careerMapping = {
         "Aviation Inspector",
         "CFA",
         "Pharmacist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Math & Chemistry",
+        "B.Sc. in Statistics",
+        "B.Com. Regular"
       ]
     },
     "Numerical-Artistic-Social": {
@@ -172,6 +210,10 @@ const careerMapping = {
         "Content creation",
         "UI/UX Designer",
         "Social Media Analyst"
+      ],
+      recommendedCourses: [
+        "B.Com Regular",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Numerical-Artistic-Enterprising": {
@@ -188,6 +230,10 @@ const careerMapping = {
         "Data Visualization (Maths required)",
         "Creative Marketing Manager",
         "Product Manager"
+      ],
+      recommendedCourses: [
+        "B.A. in any Subject",
+        "B.Com. in Business Management"
       ]
     },
     "Numerical-Artistic-Conventional": {
@@ -204,6 +250,10 @@ const careerMapping = {
         "Budget Analyst (Maths required)",
         "Animator",
         "Landscape Architecture"
+      ],
+      recommendedCourses: [
+        "B.Com. B.Ed.",
+        "B.Sc. B.Ed."
       ]
     },
     "Numerical-Social-Enterprising": {
@@ -221,6 +271,10 @@ const careerMapping = {
         "Financial Adviser",
         "Economist",
         "Computer Scientist"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.A. in Economics"
       ]
     },
     "Numerical-Social-Conventional": {
@@ -237,6 +291,10 @@ const careerMapping = {
         "Banker",
         "Business Manager / Administrative",
         "Accountant"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. Regular"
       ]
     },
     "Numerical-Enterprising-Conventional": {
@@ -254,6 +312,11 @@ const careerMapping = {
         "Management Consultant",
         "Business Consultant",
         "Project Manager"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. Regular",
+        "B.Com. in International Business"
       ]
     },
     "Spatial-Realistic-Investigative": {
@@ -270,6 +333,10 @@ const careerMapping = {
         "CAD Technician",
         "Robotics Engineer",
         "Mechanical Designer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Science",
+        "B.Sc. in Botany & EVS"
       ]
     },
     "Spatial-Realistic-Artistic": {
@@ -289,6 +356,10 @@ const careerMapping = {
         "Interior / Fashion / Jewelry Designer",
         "Fine Arts",
         "Culinary Chef"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)"
       ]
     },
     "Spatial-Realistic-Social": {
@@ -305,6 +376,10 @@ const careerMapping = {
         "AutoCAD Designer",
         "Community Architect",
         "Real Estate Development"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)"
       ]
     },
     "Spatial-Realistic-Enterprising": {
@@ -321,6 +396,10 @@ const careerMapping = {
         "Product Design Entrepreneur",
         "Event Manager",
         "Interior / Jewelry Designer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Spatial-Realistic-Conventional": {
@@ -337,6 +416,10 @@ const careerMapping = {
         "Surveyor",
         "Technical Illustrator",
         "Computer-Aided Design (CAD) Specialist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in NS & NT",
+        "B.Sc. in Information Technology"
       ]
     },
     "Spatial-Investigative-Artistic": {
@@ -354,6 +437,10 @@ const careerMapping = {
         "Animation Designer",
         "Forensic Sketch Artist",
         "Fine Arts"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)"
       ]
     },
     "Spatial-Investigative-Social": {
@@ -370,6 +457,10 @@ const careerMapping = {
         "Neuropsychologist",
         "Architecture",
         "Graphic / Web Designer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "BA in Psychology"
       ]
     },
     "Spatial-Investigative-Enterprising": {
@@ -386,6 +477,10 @@ const careerMapping = {
         "Designer Entrepreneur",
         "Drone Mapping Specialist",
         "Game Developer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in AI & ML (Maths Required)",
+        "B.Sc. in Computer Application (Maths Required)"
       ]
     },
     "Spatial-Investigative-Conventional": {
@@ -402,6 +497,11 @@ const careerMapping = {
         "Statistician for Spatial Studies",
         "Computer Scientist",
         "Software Engineer"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Statistics",
+        "B.Sc. in Cyber & Digital Science",
+        "B.Sc. in Cyber Security (Maths Required)"
       ]
     },
     "Spatial-Artistic-Social": {
@@ -420,6 +520,10 @@ const careerMapping = {
         "Photographer",
         "Architecture",
         "Wedding Planner"
+      ],
+      recommendedCourses: [
+        "BA in Psychology",
+        "B.Sc. in Computer Application (Maths Required)"
       ]
     },
     "Spatial-Artistic-Enterprising": {
@@ -437,6 +541,10 @@ const careerMapping = {
         "Photographer",
         "Wedding Planner",
         "Architecture"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Spatial-Artistic-Conventional": {
@@ -454,6 +562,10 @@ const careerMapping = {
         "Architect",
         "Photographer",
         "Data Scientist (Maths Required)"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Data Science (Maths Required)",
+        "BA in any subject"
       ]
     },
     "Spatial-Social-Enterprising": {
@@ -470,6 +582,10 @@ const careerMapping = {
         "Design Consultant",
         "Photographer",
         "Graphic Designer"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "B.Com. in Business Management"
       ]
     },
     "Spatial-Social-Conventional": {
@@ -487,6 +603,10 @@ const careerMapping = {
         "Civil Engineer (Maths Required)",
         "Architect (Maths Required)",
         "Fashion / Jewelry Designer"
+      ],
+      recommendedCourses: [
+        "B.Com Regular",
+        "BA in any subject"
       ]
     },
     "Spatial-Enterprising-Conventional": {
@@ -502,6 +622,10 @@ const careerMapping = {
         "Business Analyst (Spatial Tech)",
         "Design Project Manager",
         "Printing Business Owner"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Logical-Realistic-Investigative": {
@@ -519,6 +643,11 @@ const careerMapping = {
         "Software Developer",
         "Lab Technician",
         "Pharmacist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+        "B.Sc. in Data Science (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)"
       ]
     },
     "Logical-Realistic-Artistic": {
@@ -535,6 +664,10 @@ const careerMapping = {
         "Audio Engineer",
         "Animation Programmer",
         "Digital Artist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Science (Maths Required)",
+        "B.Sc. in Computer Application (Maths Required)"
       ]
     },
     "Logical-Realistic-Social": {
@@ -550,6 +683,9 @@ const careerMapping = {
         "Physical Therapist",
         "Lawyer",
         "Physiotherapist"
+      ],
+      recommendedCourses: [
+        "BA in Psychology"
       ]
     },
     "Logical-Realistic-Enterprising": {
@@ -566,6 +702,11 @@ const careerMapping = {
         "Software Developer",
         "Computer Scientist (AI)",
         "Entrepreneur"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Science (Maths Required)",
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Com. in Business Management"
       ]
     },
     "Logical-Realistic-Conventional": {
@@ -583,6 +724,11 @@ const careerMapping = {
         "Computer Scientist (Maths Required)",
         "Banker",
         "Business Manager"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Cyber Security (Maths Required)",
+        "B.Sc. in Computer Science (Maths Required)",
+        "B.Com. in Business Management"
       ]
     },
     "Logical-Investigative-Artistic": {
@@ -599,6 +745,11 @@ const careerMapping = {
         "Data Visualization Expert",
         "Physicists",
         "Psychologist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+        "B.Sc. in Data Science (Maths Required)",
+        "BA in Psychology"
       ]
     },
     "Logical-Investigative-Social": {
@@ -617,6 +768,10 @@ const careerMapping = {
         "Journalist",
         "Doctor",
         "Physiotherapist"
+      ],
+      recommendedCourses: [
+        "B.A. in Psychology",
+        "Integrated BA B.Ed"
       ]
     },
     "Logical-Investigative-Enterprising": {
@@ -633,6 +788,11 @@ const careerMapping = {
         "Product Manager",
         "Economist",
         "Statistician / Data Analyst"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Data Science (Maths Required)",
+        "B.Sc. in Information Technology",
+        "B.Com. in Business Management"
       ]
     },
     "Logical-Investigative-Conventional": {
@@ -652,6 +812,11 @@ const careerMapping = {
         "Accountant (Maths Required)",
         "Company Secretary",
         "Doctor"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Statistics",
+        "B.Sc. in Maths & Chemistry",
+        "B.Com Regular"
       ]
     },
     "Logical-Artistic-Social": {
@@ -669,6 +834,10 @@ const careerMapping = {
         "Social Media Manager",
         "Journalist",
         "Design Teacher"
+      ],
+      recommendedCourses: [
+        "B.A. in English",
+        "B.A. in Psychology"
       ]
     },
     "Logical-Artistic-Enterprising": {
@@ -684,6 +853,11 @@ const careerMapping = {
         "Interior / Animation Designer",
         "Data Science Analyst (Maths Required)",
         "Content Marketing Manager"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Information Technology",
+        "B.Sc. in Artificial Intelligence & Machine Learning (Maths Required)",
+        "B.Sc. in Data Science (Maths Required)"
       ]
     },
     "Logical-Artistic-Conventional": {
@@ -700,6 +874,10 @@ const careerMapping = {
         "Graphic / Industrial Designer",
         "Digital Media Manager",
         "Event Manager"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Logical-Social-Enterprising": {
@@ -717,6 +895,11 @@ const careerMapping = {
         "Sales Manager",
         "Corporate Trainer",
         "Healthcare Administrator"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "Integrated BA B.Ed",
+        "Integrated B.Com B.Ed"
       ]
     },
     "Logical-Social-Conventional": {
@@ -733,6 +916,11 @@ const careerMapping = {
         "Training Programme Coordinator",
         "Rehabilitation Psychologist",
         "Office Administrator"
+      ],
+      recommendedCourses: [
+        "B.A. in Psychology",
+        "B.Com. in Business Management",
+        "Integrated BA B.Ed"
       ]
     },
     "Logical-Enterprising-Conventional": {
@@ -750,6 +938,10 @@ const careerMapping = {
         "Banking Officer",
         "CFA/ Chartered Accountant",
         "Company Secretary"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "B.Com. in Business Management"
       ]
     },
     "Clerical-Realistic-Investigative": {
@@ -766,6 +958,11 @@ const careerMapping = {
         "Lab Technician (Maths Required)",
         "Inventory Manager",
         "Quality Control Inspector"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Application (Maths Required)",
+        "B.Sc. in Statistics",
+        "B.Sc. in Data Science (Maths Required)"
       ]
     },
     "Clerical-Realistic-Artistic": {
@@ -782,6 +979,10 @@ const careerMapping = {
         "Design Project Coordinator",
         "Graphic / Interior Design Assistant",
         "Craft-based Businessman"
+      ],
+      recommendedCourses: [
+        "BA in any subject",
+        "B.Com. in Business Management"
       ]
     },
     "Clerical-Realistic-Social": {
@@ -798,6 +999,10 @@ const careerMapping = {
         "Rehabilitation Psychologist",
         "Special Educator",
         "Social Worker"
+      ],
+      recommendedCourses: [
+        "BA in Psychology",
+        "B.Com Regular"
       ]
     },
     "Clerical-Realistic-Enterprising": {
@@ -814,6 +1019,10 @@ const careerMapping = {
         "Sales Support Assistant",
         "Accountant",
         "Office Assistant"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Clerical-Realistic-Conventional": {
@@ -830,6 +1039,10 @@ const careerMapping = {
         "Data Entry Operator",
         "Office Assistant",
         "Administrator"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "B.Com. in Business Management"
       ]
     },
     "Clerical-Investigative-Artistic": {
@@ -847,6 +1060,10 @@ const careerMapping = {
         "Museum Assistant",
         "Art Researcher",
         "Digital Content Curator"
+      ],
+      recommendedCourses: [
+        "B.A. in English",
+        "B.Com. - Regular"
       ]
     },
     "Clerical-Investigative-Social": {
@@ -863,6 +1080,10 @@ const careerMapping = {
         "Research Assistant",
         "NGO Project Clerk",
         "Administrator"
+      ],
+      recommendedCourses: [
+        "Integrated BA B.Ed",
+        "BA in Psychology"
       ]
     },
     "Clerical-Investigative-Enterprising": {
@@ -878,6 +1099,10 @@ const careerMapping = {
         "Project Manager",
         "Sales Data Analyst",
         "Business Development Assistant"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Clerical-Investigative-Conventional": {
@@ -894,6 +1119,10 @@ const careerMapping = {
         "Accountant",
         "Technical Support Clerk",
         "Bank Clerk"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "B.Com. in Computer Application (Maths Required)"
       ]
     },
     "Clerical-Artistic-Social": {
@@ -910,6 +1139,10 @@ const careerMapping = {
         "Gallery Assistant",
         "Public Relation Officer",
         "Customer Care Executive"
+      ],
+      recommendedCourses: [
+        "BA in English, Psychology",
+        "B.Com Regular"
       ]
     },
     "Clerical-Artistic-Enterprising": {
@@ -925,6 +1158,10 @@ const careerMapping = {
         "Event / Wedding Planner Assistant",
         "Brand / Marketing Assistant",
         "Interior / Fashion Designer Assistant"
+      ],
+      recommendedCourses: [
+        "B.Com. - Regular",
+        "B.Com. in Business Management"
       ]
     },
     "Clerical-Artistic-Conventional": {
@@ -941,6 +1178,10 @@ const careerMapping = {
         "Fashion / Interior Designer Assistant",
         "Admin Worker",
         "Event Coordinator"
+      ],
+      recommendedCourses: [
+        "B.Com. in Business Management",
+        "B.A in English"
       ]
     },
     "Clerical-Social-Enterprising": {
@@ -957,6 +1198,10 @@ const careerMapping = {
         "Front Desk Executive",
         "Training Coordinator",
         "Office Assistant"
+      ],
+      recommendedCourses: [
+        "B.Com. Business Management",
+        "B.Com Regular"
       ]
     },
     "Clerical-Social-Conventional": {
@@ -974,6 +1219,10 @@ const careerMapping = {
         "Data Entry Clerk",
         "Front Desk Officer",
         "Banker"
+      ],
+      recommendedCourses: [
+        "B.Com. Regular",
+        "BA in any subject"
       ]
     },
     "Clerical-Enterprising-Conventional": {
@@ -990,6 +1239,10 @@ const careerMapping = {
         "Insurance Executive",
         "Banking Clerk",
         "Hotel Management"
+      ],
+      recommendedCourses: [
+        "B.Com. Business Management",
+        "B.Com. Regular"
       ]
     },
     "Verbal-Realistic-Investigative": {
@@ -1006,6 +1259,10 @@ const careerMapping = {
         "Health Educator",
         "Reporter",
         "Lawyer"
+      ],
+      recommendedCourses: [
+        "B.A. in Psychology",
+        "B.Com. Regular"
       ]
     },
     "Verbal-Realistic-Artistic": {
@@ -1024,6 +1281,10 @@ const careerMapping = {
         "Stage Manager",
         "Content Creator",
         "Anchor"
+      ],
+      recommendedCourses: [
+        "B.A. in Psychology",
+        "B.A. in English"
       ]
     },
     "Verbal-Realistic-Social": {
@@ -1041,6 +1302,10 @@ const careerMapping = {
         "Public Relations Officer",
         "Counselling Psychologist",
         "Social Worker"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology",
+        "B.Com. Business Management"
       ]
     },
     "Verbal-Realistic-Enterprising": {
@@ -1057,6 +1322,10 @@ const careerMapping = {
         "Business Consultant",
         "Marketing Manager",
         "Entrepreneur"
+      ],
+      recommendedCourses: [
+        "B.Com. Business Management",
+        "B.Com. in International Business"
       ]
     },
     "Verbal-Realistic-Conventional": {
@@ -1073,6 +1342,10 @@ const careerMapping = {
         "Human Resources Specialist",
         "Customer Support",
         "Researcher"
+      ],
+      recommendedCourses: [
+        "B.Com. Regular",
+        "B.A. Psychology"
       ]
     },
     "Verbal-Investigative-Artistic": {
@@ -1091,6 +1364,10 @@ const careerMapping = {
         "Podcast Creator",
         "Documentary Filmmaker",
         "Educational YouTuber"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology",
+        "B.A. English"
       ]
     },
     "Verbal-Investigative-Social": {
@@ -1109,6 +1386,11 @@ const careerMapping = {
         "Policy / Research Analyst",
         "Police",
         "Lawyer"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology",
+        "B.Sc. B.Ed.",
+        "LLB"
       ]
     },
     "Verbal-Investigative-Enterprising": {
@@ -1126,6 +1408,10 @@ const careerMapping = {
         "Public Relation Officer",
         "Lawyer",
         "Sales Manager"
+      ],
+      recommendedCourses: [
+        "B.Com. in International Business",
+        "B.Com. in Business Management"
       ]
     },
     "Verbal-Investigative-Conventional": {
@@ -1143,6 +1429,10 @@ const careerMapping = {
         "Lawyer",
         "News Reporter",
         "Intelligence Officer"
+      ],
+      recommendedCourses: [
+        "B.Com. in International Business",
+        "B.Sc. in Data Science (Maths Required)"
       ]
     },
     "Verbal-Artistic-Social": {
@@ -1160,6 +1450,10 @@ const careerMapping = {
         "Content Creator",
         "Radio Jockey / Podcast Creator",
         "News Anchor"
+      ],
+      recommendedCourses: [
+        "B.A. B.Ed.",
+        "B.A. English / Psychology"
       ]
     },
     "Verbal-Artistic-Enterprising": {
@@ -1177,6 +1471,10 @@ const careerMapping = {
         "Social Media Influencer / Youtuber",
         "Event Manager",
         "Public Relation Officer"
+      ],
+      recommendedCourses: [
+        "BA", 
+        "B.Com."
       ]
     },
     "Verbal-Artistic-Conventional": {
@@ -1193,6 +1491,10 @@ const careerMapping = {
         "Social Media Manager",
         "Marketing Manager",
         "Librarian"
+      ],
+      recommendedCourses: [
+        "B.A. B.Ed.",
+        "B.Com."
       ]
     },
     "Verbal-Social-Enterprising": {
@@ -1210,6 +1512,10 @@ const careerMapping = {
         "Wedding Planner",
         "Business Development Manager",
         "Hotel Management"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology",
+        "B.Com. Business Management"
       ]
     },
     "Verbal-Social-Conventional": {
@@ -1228,6 +1534,10 @@ const careerMapping = {
         "Trainer",
         "Developmental Psychologist",
         "Hotel Management"
+      ],
+      recommendedCourses: [
+        "B.A. Psychology / English",
+        "B.Com. Regular"
       ]
     },
     "Verbal-Enterprising-Conventional": {
@@ -1246,6 +1556,10 @@ const careerMapping = {
         "Business Management Officer",
         "Trainer",
         "Company Secretary"
+      ],
+      recommendedCourses: [
+        "B.Com Regular",
+        "B.Com. International Business"
       ]
     }
   };
@@ -1398,6 +1712,11 @@ export default function TestResults() {
           "Financial Analyst",
           "Business Consultant",
           "Research Scientist"
+        ],
+        recommendedCourses: [
+          "B.Sc. in Computer Science",
+          "B.Sc. in Mathematics",
+          "B.Com. with focus on Finance"
         ]
       };
     }
@@ -1440,6 +1759,11 @@ export default function TestResults() {
         "Financial Analyst",
         "Business Consultant",
         "Research Scientist"
+      ],
+      recommendedCourses: [
+        "B.Sc. in Computer Science",
+        "B.Sc. in Mathematics",
+        "B.Com. with focus on Finance"
       ]
     };
   };
@@ -1542,27 +1866,6 @@ export default function TestResults() {
       secondPageCanvas.width * secondRatio, 
       secondPageCanvas.height * secondRatio
     );
-    
-    // Add footer to both pages if we captured it separately
-    if (footerCanvas) {
-      // Calculate footer position and size
-      const footerWidth = footerCanvas.width;
-      const footerImgHeight = footerCanvas.height;
-      const footerRatio = pdfWidth / footerWidth * 0.9; // Make it 90% of page width
-      const footerX = (pdfWidth - footerWidth * footerRatio) / 2;
-      const footerY = pdfHeight - (footerImgHeight * footerRatio) - 5;
-      
-      // Add to second page
-      // pdf.setPage(2);
-      // pdf.addImage(
-      //   footerCanvas.toDataURL('image/png'), 
-      //   'PNG', 
-      //   footerX, 
-      //   footerY, 
-      //   footerWidth * footerRatio, 
-      //   footerImgHeight * footerRatio
-      // );
-    }
     
     // Restore original styles
     reportElement.style.width = originalStyles.width;
@@ -1696,6 +1999,11 @@ setUserData(user);
             "Financial Analyst", 
             "Business Consultant",
             "Research Scientist"
+          ],
+          recommendedCourses: [
+            "B.Sc. in Computer Science",
+            "B.Sc. in Mathematics",
+            "B.Com. with focus on Finance"
           ]
         });
       } finally {
@@ -1874,6 +2182,27 @@ setUserData(user);
               <p className="font-medium text-[#ec7063]">
                 Potential Stream: <span className="text-[#145a32]">{careerRecommendations?.streams?.join('/ ') || "Science/ Commerce"}</span>
               </p>
+            </div>
+            
+            {/* Recommended Courses Section */}
+            <div className="mb-6">
+              <p className="font-medium text-[#ec7063] mb-2">Recommended Courses:</p>
+              <div className="bg-[#ebfaf1] p-4 rounded-lg border border-[#abebc6]">
+                <ul className="space-y-2">
+                  {(careerRecommendations?.recommendedCourses || [
+                    "B.Sc. in Computer Science",
+                    "B.Sc. in Mathematics",
+                    "B.Com. with focus on Finance"
+                  ]).map((course, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="flex-shrink-0 h-5 w-5 mt-0.5 text-[#145a32]">
+                        <BookOpen size={18} />
+                      </div>
+                      <span className="ml-2 text-gray-700">{course}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             
             <div>
