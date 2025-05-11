@@ -1969,6 +1969,7 @@ function fixSignatureImages(signatureElement) {
 }
 
 // Helper function to apply CSS adjustments
+// Helper function to apply CSS adjustments
 function applyCSSAdjustments(clonedDoc, isIOS) {
   if (isIOS) {
     const styles = clonedDoc.createElement('style');
@@ -2016,6 +2017,51 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
         margin-top: 2px !important;
         margin-bottom: 2px !important;
         line-height: 1.3 !important;
+      }
+      
+      /* Make personal info fields side-by-side on iOS */
+      /* First, target the parent container */
+      .p-6:first-of-type > div:not(:first-child), .sm\\:p-8:first-of-type > div:not(:first-child) {
+        display: inline-block !important;
+        width: 45% !important;
+        vertical-align: top !important;
+        margin-right: 5% !important;
+      }
+      
+      /* Target "What is Aptitude" sections to make smaller */
+      div:has(h3:contains("What is")), 
+      div:has(div:contains("What is")) {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+      }
+      
+      div:contains("What is Aptitude"), 
+      div:contains("What is Personality"),
+      div:contains("What is Interest"),
+      div:contains("How do together") {
+        font-size: 85% !important;
+        line-height: 1.2 !important;
+      }
+      
+      /* Make text in these sections smaller */
+      div:contains("What is Aptitude") p, 
+      div:contains("What is Personality") p,
+      div:contains("What is Interest") p,
+      div:contains("How do together") p {
+        font-size: 80% !important;
+        line-height: 1.2 !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+      }
+      
+      /* Target colored text */
+      span[style*="color: #"], 
+      span[style*="color:#"], 
+      .text-amber-800,
+      span.text-amber-800,
+      span.font-semibold, 
+      span.font-bold {
+        font-size: inherit !important;
       }
     `;
     clonedDoc.head.appendChild(styles);
