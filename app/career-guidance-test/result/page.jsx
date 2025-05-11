@@ -11,7 +11,8 @@ import {
   Loader,
   RefreshCcw,
   CheckCircle,
-  BookOpen
+  BookOpen,
+  Link
 } from "lucide-react";
 import { updateTestResults } from "./actions";
 
@@ -2214,13 +2215,13 @@ setUserData(user);
                 </>
               )}
             </button>
-            <button
-              onClick={handleTakeNewTest}
-              className="flex items-center justify-center px-4 py-2 bg-white text-[#117864] rounded-lg shadow hover:bg-gray-50 transition-colors"
+            <a
+              href="https://santvana.co.in/"
+              className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
             >
               <RefreshCcw className="h-4 w-4 mr-2" />
-              Take New Test
-            </button>
+              Visit Our Website
+            </a>
           </div>
         </div>
 
@@ -2585,13 +2586,13 @@ setUserData(user);
               </>
             )}
           </button>
-          <button
-            onClick={handleTakeNewTest}
-            className="flex items-center justify-center px-6 py-3 bg-white text-[#117864] rounded-lg shadow hover:bg-gray-50 transition-colors w-full sm:w-auto"
+          <a
+            href="https://www.santvana.co.in/"
+            className="flex items-center justify-center px-6 py-3 text-white bg-[#117864] rounded-lg shadow  w-full sm:w-auto"
           >
             <RefreshCcw className="h-5 w-5 mr-2" />
-            Take Another Test
-          </button>
+            Visit Our Website
+          </a>
         </div>
       </div>
     </div>
