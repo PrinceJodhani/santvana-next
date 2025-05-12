@@ -553,6 +553,7 @@ const [codeError, setCodeError] = useState("");
         // Move to instructions
         setCurrentStep("section1_instructions");
         setCookie("current_section", "section1_instructions", 1);
+          setShowCodePopup(true);
       } else {
         setErrors((prev) => ({ ...prev, form: result.error || "Failed to submit form. Please try again." }));
       }
@@ -699,7 +700,7 @@ const handleSkipQuestion = () => {
       
       // Move to section 2 instructions
       setCurrentStep("section2_instructions");
-      setShowCodePopup(true);
+
     } catch (error) {
       console.error("Error saving results:", error);
       alert("There was an error saving your results. Please try again.");
@@ -708,7 +709,8 @@ const handleSkipQuestion = () => {
     }
   };
 
-  const handleVerifyCode = () => {
+  // 2. Modify the handleVerifyCode function
+const handleVerifyCode = () => {
   // Check if the code is correct (case insensitive)
   if (verificationCode.toUpperCase() === "ST2710") {
     // Clear the code and error
@@ -718,9 +720,9 @@ const handleSkipQuestion = () => {
     // Hide the popup
     setShowCodePopup(false);
     
-    // Proceed to section 2 instructions
-    setCookie("current_section", "section2_instructions", 1);
-    setCurrentStep("section2_instructions");
+    // Proceed to section 1 instructions
+    setCookie("current_section", "section1_instructions", 1);
+    setCurrentStep("section1_instructions");
   } else {
     // Show error message
     setCodeError("Incorrect code. Please try again.");
