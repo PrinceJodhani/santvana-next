@@ -555,9 +555,15 @@ const [codeError, setCodeError] = useState("");
         setCookie("current_section", "section1_instructions", 1);
           setShowCodePopup(true);
       } else {
+      // Check if limit is reached
+      if (result.limitReached) {
+        // Show limit reached message
+        setCurrentStep("limit_reached");
+      } else {
         setErrors((prev) => ({ ...prev, form: result.error || "Failed to submit form. Please try again." }));
       }
-    } catch (error) {
+    }
+  } catch (error) {
       console.error("Error submitting form:", error);
       setErrors((prev) => ({ ...prev, form: "Failed to submit form. Please try again." }));
     } finally {
@@ -963,6 +969,42 @@ const handleVerifyCode = () => {
             </div>
           </motion.div>
         )}
+
+        {/* LIMIT REACHED MESSAGE */}
+{currentStep === "limit_reached" && (
+  <motion.div
+    key="limit_reached"
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    variants={pageVariants}
+    transition={{ duration: 0.3 }}
+  >
+    <div className="bg-white shadow-xl rounded-xl overflow-hidden">
+      <div className="bg-[#abebc6] py-6 px-8">
+        <h1 className="text-2xl font-bold text-[#186a3b]">Career Guidance Assessment Registration</h1>
+        <p className="text-[#186a3b] mt-2">Maximum Limit Reached</p>
+      </div>
+      
+      <div className="py-8 px-8 text-center">
+        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 mb-6">
+          <h2 className="text-xl font-bold mb-4">We are not accepting new tests currently</h2>
+          <p className="text-gray-600">
+            We have reached the maximum number of tests we can process at this time. 
+            Please check back later or contact us for more information.
+          </p>
+        </div>
+        
+        <button
+          onClick={() => window.location.href = '/'}
+          className="mt-4 inline-flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#935116] hover:bg-[#1d8348] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+        >
+          Return to Home
+        </button>
+      </div>
+    </div>
+  </motion.div>
+)}
 
         {/* SECTION 1 INSTRUCTIONS */}
         {currentStep === "section1_instructions" && (
