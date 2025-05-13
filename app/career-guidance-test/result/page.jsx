@@ -2224,13 +2224,13 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
               <RefreshCcw className="h-4 w-4 mr-2" />
               Visit Our Website
             </a>
-            <button
+             {/* <button
               onClick={handleTakeNewTest}
               className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
             >
               <RefreshCcw className="h-4 w-4 mr-2" />
               Take New Test
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -2634,13 +2634,13 @@ function applyCSSAdjustments(clonedDoc, isIOS) {
             <RefreshCcw className="h-5 w-5 mr-2" />
             Visit Our Website
           </a>
-          <button
+          {/* <button
             onClick={handleTakeNewTest}
             className="flex items-center justify-center px-4 py-2 text-white bg-[#117864] rounded-lg shadow "
           >
             <RefreshCcw className="h-4 w-4 mr-2" />
             Take New Test
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
