@@ -698,10 +698,10 @@ function AdminTestsContent() {
                     <div>
                       <p className="text-sm text-gray-500">Time Taken</p>
                      
-                        <p className="font-medium">{calculateTimeTaken(
-                        typeof detailView.test_started_at === 'object' ? detailView.test_started_at.toISOString() : detailView.test_started_at,
-                        typeof detailView.test_completed_at === 'object' ? detailView.test_completed_at.toISOString() : detailView.test_completed_at
-                      )}</p>
+                       <p className="font-medium">{calculateTimeTaken(
+  typeof detailView.test_started_at === 'object' && detailView.test_started_at ? detailView.test_started_at.toISOString() : detailView.test_started_at,
+  typeof detailView.test_completed_at === 'object' && detailView.test_completed_at ? detailView.test_completed_at.toISOString() : detailView.test_completed_at
+)}</p>
                     </div>
                   </div>
                   <div>
