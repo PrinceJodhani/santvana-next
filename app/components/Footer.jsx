@@ -170,7 +170,7 @@ const Footer = () => {
           All rights reserved.
         </p>
         <p>
-          Developed By <a href='https://www.linkedin.com/in/prince-jodhani-05413721b'>Prince Jodhani</a>
+          Developed By <a href='https://www.instagram.com/im.princejodhani'>Prince Jodhani</a>
         </p>
       </div>
     </footer>
