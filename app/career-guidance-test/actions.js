@@ -39,7 +39,7 @@ export async function submitPersonalityData(data) {
     const countResult = await getPersonalityTestCount();
     
     // Define your limit (10, 15, 500 etc.)
-    const TEST_LIMIT = 510; // Change this to your desired limit
+    const TEST_LIMIT = 1250; // Change this to your desired limit
     
     // Check if limit reached
     if (countResult.success && countResult.count >= TEST_LIMIT) {
