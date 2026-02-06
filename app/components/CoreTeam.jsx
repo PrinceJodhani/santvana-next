@@ -1,257 +1,126 @@
 // app/components/CoreTeam.jsx
 "use client";
-import React, { useState } from "react";
-import AppointmentForm from "./AppointmentForm";
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-// Import the Drawer components
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-} from "@/components/ui/drawer";
-
-// Assuming you have installed and configured your Drawer component
-
-const coreTeam = [
+const founders = [
   {
-    name: "Ms. Poonam G Vipani",
-    title: "Associate Clinical Psychologist",
-    qualifications: "MA, PDCP (RCI Registered)",
+    name: "Ms. Poonam Vipani",
+    title: "RCI Registered Clinical Psychologist (A)",
+    qualifications: "MA, PDCP",
     role: "Founder",
     image: "/images/poonam.jpg",
-    phone: "+919824218278",
-    details: `
-
-    I am a dedicated and empathetic Associate Clinical Psychologist licensed by Rehabilitation Counsil of India (RCI) with over a decade of enriched experience in the field. Proficient in a wide array of evidence-based therapeutic modalities including Cognitive Behavioral Therapy (CBT), REBT, DBT, family & relationship counselling, career counselling and cancer counseling. Bringing forth 12 years of comprehensive expertise in providing mental health support and guidance to individuals across various life stages. Specializing in working with adolescents, adults, elderly individuals, and couples. Additionally, I extend my expertise as a psychotherapist to an NGO dedicated to supporting cancer patients through their emotional journeys.
-    I aim to create a supportive space for healing and growth through collaboration. Witnessing progress and transformation is deeply fulfilling and inspiring, like watching a seed bloom with effort and teamwork.
-    
-
-**Key Skills:**
-- Specialized training in Clinical Psychology
-- Expertise in REBT, CBT, DBT, and other therapeutic approaches
-- Experience working with individuals, couples, and families
-- Tailored therapeutic approaches for varied age groups
-- Cultivating a supportive and nurturing environment for clients
-- Compassionate support for cancer patients through psychotherapeutic care
-
-**Professional Accomplishments:**
-- Successfully helped numerous individuals and couples navigate through challenging mental health issues
-- Conducted workshops and seminars on mental well-being and relationship dynamics
-- Actively involved in community outreach programs promoting mental health awareness
-- Recognized for providing empathetic and effective psychotherapeutic care to cancer patients
-
-**Associated with:**
-- Santvana - Psychological Guidance Centre (Founder)
-- Basil Onco Care (For Cancer Patients)
-- Priyanka Jariwala Memorial Foundation (For Cancer Patients)
-- Indiagro Consortium Producer Company Limited (Director)
-- Gujagro Farmers Producer Company Limited (Director)
-- Former Psychologist at Psylens Centre, Surat
-- Former Psychologist at ‘Prashanti’ – Dr. Mahesh Desai, Psychiatrist
-- Former Psychologist at Shree Gurunanak Charitable Trust Hospital
-- Former Psychologist at National Training & Consultancy
-    `,
+    gradient: "from-brown-500 to-brown-600",
+    borderColor: "border-brown-200",
+    badgeBg: "bg-gradient-to-r from-brown-100 to-brown-50",
+    badgeText: "text-brown-700",
+    ringColor: "ring-brown-200",
   },
   {
     name: "Ms. Rajvee Shah",
-    title: "Psychotherapist",
+    title: "Psychologist",
     qualifications: "MA – Clinical Psychology",
-    role: "Co-founder",
+    role: "Co-Founder",
     image: "/images/rajvee.jpg",
-    phone: "+919723069261",
-    details: `
-
-As a Psychotherapist and co-founder of Santvana - Psychological Guidance Centre, I bring a wealth of expertise in clinical psychology and a diverse toolkit of therapeutic modalities, including CBT, REBT, DBT, and more. With a Master’s in Clinical Psychology, my practice focuses on serving individuals, couples, and families across all age groups. Since 2021, I have been wholeheartedly dedicated to delivering personalized, evidence-based therapy to individuals striving to navigate life's challenges and enhance their overall well-being. My approach aims to foster a compassionate and supportive environment where healing and personal growth can flourish through collaborative efforts.
-
-**Key Skills:**
-- Proficiency in CBT, REBT, DBT, and other therapeutic approaches
-- Experience working with individuals, couples, and families
-- Tailored therapeutic approaches for varied age groups
-- Cultivating a supportive and nurturing environment for clients
-
-**Professional Accomplishments:**
-- Successfully helped individuals and couples navigate through challenging mental health issues
-- Conducted workshops and seminars on mental well-being and relationship dynamics
-- Actively involved in community outreach programs promoting mental health awareness
-
-**Associated with:**
-- Santvana - Psychological Guidance Centre (Co-Founder)
-- Psychologist and tutor at Eureka Coaching Centre
-- Former Psychologist at Psylens Centre, Surat
-- Former psychologist and tutor at Keystone Universe of Education, Ahmedabad, and Ace Academy, Ahmedabad
-    `,
+    gradient: "from-teal-500 to-teal-600",
+    borderColor: "border-teal-200",
+    badgeBg: "bg-gradient-to-r from-teal-100 to-teal-50",
+    badgeText: "text-teal-700",
+    ringColor: "ring-teal-200",
   },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.2 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 const CoreTeam = () => {
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [showDetailsDrawer, setShowDetailsDrawer] = useState(false);
-  const [showBookingDrawer, setShowBookingDrawer] = useState(false);
-
-  const handleViewDetails = (member) => {
-    setSelectedMember(member);
-    setShowDetailsDrawer(true);
-  };
-
-  const handleBookNow = (member) => {
-    setSelectedMember(member);
-    setShowBookingDrawer(true);
-  };
-
-  const closeDetailsDrawer = () => {
-    setShowDetailsDrawer(false);
-    setSelectedMember(null);
-  };
-
-  const closeBookingDrawer = () => {
-    setShowBookingDrawer(false);
-    setSelectedMember(null);
-  };
-
-  // Function to parse details text and create React elements
-  const parseDetails = (text) => {
-    const lines = text.split("\n").filter((line) => line.trim() !== "");
-    const elements = [];
-
-    lines.forEach((line, idx) => {
-      if (line.startsWith("**") && line.endsWith("**")) {
-        // Heading
-        const headingText = line.substring(2, line.length - 2);
-        elements.push(
-          <h2 key={`heading-${idx}`} className="text-2xl font-bold mt-6">
-            {headingText}
-          </h2>
-        );
-      } else if (line.startsWith("-")) {
-        // List item
-        elements.push(
-          <li key={`list-${idx}`} className="ml-6 list-disc text-lg">
-            {line.substring(1).trim()}
-          </li>
-        );
-      } else {
-        // Paragraph
-        elements.push(
-          <p key={`paragraph-${idx}`} className="mt-4 text-lg">
-            {line}
-          </p>
-        );
-      }
-    });
-
-    return elements;
-  };
-
   return (
-    <section id="team" className="py-16 bg-[#546365]">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[#C0CEC0]">
-          Meet Our Core Team
-        </h2>
-        <div className="flex flex-col md:flex-row justify-center items-center space-y-12 md:space-y-0 md:space-x-12">
-          {coreTeam.map((member, index) => (
-            <div key={index} className="text-center">
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-48 h-48 object-cover rounded-full mx-auto mb-4"
-              />
-              <h3 className="text-xl font-semibold text-[#C0CEC0]">
+    <section className="py-20 md:py-28 bg-gradient-to-b from-teal-50/30 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-brown-100 to-teal-100 text-brown-700 text-xs font-semibold uppercase tracking-wider mb-4">
+              <svg className="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Our Founders
+            </span>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
+              <span className="text-brown-800">Meet Our </span>
+              <span className="bg-gradient-to-r from-teal-700 to-sage-600 bg-clip-text text-transparent">Core Team</span>
+            </h2>
+            <p className="text-brown-500 max-w-xl mx-auto">
+              Led by experienced clinical psychologists dedicated to your well-being.
+            </p>
+          </motion.div>
+        </div>
+
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-3xl mx-auto"
+        >
+          {founders.map((member) => (
+            <motion.div
+              key={member.name}
+              variants={item}
+              className={`group flex-1 bg-white rounded-2xl p-8 border-2 ${member.borderColor} text-center hover:shadow-xl transition-all duration-300 relative overflow-hidden`}
+            >
+              {/* Decorative corner accent */}
+              <div className={`absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br ${member.gradient} rounded-full opacity-10 group-hover:opacity-20 transition-opacity`} />
+
+              <div className={`w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 ring-4 ${member.ringColor} shadow-lg`}>
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  width={128}
+                  height={128}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className={`inline-block px-4 py-1.5 rounded-full ${member.badgeBg} ${member.badgeText} text-xs font-bold mb-3`}>
+                {member.role}
+              </span>
+              <h3 className="text-lg font-semibold text-brown-800 mb-1">
                 {member.name}
               </h3>
-              <p className="text-[#C0CEC0]">{member.title}</p>
-              <p className="text-[#C0CEC0]">{member.qualifications}</p>
-              <p className="font-semibold text-[#C0CEC0]">{member.role}</p>
-
-              {/* Buttons */}
-              <div className="mt-4 flex justify-center space-x-4">
-                {/* View Details Button */}
-                <button
-                  onClick={() => handleViewDetails(member)}
-                  className="relative mt-4 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-blue-300 to-green-200 group-hover:from-blue-200 group-hover:via-green-300 group-hover:to-green-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
-                >
-                  <span className="relative mr-1 mb-0.5 px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-
-                  View Details
-                  </span>
-                </button>
-
-                {/* Book Now Button */}
-                <button
-                  onClick={() => handleBookNow(member)}
-                  className="relative mt-4 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-blue-300 to-green-200 group-hover:from-blue-200 group-hover:via-green-300 group-hover:to-green-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400"
-                >
-                  <span className="relative mr-1 mb-0.5 px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-
-                  Book Now
-                  </span>
-                </button>
-              </div>
-            </div>
+              <p className="text-sm text-teal-600 mb-1 font-medium">{member.title}</p>
+              <p className="text-xs text-gray-400">{member.qualifications}</p>
+            </motion.div>
           ))}
+        </motion.div>
+
+        <div className="text-center mt-10">
+          <Link
+            href="/about/team"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brown-700 hover:text-teal-700 transition-colors bg-gradient-to-r from-brown-50 to-teal-50 px-6 py-3 rounded-full border border-brown-200 hover:border-teal-300 hover:shadow-md transition-all duration-300"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            View All Team Members
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
-
-      {/* Drawer for displaying member details */}
-      {selectedMember && showDetailsDrawer && (
-        <Drawer open={showDetailsDrawer} onClose={closeDetailsDrawer}>
-          <DrawerContent className="bg-white max-w-screen-lg mx-auto p-6">
-            <DrawerClose asChild>
-              <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
-                &#10005;
-              </button>
-            </DrawerClose>
-            <div className="flex flex-col items-center">
-              <img
-                src={selectedMember.image}
-                alt={selectedMember.name}
-                className="w-40 h-40 object-cover rounded-full mb-4"
-              />
-              <h2 className="text-3xl font-bold text-gray-800">
-                {selectedMember.name}
-              </h2>
-              <p className="text-gray-600 text-xl">{selectedMember.title}</p>
-              <p className="text-gray-600 text-lg">
-                {selectedMember.qualifications}
-              </p>
-            </div>
-            <div
-              className="mt-6 overflow-y-auto"
-              style={{ maxHeight: "50vh" }}
-            >
-              <div
-                className="text-gray-800 mx-auto"
-                style={{ maxWidth: "1024px" }}
-              >
-                {parseDetails(selectedMember.details)}
-              </div>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      )}
-
-      {/* Drawer for booking form */}
-      {selectedMember && showBookingDrawer && (
-        <Drawer open={showBookingDrawer} onClose={closeBookingDrawer}>
-          <DrawerContent className="bg-white max-w-md mx-auto p-6">
-            <DrawerClose asChild>
-              <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
-                &#10005;
-              </button>
-            </DrawerClose>
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Book an Appointment
-              </h2>
-            </div>
-            {/* Appointment Form */}
-            <AppointmentForm
-              member={selectedMember}
-              onClose={closeBookingDrawer}
-            />
-          </DrawerContent>
-        </Drawer>
-      )}
     </section>
   );
 };
