@@ -194,10 +194,10 @@ export default function AdultServicesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-sage-700 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-gradient-to-br from-emerald-50 via-teal-50 to-green-50 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-sage-600 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-600 rounded-full blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-40 translate-y-1/2 -translate-x-1/2" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -206,15 +206,15 @@ export default function AdultServicesContent() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-emerald-800 mb-4">
               You Don&apos;t Have to Face It Alone
             </h2>
-            <p className="text-sage-100 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-emerald-700/70 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
               Taking the first step is the hardest part. Reach out today and begin your journey towards emotional well-being.
             </p>
             <button
               onClick={handleBookAppointment}
-              className="bg-white text-sage-700 hover:bg-sage-50 px-8 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:shadow-lg"
+              className="bg-emerald-700 text-white hover:bg-emerald-800 px-8 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-emerald-200/50"
             >
               Book a Consultation
             </button>

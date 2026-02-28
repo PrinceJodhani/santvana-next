@@ -32,9 +32,9 @@ const Footer = () => {
               <Image
                 src="/images/logo.png"
                 alt="Santvana Logo"
-                width={180}
-                height={50}
-                className="h-14 w-auto"
+                width={260}
+                height={72}
+                className="h-24 w-auto"
               />
             </Link>
             <p className="mt-4 text-sm text-gray-500 leading-relaxed">

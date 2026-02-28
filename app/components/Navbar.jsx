@@ -82,7 +82,7 @@ const Navbar = () => {
               <img
                 src="/images/logo.png"
                 alt="Santvana Psychological Well-Being Centre"
-                className="h-14 w-auto"
+                className="h-20 w-auto"
               />
             </Link>
 

@@ -70,13 +70,13 @@ export default function BlogsContent() {
                   className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-brown-100/60 hover:shadow-xl hover:shadow-brown-100/40 hover:border-brown-200 transition-all duration-500 h-full"
                 >
                   {/* Thumbnail */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={blog.thumbnail}
                       alt={blog.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-brown-900/40 via-transparent to-transparent" />
