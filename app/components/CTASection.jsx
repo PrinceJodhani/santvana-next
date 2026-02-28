@@ -9,14 +9,16 @@ export default function CTASection() {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
-      {/* Rich gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-teal-700 via-teal-800 to-brown-800" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brown-700/30 via-transparent to-transparent" />
+      {/* Rich greenish to brown gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-teal-700 to-brown-800" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-green-600/25 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brown-700/35 via-transparent to-transparent" />
 
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-teal-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brown-600/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brown-600/25 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-green-500/10 rounded-full blur-3xl" />
 
         {/* Floating decorative icons */}
         <motion.div
@@ -24,7 +26,7 @@ export default function CTASection() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[15%] left-[10%] w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hidden md:flex"
         >
-          <svg className="w-5 h-5 text-teal-300/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-emerald-300/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
         </motion.div>
@@ -41,14 +43,14 @@ export default function CTASection() {
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-teal-200 text-xs font-semibold uppercase tracking-wider mb-6 border border-white/10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-emerald-200 text-xs font-semibold uppercase tracking-wider mb-6 border border-white/10">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Start Your Journey
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">
-            Your Journey to <span className="text-teal-300">Healing</span> Begins Here
+            Your Journey to <span className="text-emerald-300">Healing</span> Begins Here
           </h2>
           <p className="text-brown-100 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
             Take the first step towards emotional well-being. Book a consultation with our experienced psychologists and therapists today.
@@ -58,7 +60,7 @@ export default function CTASection() {
               onClick={() => setShowBooking(true)}
               className="w-full sm:w-auto bg-white text-brown-800 hover:bg-brown-50 px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:shadow-xl hover:shadow-black/10 flex items-center justify-center gap-2"
             >
-              <svg className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Book an Appointment
@@ -73,7 +75,7 @@ export default function CTASection() {
               Call +91 98242 18278
             </a>
           </div>
-          <p className="mt-8 text-teal-200/80 text-sm flex items-center justify-center gap-2">
+          <p className="mt-8 text-emerald-200/80 text-sm flex items-center justify-center gap-2">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
