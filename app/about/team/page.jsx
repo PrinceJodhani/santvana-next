@@ -33,13 +33,6 @@ const teamMembers = [
     image: "/images/nidhi.jpg",
   },
   {
-    name: "Ms. Dhruvi Goyal",
-    title: "Psychologist | ABA Therapist",
-    qualifications: "M.A. | PhD Aspirant",
-    bio: "Psychologist and ABA Therapist working with children and adults, combining behavioural strategies with therapeutic insight.",
-    image: "/images/dhruvi.jpg",
-  },
-  {
     name: "Mrs. Chandani Makhania",
     title: "Psychology Trainee",
     qualifications: "",

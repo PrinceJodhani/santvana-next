@@ -73,6 +73,19 @@
   }
 }
 
+/* Shake / vibrate animation for social icons */
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(-6deg); }
+  20% { transform: rotate(6deg); }
+  30% { transform: rotate(-6deg); }
+  40% { transform: rotate(6deg); }
+  50% { transform: rotate(0deg); }
+}
+.animate-shake {
+  animation: shake 2.5s ease-in-out infinite;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
