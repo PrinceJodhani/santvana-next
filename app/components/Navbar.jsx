@@ -69,10 +69,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
+        className={`fixed w-full z-50 transition-all duration-500 backdrop-blur-xl ${
           scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-white"
+            ? "bg-white/60 shadow-lg shadow-black/[0.03] border-b border-white/60"
+            : "bg-white/40 border-b border-white/30"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,7 +133,7 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden"
+                      className="absolute top-full left-0 mt-1 w-56 bg-white/70 backdrop-blur-2xl rounded-xl shadow-xl shadow-black/[0.08] border border-white/50 py-2 overflow-hidden"
                     >
                       {aboutLinks.map((link) => (
                         <Link
@@ -190,7 +190,7 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden"
+                      className="absolute top-full left-0 mt-1 w-64 bg-white/70 backdrop-blur-2xl rounded-xl shadow-xl shadow-black/[0.08] border border-white/50 py-2 overflow-hidden"
                     >
                       {serviceLinks.map((link) => (
                         <Link
@@ -296,7 +296,7 @@ const Navbar = () => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
+              className="lg:hidden bg-white/60 backdrop-blur-2xl border-t border-white/40 overflow-hidden"
             >
               <div className="px-4 py-4 space-y-1 max-h-[calc(100vh-5rem)] overflow-y-auto">
                 <MobileNavLink href="/" onClick={toggleMobileMenu} active={pathname === "/"}>
