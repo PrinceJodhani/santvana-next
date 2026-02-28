@@ -133,7 +133,7 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 mt-1 w-56 bg-white/70 backdrop-blur-2xl rounded-xl shadow-xl shadow-black/[0.08] border border-white/50 py-2 overflow-hidden"
+                      className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl shadow-black/[0.08] border border-gray-100 py-2 overflow-hidden"
                     >
                       {aboutLinks.map((link) => (
                         <Link
@@ -190,7 +190,7 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 mt-1 w-64 bg-white/70 backdrop-blur-2xl rounded-xl shadow-xl shadow-black/[0.08] border border-white/50 py-2 overflow-hidden"
+                      className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl shadow-black/[0.08] border border-gray-100 py-2 overflow-hidden"
                     >
                       {serviceLinks.map((link) => (
                         <Link
