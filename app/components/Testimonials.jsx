@@ -5,24 +5,20 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const testimonials = [
   {
-    quote: "I had anxiety problems and after taking therapy from her I feel much better. Thank you for your such a humble and kind gesture as well as guidance and support.",
-    name: "Indi Agrocon",
+    quote: "Been in touch with Dr Poonam Vipani since 2020. This is 2026 she has always been there, showed me right direction regarding anxieties, stress and n number of mental health issues. Very best therapist in town. Never worry about your privacy.",
+    name: "Sagar Chokhawala",
   },
   {
-    quote: "I am feeling very much better now only because of Dr. Poonam. She's very kind hearted and it was a very good experience for me. Thankyou so much ma'am!",
-    name: "Poulomi Biswas",
+    quote: "I'm really grateful to Santvana for being there for me during one of the toughest phases of my life. Their sessions truly helped me heal and understand myself better. A very special thanks to Rajvii ma'am, who was incredibly kind, understanding, and flexible with her timings. Her warmth and positive energy made every session feel comfortable and meaningful. Thank you, Santvana, for all the support and care — you've made a big difference in my journey!",
+    name: "Adithya Chandak",
   },
   {
-    quote: "Poonam mam, aka my therapist, has helped me a lot to become who I am today. She has been very generous towards me, and hence I have found my safe space here with her.",
-    name: "Prisha Gupta",
+    quote: "We came to Santvana because our child was having frequent tantrums and difficulty adjusting at school. The therapist was very calm and patient with our child and also explained things clearly to us as parents. Over a few weeks, we started seeing small but meaningful changes. The environment is safe and child-friendly. We are happy with the support we received.",
+    name: "Nafisa Lokhandwala",
   },
   {
-    quote: "Nice experience and thanks to Poonam mam for her support. The sessions were really helpful and the environment was very comfortable.",
-    name: "Dipesh Bochiya",
-  },
-  {
-    quote: "I was really happy that I took the decision and started therapy for my situation. Poonam mam is very helpful and a good listener. She helped me a lot.",
-    name: "Akshay Barvaliya",
+    quote: "I had a great experience as an intern here. The team was supportive, approachable, and genuinely invested in helping interns learn. I worked on case studies, gained hands-on experience, and received regular feedback that helped me grow professionally. The work environment was positive and collaborative, making it a valuable learning experience overall. I'd definitely recommend this internship to students looking to build practical skills.",
+    name: "Rachna Saxena",
   },
 ];
 
@@ -71,7 +67,7 @@ const Testimonials = () => {
               </svg>
             </div>
 
-            <div className="min-h-[180px] flex items-center justify-center">
+            <div className="min-h-[280px] flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={current}
@@ -81,6 +77,14 @@ const Testimonials = () => {
                   transition={{ duration: 0.4 }}
                   className="text-center pt-8"
                 >
+                  {/* 5-star rating */}
+                  <div className="flex items-center justify-center gap-1 mb-5">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
                   <p className="text-lg md:text-xl text-brown-700 leading-relaxed mb-8 italic max-w-2xl mx-auto font-medium">
                     &ldquo;{testimonials[current].quote}&rdquo;
                   </p>
@@ -88,9 +92,12 @@ const Testimonials = () => {
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brown-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
                       {testimonials[current].name.charAt(0)}
                     </div>
-                    <p className="text-sm font-bold text-brown-800">
-                      {testimonials[current].name}
-                    </p>
+                    <div>
+                      <p className="text-sm font-bold text-brown-800">
+                        {testimonials[current].name}
+                      </p>
+                      <p className="text-xs text-gray-400">Google Review</p>
+                    </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
