@@ -67,6 +67,20 @@ const teamMembers = [
     bio: "Individualised nutrition and dietary guidance to support mental and physical well-being through balanced eating habits.",
     image: "/images/bhumi.jpg",
   },
+  {
+    name: "Ms. Purvi Soni",
+    title: "Special Educator (RCI Registered)",
+    qualifications: "",
+    bio: "RCI Registered Special Educator supporting children with diverse learning needs through individualised educational strategies and developmental care.",
+    image: "/images/purvi.jpeg",
+  },
+  {
+    name: "Ms. Vishva Patel",
+    title: "Psychologist",
+    qualifications: "",
+    bio: "Psychologist providing compassionate, evidence-based support for individuals navigating a range of psychological and emotional concerns.",
+    image: "/images/vishwa.jpeg",
+  },
 ];
 
 const containerVariants = {
