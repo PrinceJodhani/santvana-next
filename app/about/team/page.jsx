@@ -32,12 +32,26 @@ const teamMembers = [
     bio: "RCI Licensed Clinical Psychologist using an eclectic therapy approach to support clients with diverse mental health needs.",
     image: "/images/nidhi.jpg",
   },
+   {
+    name: "Ms. Purvi Soni",
+    title: "Special Educator (RCI Registered)",
+    qualifications: "",
+    bio: "RCI Registered Special Educator supporting children with diverse learning needs through individualised educational strategies and developmental care.",
+    image: "/images/purvi.jpeg",
+  },
+  {
+    name: "Ms. Vishva Patel",
+    title: "Psychologist",
+    qualifications: "",
+    bio: "Psychologist providing compassionate, evidence-based support for individuals navigating a range of psychological and emotional concerns.",
+    image: "/images/vishwa.jpeg",
+  },
   {
     name: "Mrs. Chandani Makhania",
     title: "Psychology Trainee",
     qualifications: "",
     bio: "Psychology Trainee working with children under clinical supervision, gaining hands-on experience in therapeutic and developmental care.",
-    image: "/images/chandani.jpg",
+    image: "/images/chandani.png",
   },
   {
     name: "Dr. Rutvi Kakadiya",
@@ -46,13 +60,13 @@ const teamMembers = [
     bio: "Occupational Therapist providing clinical supervision in child development, sensory integration, and functional independence.",
     image: "/images/rutvi.jpg",
   },
-  {
-    name: "Dr. Sneha Patel",
-    title: "Physiotherapist",
-    qualifications: "BPT | NDT, MET, GSCPT",
-    bio: "Physiotherapist supporting occupational therapy and speech therapy interventions through targeted physical rehabilitation.",
-    image: "/images/sneha.jpg",
-  },
+  // {
+  //   name: "Dr. Sneha Patel",
+  //   title: "Physiotherapist",
+  //   qualifications: "BPT | NDT, MET, GSCPT",
+  //   bio: "Physiotherapist supporting occupational therapy and speech therapy interventions through targeted physical rehabilitation.",
+  //   image: "/images/sneha.jpg",
+  // },
   {
     name: "Dr. Jinal Shah",
     title: "Homeopathic Consultant",
@@ -67,20 +81,7 @@ const teamMembers = [
     bio: "Individualised nutrition and dietary guidance to support mental and physical well-being through balanced eating habits.",
     image: "/images/bhumi.jpg",
   },
-  {
-    name: "Ms. Purvi Soni",
-    title: "Special Educator (RCI Registered)",
-    qualifications: "",
-    bio: "RCI Registered Special Educator supporting children with diverse learning needs through individualised educational strategies and developmental care.",
-    image: "/images/purvi.jpeg",
-  },
-  {
-    name: "Ms. Vishva Patel",
-    title: "Psychologist",
-    qualifications: "",
-    bio: "Psychologist providing compassionate, evidence-based support for individuals navigating a range of psychological and emotional concerns.",
-    image: "/images/vishwa.jpeg",
-  },
+ 
 ];
 
 const containerVariants = {

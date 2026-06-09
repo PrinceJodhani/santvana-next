@@ -97,14 +97,14 @@ const item = {
 export default function HowTherapyWorks() {
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
-      {/* Rich background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brown-800 via-brown-900 to-brown-800" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-900/20 via-transparent to-transparent" />
+      {/* Soft pastel background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-brown-50 via-brown-100 to-brown-50" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-100/40 via-transparent to-transparent" />
 
       {/* Decorative patterns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-teal-700/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-brown-700/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-teal-200/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-brown-200/40 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,16 +115,16 @@ export default function HowTherapyWorks() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-teal-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-white/10">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/70 backdrop-blur-sm text-teal-700 text-xs font-semibold uppercase tracking-wider mb-4 border border-brown-200">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Our Process
             </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">
-              How Therapy Works at <span className="text-teal-400">Santvana</span>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-brown-900 mb-4">
+              How Therapy Works at <span className="text-teal-600">Santvana</span>
             </h2>
-            <p className="text-brown-200 max-w-xl mx-auto">
+            <p className="text-brown-600 max-w-xl mx-auto">
               A structured, compassionate approach to your healing journey.
             </p>
           </motion.div>
@@ -141,10 +141,10 @@ export default function HowTherapyWorks() {
             <motion.div
               key={step.number}
               variants={item}
-              className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+              className="group relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-brown-100 shadow-sm hover:bg-white hover:border-brown-200 hover:shadow-lg hover:shadow-brown-100/50 transition-all duration-300"
             >
               {/* Step number - large decorative */}
-              <span className="text-5xl font-serif font-bold text-white/5 absolute top-3 right-5 group-hover:text-white/10 transition-colors">
+              <span className="text-5xl font-serif font-bold text-brown-900/5 absolute top-3 right-5 group-hover:text-brown-900/10 transition-colors">
                 {step.number}
               </span>
 
@@ -153,10 +153,10 @@ export default function HowTherapyWorks() {
                   {step.icon}
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-white mb-2">
+                  <h3 className="text-base font-semibold text-brown-900 mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-brown-200/80 leading-relaxed">
+                  <p className="text-sm text-brown-600 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
