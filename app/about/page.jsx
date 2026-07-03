@@ -1,11 +1,14 @@
 // app/about/page.jsx
 import Link from "next/link";
 import PageHero from "@/app/components/PageHero";
+import JsonLd from "@/app/components/JsonLd";
+import { breadcrumbSchema } from "@/app/lib/site";
 
 export const metadata = {
   title: "About Santvana | Trusted Psychologists & Therapists in Surat",
   description:
     "Santvana Psychological Well-Being Centre is a leading mental health clinic in Surat with clinical psychologists, trained therapists & child development experts.",
+  alternates: { canonical: "/about" },
 };
 
 const subPages = [
@@ -85,6 +88,12 @@ const subPages = [
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       <PageHero
         badge="About Us"
         title="About Santvana"

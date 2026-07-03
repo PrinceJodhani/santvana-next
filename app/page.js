@@ -8,6 +8,10 @@ import CoreTeam from "./components/CoreTeam";
 import Testimonials from "./components/Testimonials";
 import CTASection from "./components/CTASection";
 
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <>

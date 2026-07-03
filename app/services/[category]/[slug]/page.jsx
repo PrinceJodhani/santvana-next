@@ -1,10 +1,10 @@
 // app/services/[category]/[slug]/page.jsx
-export default function ServiceDetail({ params }) {
-    const { category, slug } = params;
-    const title = slug.replace(/-/g, " ");
-  
-    // SEO-friendly detailed descriptions for each service
-    const serviceDetails = {
+import JsonLd from "@/app/components/JsonLd";
+import { getCategory, getAllServicePaths } from "@/app/data/services";
+import { serviceSchema, breadcrumbSchema } from "@/app/lib/site";
+
+// SEO-friendly detailed descriptions for each service.
+const serviceDetails = {
       "family-counselling": "Counselling is a professional practice that involves providing guidance, support, and advice to individuals or groups facing personal, emotional, psychological, or social challenges. At our centre, Family Counselling offers a safe, confidential, and empathetic environment where families can address conflicts, improve communication, and build stronger relationships. Our experienced counsellors help families navigate complex issues, ensuring improved well-being and long-term harmony.",
       "personal-counselling": "Personal Counselling is designed to help individuals overcome personal challenges and emotional distress. Our expert counsellors provide tailored guidance to help you understand your emotions, develop effective coping strategies, and foster personal growth. Experience a supportive atmosphere that prioritizes your mental health and long-term success.",
       "couple-counselling": "Couple Counselling is dedicated to helping partners enhance communication, resolve conflicts, and rebuild trust. Our seasoned professionals offer compassionate support and evidence-based strategies to strengthen your relationship. Discover how our tailored approach can foster a more harmonious and fulfilling partnership.",
@@ -31,20 +31,86 @@ export default function ServiceDetail({ params }) {
       "homeopathic-consultation": "Our Homeopathic Consultation offers a holistic, natural approach to health and well-being. Using individualized remedies, we work to restore balance and support your body's innate healing processes.",
       "nutrition-consultation": "Nutrition Consultation focuses on developing personalized dietary strategies to optimize health. Our experts provide guidance on balanced nutrition, aiming to improve energy levels, overall wellness, and long-term vitality.",
       "mindfulness-stress-management": "Mindfulness & Stress Management services teach effective techniques for reducing stress and cultivating mindfulness. Our approach helps you develop resilience, achieve balance, and maintain mental clarity in everyday life.",
-      "wellness-coaching": "Wellness Coaching offers personalized support to help you set and achieve your health goals. Our coaches work with you to create sustainable lifestyle changes that enhance physical, mental, and emotional well-being."
-    };
-  
-    const description =
-      serviceDetails[slug] ||
-      `Discover comprehensive insights about ${title} under our ${category} services. Our expert guidance and tailored solutions are designed to enhance your well-being and support lasting positive change.`;
-  
-    return (
+  "wellness-coaching": "Wellness Coaching offers personalized support to help you set and achieve your health goals. Our coaches work with you to create sustainable lifestyle changes that enhance physical, mental, and emotional well-being.",
+};
+
+// Human-readable label for a slug (falls back to title-casing the slug).
+function labelFor(category, slug) {
+  const cat = getCategory(category);
+  const item = cat?.items.find((i) => i.slug === slug);
+  if (item) return item.label;
+  return slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function descriptionFor(category, slug, label) {
+  return (
+    serviceDetails[slug] ||
+    `Discover comprehensive insights about ${label} under our ${category} services. Our expert guidance and tailored solutions are designed to enhance your well-being and support lasting positive change.`
+  );
+}
+
+export function generateStaticParams() {
+  return getAllServicePaths().map(({ category, slug }) => ({ category, slug }));
+}
+
+export async function generateMetadata({ params }) {
+  const { category, slug } = await params;
+  const label = labelFor(category, slug);
+  const description = descriptionFor(category, slug, label);
+  const title = `${label} in Surat | Santvana Psychological Well-Being Centre`;
+  const metaDescription =
+    description.length > 155 ? `${description.slice(0, 152).trim()}...` : description;
+
+  return {
+    title,
+    description: metaDescription,
+    alternates: { canonical: `/services/${category}/${slug}` },
+    openGraph: {
+      title,
+      description: metaDescription,
+      url: `/services/${category}/${slug}`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: metaDescription,
+    },
+  };
+}
+
+export default async function ServiceDetail({ params }) {
+  const { category, slug } = await params;
+  const label = labelFor(category, slug);
+  const description = descriptionFor(category, slug, label);
+
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: label,
+          description,
+          path: `/services/${category}/${slug}`,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Services", path: `/services/${category}` },
+          { name: label, path: `/services/${category}/${slug}` },
+        ])}
+      />
       <div className="min-h-screen pt-20 px-4 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold capitalize">
-          {title} <span className="text-sm font-normal text-gray-600">({category})</span>
+        <h1 className="text-3xl font-bold">
+          {label}{" "}
+          <span className="text-sm font-normal text-gray-600 capitalize">
+            ({category.replace(/-/g, " ")})
+          </span>
         </h1>
         <p className="mt-6 text-gray-700 leading-relaxed">{description}</p>
       </div>
-    );
-  }
-  
+    </>
+  );
+}

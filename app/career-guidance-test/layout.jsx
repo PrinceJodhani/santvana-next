@@ -1,27 +1,23 @@
-// Create a new file: app/career-guidance-test/layout.jsx
+// app/career-guidance-test/layout.jsx
+const title = "Free Career Guidance Test in Surat | Santvana";
+const description =
+  "Take Santvana's free career guidance assessment to discover your ideal career path, with expert career counselling available in Surat and online.";
 
 export const metadata = {
-  title: 'Career Guidance Assessment | Santvana Pyschological Well-being center',
-  description: 'Take our comprehensive career guidance assessment to discover your ideal career path',
+  title,
+  description,
+  alternates: { canonical: "/career-guidance-test" },
   openGraph: {
-    title: 'Career Guidance Assessment | Santvana Pyschological Well-being center',
-    description: 'Take our comprehensive career guidance assessment to discover your ideal career path',
-    images: [
-      {
-        url: '/images/logo.png',
-        width: 1200,
-        height: 630,
-        alt: 'Career Guidance Assessment Logo',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
+    title,
+    description,
+    url: "/career-guidance-test",
+    locale: "en_IN",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Career Guidance Assessment | Santvana Pyschological Well-being center',
-    description: 'Take our comprehensive career guidance assessment to discover your ideal career path',
-    images: ['/images/logo.png'],
+    card: "summary_large_image",
+    title,
+    description,
   },
 };
 

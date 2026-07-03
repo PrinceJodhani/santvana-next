@@ -1,10 +1,13 @@
 // app/about/mission-vision/page.jsx
 import PageHero from "@/app/components/PageHero";
+import JsonLd from "@/app/components/JsonLd";
+import { breadcrumbSchema } from "@/app/lib/site";
 
 export const metadata = {
   title: "Mission & Vision | Mental Health Centre in Surat",
   description:
     "Learn about Santvana's mission to provide ethical, compassionate and evidence-based psychological care for children, adults and families in Surat.",
+  alternates: { canonical: "/about/mission-vision" },
 };
 
 const visionPoints = [
@@ -18,6 +21,13 @@ const visionPoints = [
 export default function MissionVisionPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+          { name: "Mission & Vision", path: "/about/mission-vision" },
+        ])}
+      />
       <PageHero
         badge="Our Purpose"
         title="Mission & Vision"

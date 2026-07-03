@@ -1,6 +1,8 @@
 // app/blogs/[slug]/page.jsx
 import { notFound } from "next/navigation";
 import { getBlogBySlug, getAllSlugs } from "@/app/data/blogs";
+import JsonLd from "@/app/components/JsonLd";
+import { articleSchema, breadcrumbSchema } from "@/app/lib/site";
 import BlogDetail from "./BlogDetail";
 
 export async function generateStaticParams() {
@@ -12,19 +14,23 @@ export async function generateMetadata({ params }) {
   const blog = getBlogBySlug(slug);
   if (!blog) return {};
 
+  const title = `${blog.title} | Santvana Blog`;
   return {
-    title: `${blog.title} | Santvana Blog`,
+    title,
     description: blog.excerpt,
+    alternates: { canonical: `/blogs/${blog.slug}` },
     openGraph: {
-      title: `${blog.title} | Santvana Blog`,
+      title,
       description: blog.excerpt,
-      url: `https://santvana.co.in/blogs/${blog.slug}`,
+      url: `/blogs/${blog.slug}`,
       type: "article",
+      publishedTime: blog.date,
+      authors: blog.author?.name ? [blog.author.name] : undefined,
       images: [blog.thumbnail],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${blog.title} | Santvana Blog`,
+      title,
       description: blog.excerpt,
       images: [blog.thumbnail],
     },
@@ -36,5 +42,17 @@ export default async function BlogPage({ params }) {
   const blog = getBlogBySlug(slug);
   if (!blog) notFound();
 
-  return <BlogDetail blog={blog} />;
+  return (
+    <>
+      <JsonLd data={articleSchema(blog)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Blogs", path: "/blogs" },
+          { name: blog.title, path: `/blogs/${blog.slug}` },
+        ])}
+      />
+      <BlogDetail blog={blog} />
+    </>
+  );
 }
